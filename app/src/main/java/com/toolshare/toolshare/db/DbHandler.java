@@ -53,30 +53,16 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     // MIGRATIONS
-/*    private static final String MIGRATION_1_TO_2 = "ALTER TABLE "
-            + TABLE_USERS + " ADD " + USERS_COLUMN_LOCATION + " TEXT DEFAULT null;";
+    private static final String MIGRATION_1_TO_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key, "
+            + TOOL_COLUMN_OWNER + " text, "
+            + TOOL_COLUMN_TYPE_ID + " integer, "
+            + TOOL_COLUMN_NAME + " text, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text);";
 
-    private static final String MIGRATION_2_TO_3_PART_1 = "ALTER TABLE "
-            + TABLE_USERS + " RENAME TO users_old;";
-    private static final String MIGRATION_2_TO_3_PART_2 = "CREATE TABLE users ("
-            + USERS_COLUMN_EMAIL + " text primary key, "
-            + USERS_COLUMN_FIRST_NAME + " text NOT NULL,"
-            + USERS_COLUMN_LAST_NAME + " text NOT NULL,"
-            + USERS_COLUMN_PHONE + " text,"
-            + USERS_COLUMN_PASSWORD + " text NOT NULL)";
-    private static final String MIGRATION_2_TO_3_PART_3 = "INSERT INTO users ("
-            + USERS_COLUMN_EMAIL + ", "
-            + USERS_COLUMN_FIRST_NAME + ", "
-            + USERS_COLUMN_LAST_NAME + ", "
-            + USERS_COLUMN_PHONE + ", "
-            + USERS_COLUMN_PASSWORD + ") "
-            + "SELECT "
-            + USERS_COLUMN_EMAIL + ", "
-            + USERS_COLUMN_FIRST_NAME + ", "
-            + USERS_COLUMN_LAST_NAME + ", "
-            + USERS_COLUMN_PHONE + ", "
-            + USERS_COLUMN_PASSWORD
-            + " FROM users_old";*/
+    //// YOU WERE WORKING ON ADDING THE MIGRATION TO ADD THE NEW TABLES
 
     // Creating Tables
     @Override
