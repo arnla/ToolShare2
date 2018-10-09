@@ -111,8 +111,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String lastName = mLastNameView.getText().toString();
         String phone = mPhoneView.getText().toString();
         String password = mPasswordView.getText().toString();
+        User user = new User(email, firstName, lastName, phone, password);
 
-        db.addUser(new User(email, firstName, lastName, phone, password));
+        user.addUser(db);
 
         Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(i);

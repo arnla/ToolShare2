@@ -331,7 +331,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         private Boolean loginUser() {
             // Check if user in database
-            User user = db.getUser(mEmail);
+            User user = new User();
+            user = user.getUser(db, mEmail);
             if (user == null) {
                 Toast.makeText(LoginActivity.this, "No account registered to this email", Toast.LENGTH_LONG).show();
                 return false;
