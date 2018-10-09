@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -30,7 +30,7 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     // MIGRATIONS
-    private static final String MIGRATION_1_TO_2 = "ALTER TABLE "
+/*    private static final String MIGRATION_1_TO_2 = "ALTER TABLE "
             + TABLE_USERS + " ADD " + USERS_COLUMN_LOCATION + " TEXT DEFAULT null;";
 
     private static final String MIGRATION_2_TO_3_PART_1 = "ALTER TABLE "
@@ -53,7 +53,7 @@ public class DbHandler extends SQLiteOpenHelper {
             + USERS_COLUMN_LAST_NAME + ", "
             + USERS_COLUMN_PHONE + ", "
             + USERS_COLUMN_PASSWORD
-            + " FROM users_old";
+            + " FROM users_old";*/
 
     // Creating Tables
     @Override
@@ -70,7 +70,7 @@ public class DbHandler extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion < 2) {
+/*        if (oldVersion < 2) {
             db.execSQL(MIGRATION_1_TO_2);
         }
 
@@ -78,7 +78,7 @@ public class DbHandler extends SQLiteOpenHelper {
             db.execSQL(MIGRATION_2_TO_3_PART_1);
             db.execSQL(MIGRATION_2_TO_3_PART_2);
             db.execSQL(MIGRATION_2_TO_3_PART_3);
-        }
+        }*/
     }
 
     // code to add the new user

@@ -3,6 +3,7 @@ package com.toolshare.toolshare;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -112,6 +113,9 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String password = mPasswordView.getText().toString();
 
         db.addUser(new User(email, firstName, lastName, phone, password));
+
+        Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(i);
 
         /*// Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
