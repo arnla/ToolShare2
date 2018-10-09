@@ -24,6 +24,29 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String USERS_COLUMN_PASSWORD = "password";
     public static final String USERS_COLUMN_LOCATION = "location";
 
+    // TOOL TABLE
+    public static final String TABLE_TOOLS = "tools";
+    public static final String TOOL_COLUMN_ID = "id";
+    public static final String TOOL_COLUMN_OWNER = "owner";
+    public static final String TOOL_COLUMN_TYPE_ID = "type_id";
+    public static final String TOOL_COLUMN_NAME = "name";
+    public static final String TOOL_COLUMN_YEAR = "year";
+    public static final String TOOL_COLUMN_MODEL = "model";
+
+    // TOOL TYPE TABLE
+    public static final String TABLE_TOOL_TYPES = "tool_types";
+    public static final String TOOL_TYPE_COLUMN_ID = "id";
+    public static final String TOOL_TYPE_COLUMN_TYPE = "type";
+    public static final String TOOL_TYPE_COLUMN_DESCRIPTION = "description";
+
+    // AD TABLE
+    public static final String TABLE_ADS = "ads";
+    public static final String AD_COLUMN_ID = "id";
+    public static final String AD_COLUMN_OWNER = "owner";
+    public static final String AD_COLUMN_TOOL_ID = "tool_id";
+    public static final String AD_COLUMN_POST_DATE = "post_date";
+    public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
+
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance

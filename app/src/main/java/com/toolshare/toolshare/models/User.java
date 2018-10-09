@@ -76,6 +76,16 @@ public class User {
      * DB Functions
      *
      */
+
+    // USER TABLE
+    public static final String TABLE_USERS = "users";
+    public static final String USERS_COLUMN_EMAIL = "email";
+    public static final String USERS_COLUMN_FIRST_NAME = "first_name";
+    public static final String USERS_COLUMN_LAST_NAME = "last_name";
+    public static final String USERS_COLUMN_PHONE = "phone";
+    public static final String USERS_COLUMN_PASSWORD = "password";
+    public static final String USERS_COLUMN_LOCATION = "location";
+
     // code to add the new user
     public void addUser(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
