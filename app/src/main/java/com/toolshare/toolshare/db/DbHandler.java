@@ -12,16 +12,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "ToolshareDB";/*
-    private static final String KEY_ID = "id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_PH_NO = "phone_number";*/
+    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "ToolshareDB";
+
+    // USER TABLE
+    public static final String TABLE_USERS = "users";
+    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_FIRST_NAME = "first_name";
+    public static final String COLUMN_LAST_NAME = "last_name";
+    public static final String COLUMN_PHONE = "phone";
+    public static final String COLUMN_PASSWORD = "password";
+    public static final String COLUMN_LOCATION = "location";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
     }
+
+    // MIGRATIONS
+    private static final String MIGRATION_1_TO_2 = "ALTER TABLE "
+            + TABLE_USERS + " ADD " + COLUMN_LOCATION + " TEXT DEFAULT null;";
 
     // Creating Tables
     @Override
@@ -38,11 +48,9 @@ public class DbHandler extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS users");
-
-        // Create tables again
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL(MIGRATION_1_TO_2);
+        }
     }
 
     // code to add the new user
