@@ -73,4 +73,19 @@ public class Tool {
     public void setModel(String model) {
         this.Model = model;
     }
+
+
+    /*****************************************************************************
+     * DB Functions
+     *
+     */
+
+    // TOOL TABLE
+    public static final String TABLE_TOOLS = "tools";
+    public static final String TOOL_COLUMN_ID = "id";
+    public static final String TOOL_COLUMN_OWNER = "owner";
+    public static final String TOOL_COLUMN_TYPE_ID = "type_id";
+    public static final String TOOL_COLUMN_NAME = "name";
+    public static final String TOOL_COLUMN_YEAR = "year";
+    public static final String TOOL_COLUMN_MODEL = "model";
 }
