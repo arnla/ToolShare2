@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -53,7 +53,7 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     // MIGRATIONS
-    private static final String MIGRATION_1_TO_2 = "CREATE TABLE "
+    private static final String MIGRATION_1_TO_2_PART_1 = "CREATE TABLE "
             + TABLE_TOOLS + " ("
             + TOOL_COLUMN_ID + " integer primary key, "
             + TOOL_COLUMN_OWNER + " text, "
@@ -61,8 +61,18 @@ public class DbHandler extends SQLiteOpenHelper {
             + TOOL_COLUMN_NAME + " text, "
             + TOOL_COLUMN_YEAR + " integer, "
             + TOOL_COLUMN_MODEL + " text);";
-
-    //// YOU WERE WORKING ON ADDING THE MIGRATION TO ADD THE NEW TABLES
+    private static final String MIGRATION_1_TO_2_PART_2 = "CREATE TABLE "
+            + TABLE_TOOL_TYPES + " ("
+            + TOOL_TYPE_COLUMN_ID + " integer primary key, "
+            + TOOL_TYPE_COLUMN_TYPE + " text, "
+            + TOOL_TYPE_COLUMN_DESCRIPTION + " integer);";
+    private static final String MIGRATION_1_TO_2_PART_3 = "CREATE TABLE "
+            + TABLE_ADS + " ("
+            + AD_COLUMN_ID + " integer primary key, "
+            + AD_COLUMN_OWNER + " text, "
+            + AD_COLUMN_TOOL_ID + " integer, "
+            + AD_COLUMN_POST_DATE + " text, "
+            + AD_COLUMN_EXPIRATION_DATE + " integer);";
 
     // Creating Tables
     @Override
@@ -79,14 +89,10 @@ public class DbHandler extends SQLiteOpenHelper {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-/*        if (oldVersion < 2) {
-            db.execSQL(MIGRATION_1_TO_2);
+        if (oldVersion < 2) {
+            db.execSQL(MIGRATION_1_TO_2_PART_1);
+            db.execSQL(MIGRATION_1_TO_2_PART_2);
+            db.execSQL(MIGRATION_1_TO_2_PART_3);
         }
-
-        if (oldVersion < 3) {
-            db.execSQL(MIGRATION_2_TO_3_PART_1);
-            db.execSQL(MIGRATION_2_TO_3_PART_2);
-            db.execSQL(MIGRATION_2_TO_3_PART_3);
-        }*/
     }
 }
