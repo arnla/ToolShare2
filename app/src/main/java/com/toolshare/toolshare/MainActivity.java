@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Bundle bundle;
+
     private Button mProfileButton;
     private Button mRentToolsButton;
     private Button mRentOutToolsButton;
@@ -21,11 +23,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bundle = getIntent().getExtras();
+
         mProfileButton = findViewById(R.id.profile_button);
         mProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 startActivity(i);
             }
         });

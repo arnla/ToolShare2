@@ -29,6 +29,7 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
                     return true;
                 case R.id.navigation_add:
                     PopupMenu popup = new PopupMenu(ProfileActivity.this, findViewById(R.id.navigation_add));
+                    popup.setOnMenuItemClickListener(ProfileActivity.this);
                     MenuInflater inflater = popup.getMenuInflater();
                     inflater.inflate(R.menu.add_menu, popup.getMenu());
                     popup.show();

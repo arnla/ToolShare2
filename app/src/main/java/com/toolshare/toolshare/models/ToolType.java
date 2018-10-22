@@ -3,8 +3,12 @@ package com.toolshare.toolshare.models;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 
 import com.toolshare.toolshare.db.DbHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ToolType {
     private int Id;
@@ -75,5 +79,22 @@ public class ToolType {
             cursor.moveToFirst();
 
         return cursor.getInt(0) + 1;
+    }
+
+    public List<String> getAllToolTypes(DbHandler dbHandler) {
+        List<String> toolTypes = new ArrayList<String>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from tool_types", null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                toolTypes.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return toolTypes;
     }
 }

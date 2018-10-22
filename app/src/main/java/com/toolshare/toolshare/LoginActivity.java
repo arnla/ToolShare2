@@ -219,7 +219,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
             mAuthTask = new UserLoginTask(email, password);
             if (mAuthTask.loginUser()) {
-                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 i.putExtra("userEmail", mEmailView.getText().toString());
                 startActivity(i);
             } else {
