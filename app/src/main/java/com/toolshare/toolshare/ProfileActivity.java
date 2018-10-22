@@ -10,9 +10,14 @@ import android.view.MenuItem;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.User;
+
 public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
-    private TextView mTextMessage;
+    private Bundle bundle;
+    private DbHandler db;
+    private TextView mUsername;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -21,20 +26,16 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
                     return true;
                 case R.id.navigation_add:
-                    mTextMessage.setText("Add");
                     PopupMenu popup = new PopupMenu(ProfileActivity.this, findViewById(R.id.navigation_add));
                     MenuInflater inflater = popup.getMenuInflater();
                     inflater.inflate(R.menu.add_menu, popup.getMenu());
                     popup.show();
                     return true;
                 case R.id.navigation_dashboard:
-                    mTextMessage.setText("Browse");
                     return true;
                 case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
                     return true;
             }
             return false;
@@ -46,7 +47,11 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
-        mTextMessage = (TextView) findViewById(R.id.message);
+        bundle = getIntent().getExtras();
+        db = new DbHandler(this);
+
+        mUsername = (TextView) findViewById(R.id.tv_username);
+        setUsername();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
@@ -63,5 +68,11 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
             default:
                 return false;
         }
+    }
+
+    private void setUsername() {
+        User user = new User();
+        user = user.getUser(db, bundle.getString("userEmail"));
+        mUsername.setText(user.getFirstName() + " " + user.getLastName());
     }
 }
