@@ -32,6 +32,7 @@
         <activity
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" />
+        <activity android:name=".NewToolActivity"></activity>
     </application>
 
 </manifest>
