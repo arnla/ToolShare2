@@ -31,7 +31,7 @@
             android:label="@string/title_activity_register" />
         <activity
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"></activity>
+            android:label="@string/title_activity_profile" />
     </application>
 
 </manifest>
