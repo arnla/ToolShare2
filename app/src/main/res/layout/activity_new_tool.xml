@@ -20,6 +20,20 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_tool_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name of Tool"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/et_tool_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"/>
+
+                <TextView
                     android:id="@+id/tv_tool_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -28,12 +42,55 @@
                     android:textStyle="bold"/>
 
                 <Spinner
-                    android:id="@+id/spinner_tool_type"
+                    android:id="@+id/s_tool_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_tool_type"
                     android:spinnerMode="dropdown"
                     android:background="@android:drawable/btn_dropdown"/>
+
+                <TextView
+                    android:id="@+id/tv_tool_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Year"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <Spinner
+                    android:id="@+id/s_tool_year"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:background="@android:drawable/btn_dropdown"/>
+
+                <TextView
+                    android:id="@+id/tv_tool_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Brand"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <Spinner
+                    android:id="@+id/s_tool_brand"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:background="@android:drawable/btn_dropdown"/>
+
+                <TextView
+                    android:id="@+id/tv_tool_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Model"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+
+                <EditText
+                    android:id="@+id/et_tool_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"/>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>

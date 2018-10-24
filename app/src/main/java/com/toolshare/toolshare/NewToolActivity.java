@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -14,12 +15,18 @@ import android.widget.TextView;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.ToolType;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class NewToolActivity extends AppCompatActivity {
 
     private DbHandler db;
+    private TextView mName;
     private Spinner mToolTypeSpinner;
+    private Spinner mYearsSpinner;
+    private Spinner mBrandSpinner;
+    private TextView mModel;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,24 +57,32 @@ public class NewToolActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_tool);
 
         db = new DbHandler(this);
-        mToolTypeSpinner = (Spinner) findViewById(R.id.spinner_tool_type);
-        loadSpinner();
+        mName = (EditText) findViewById(R.id.et_tool_name);
+        mToolTypeSpinner = (Spinner) findViewById(R.id.s_tool_type);
+        mYearsSpinner = (Spinner) findViewById(R.id.s_tool_year);
+        mBrandSpinner = (Spinner) findViewById(R.id.s_tool_brand);
+        mModel = (EditText) findViewById(R.id.et_tool_model);
+        loadSpinners();
     }
 
-    private void loadSpinner() {
-        // Spinner Drop down elements
+    private void loadSpinners() {
+        // Tool type spinner
         ToolType toolType = new ToolType();
         List<String> toolTypes = toolType.getAllToolTypes(db);
-
-        // Creating adapter for spinner
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, toolTypes);
-
-        // Drop down layout style - list view with radio button
         dataAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
         mToolTypeSpinner.setAdapter(dataAdapter);
+
+        // Year spinner
+        List<Integer> years = new ArrayList<Integer>();
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        for (int i = 1975; i <= currentYear; i++) {
+            years.add(i);
+        }
+        ArrayAdapter<Integer> yearsAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, years);
+        yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mYearsSpinner.setAdapter(yearsAdapter);
     }
 }
