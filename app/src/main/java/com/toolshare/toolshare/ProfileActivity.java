@@ -7,17 +7,25 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
+
+import java.util.List;
 
 public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     private Bundle bundle;
     private DbHandler db;
     private TextView mUsername;
+    private LinearLayout mMyTools;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -55,6 +63,10 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         setUsername();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        mMyTools = (LinearLayout) findViewById(R.id.ll_my_tools);
+
+        loadTools();
     }
 
     @Override
@@ -76,5 +88,32 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         User user = new User();
         user = user.getUser(db, bundle.getString("userEmail"));
         mUsername.setText(user.getFirstName() + " " + user.getLastName());
+    }
+
+    private void loadTools() {
+        Tool tool = new Tool();
+        List<Tool> tools = tool.getAllToolsByPk(db, bundle.getString("userEmail"));
+
+        for (int i = 0; i < tools.size(); i++) {
+            addButton(mMyTools, tools.get(i));
+        }
+    }
+
+    private void addButton(LinearLayout layout, Tool tool) {
+        Button button = new Button(getApplicationContext());
+        button.setHeight(15000);
+        layout.addView(button);
+        button.setText(tool.getName());
+        button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+/*                Intent intent = new Intent(ProfileActivity.this, EventActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("eventId", event.getEventId());
+                intent.putExtras(b);
+                startActivity(intent);*/
+            }
+        });
     }
 }

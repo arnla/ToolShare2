@@ -6,6 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.toolshare.toolshare.db.DbHandler;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tool {
     private int Id;
     private String Owner;
@@ -27,6 +30,16 @@ public class Tool {
     
     public Tool(DbHandler dbHandler, String owner, int typeId, String name, int year, String model, int brand) {
         Id = getNextId(dbHandler);
+        this.Owner = owner;
+        this.TypeId = typeId;
+        this.Name = name;
+        this.Year = year;
+        this.Model = model;
+        this.Brand = brand;
+    }
+
+    public Tool(int id, String owner, int typeId, String name, int year, String model, int brand) {
+        this.Id = id;
         this.Owner = owner;
         this.TypeId = typeId;
         this.Name = name;
@@ -132,5 +145,53 @@ public class Tool {
         // Inserting Row
         db.insert("tools", null, values);
         db.close();
+    }
+
+    public List<Tool> getAllTools(DbHandler dbHandler) {
+        List<Tool> tools = new ArrayList<Tool>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from tools", null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Tool tool = new Tool(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getInt(6));
+                tools.add(tool);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return tools;
+    }
+
+    public List<Tool> getAllToolsByPk(DbHandler dbHandler, String owner) {
+        List<Tool> tools = new ArrayList<Tool>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from tools where owner = ?", new String[] {owner});
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Tool tool = new Tool(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getInt(4),
+                        cursor.getString(5),
+                        cursor.getInt(6));
+                tools.add(tool);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return tools;
     }
 }
