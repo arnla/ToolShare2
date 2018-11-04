@@ -15,6 +15,12 @@ public class ToolType {
     private String Type;
     private String Description;
 
+    public ToolType(DbHandler dbHandler, String type, String description) {
+        Id = getNextId(dbHandler);
+        this.Type = type;
+        this.Description = description;
+    }
+
     public int getId() {
         return Id;
     }
@@ -39,6 +45,11 @@ public class ToolType {
         this.Description = description;
     }
 
+    @Override
+    public String toString() {
+        return Type;
+    }
+
 
     /*****************************************************************************
      * DB Functions
@@ -56,8 +67,8 @@ public class ToolType {
 
         ContentValues values = new ContentValues();
         values.put("id", getNextId(dbHandler)); // Id
-        values.put("type", "Saws"); // Tool type
-        values.put("description", "Cutting tools"); // Description
+        values.put("type", "Drills"); // Tool type
+        values.put("description", "Drilling tools"); // Description
 
         // Inserting Row
         db.insert("tool_types", null, values);
@@ -81,15 +92,16 @@ public class ToolType {
         return cursor.getInt(0) + 1;
     }
 
-    public List<String> getAllToolTypes(DbHandler dbHandler) {
-        List<String> toolTypes = new ArrayList<String>();
+    public static List<ToolType> getAllToolTypes(DbHandler dbHandler) {
+        List<ToolType> toolTypes = new ArrayList<ToolType>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from tool_types", null);
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                toolTypes.add(cursor.getString(1));
+                ToolType toolType = new ToolType(dbHandler, cursor.getString(1), cursor.getString(2));
+                toolTypes.add(toolType);
             } while (cursor.moveToNext());
         }
 

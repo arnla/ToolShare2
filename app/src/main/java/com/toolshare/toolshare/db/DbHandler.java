@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -48,6 +48,11 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
 
+    // BRAND TABLE
+    public static final String TABLE_BRANDS = "brands";
+    public static final String BRAND_COLUMN_ID = "id";
+    public static final String BRAND_COLUMN_NAME = "name";
+
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
@@ -79,6 +84,16 @@ public class DbHandler extends SQLiteOpenHelper {
             + TABLE_TOOLS
             + " ADD " + TOOL_COLUMN_BRAND + " text;";
 
+    private static final String MIGRATION_3_TO_4_PART_1 = "CREATE TABLE "
+            + TABLE_BRANDS + " ("
+            + BRAND_COLUMN_ID + " integer primary key, "
+            + BRAND_COLUMN_NAME + " text);";
+    private static final String MIGRATION_3_TO_4_PART_2 = "INSERT INTO "
+            + TABLE_BRANDS + " ("
+            + BRAND_COLUMN_ID + ", "
+            + BRAND_COLUMN_NAME + ") VALUES "
+            + "(1, \"Other\"),(2, \"Ryobi\"),(3, \"DeWalt\"),(4, \"Bosch\");";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -102,6 +117,11 @@ public class DbHandler extends SQLiteOpenHelper {
 
         if (oldVersion < 3) {
             db.execSQL(MIGRATION_2_TO_3);
+        }
+
+        if (oldVersion < 4) {
+            db.execSQL(MIGRATION_3_TO_4_PART_1);
+            db.execSQL(MIGRATION_3_TO_4_PART_2);
         }
     }
 }

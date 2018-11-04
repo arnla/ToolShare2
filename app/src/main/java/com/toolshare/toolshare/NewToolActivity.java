@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.PopupMenu;
@@ -13,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.ToolType;
 
 import java.util.ArrayList;
@@ -57,7 +60,6 @@ public class NewToolActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_tool);
 
         db = new DbHandler(this);
-        mName = (EditText) findViewById(R.id.et_tool_name);
         mToolTypeSpinner = (Spinner) findViewById(R.id.s_tool_type);
         mYearsSpinner = (Spinner) findViewById(R.id.s_tool_year);
         mBrandSpinner = (Spinner) findViewById(R.id.s_tool_brand);
@@ -67,9 +69,8 @@ public class NewToolActivity extends AppCompatActivity {
 
     private void loadSpinners() {
         // Tool type spinner
-        ToolType toolType = new ToolType();
-        List<String> toolTypes = toolType.getAllToolTypes(db);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        List<ToolType> toolTypes = ToolType.getAllToolTypes(db);
+        ArrayAdapter<ToolType> dataAdapter = new ArrayAdapter<ToolType>(this,
                 android.R.layout.simple_spinner_item, toolTypes);
         dataAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -84,5 +85,13 @@ public class NewToolActivity extends AppCompatActivity {
         ArrayAdapter<Integer> yearsAdapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, years);
         yearsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mYearsSpinner.setAdapter(yearsAdapter);
+
+        // Brands spinner
+        List<Brand> brands = Brand.getAllBrands(db);
+        ArrayAdapter<Brand> brandsAdapter = new ArrayAdapter<Brand>(this,
+                android.R.layout.simple_spinner_item, brands);
+        dataAdapter
+                .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mBrandSpinner.setAdapter(brandsAdapter);
     }
 }
