@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
 
 import java.util.ArrayList;
@@ -112,6 +113,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+
+        // Uncomment to add/delete tool types
+//        Button mNewToolTypeButton = (Button) findViewById(R.id.new_tool_type_button);
+//        mNewToolTypeButton.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                ToolType toolType = new ToolType();
+//                toolType.addToolType(db);
+//                Toast.makeText(LoginActivity.this, "Tool type added", Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 
     private void populateAutoComplete() {
@@ -208,6 +220,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = new UserLoginTask(email, password);
             if (mAuthTask.loginUser()) {
                 Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                i.putExtra("userEmail", mEmailView.getText().toString());
                 startActivity(i);
             } else {
                 showProgress(false);
@@ -346,5 +359,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
     }
+
+
+
+    // Function to add tool - COMMENT OUT WHEN NOT NEEDED
 }
 

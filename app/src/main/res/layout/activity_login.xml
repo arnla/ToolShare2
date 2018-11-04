@@ -81,6 +81,16 @@
                 android:layout_marginTop="16dp"
                 android:text="Register"
                 android:textStyle="bold" />
+
+            <!--Uncomment to add/delete tool types-->
+            <!--<Button-->
+                <!--android:id="@+id/new_tool_type_button"-->
+                <!--style="?android:textAppearanceSmall"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:text="New Tool Type"-->
+                <!--android:textStyle="bold" />-->
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

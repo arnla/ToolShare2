@@ -7,6 +7,7 @@ public class Tool {
     private String Name;
     private int Year;
     private String Model;
+    private String Brand;
 
     public Tool() {
         this.Id = -1;
@@ -15,15 +16,17 @@ public class Tool {
         this.Name = null;
         this.Year = -1;
         this.Model = null;
+        this.Brand = null;
     }
     
-    public Tool(int id, String owner, int typeId, String name, int year, String model) {
+    public Tool(int id, String owner, int typeId, String name, int year, String model, String brand) {
         this.Id = id;
         this.Owner = owner;
         this.TypeId = typeId;
         this.Name = name;
         this.Year = year;
         this.Model = model;
+        this.Brand = brand;
     }
 
     public int getId() {
@@ -74,6 +77,14 @@ public class Tool {
         this.Model = model;
     }
 
+    public String getBrand() {
+        return Brand;
+    }
+
+    public void setBrand(String brand) {
+        this.Brand = brand;
+    }
+
 
     /*****************************************************************************
      * DB Functions
@@ -88,4 +99,5 @@ public class Tool {
     public static final String TOOL_COLUMN_NAME = "name";
     public static final String TOOL_COLUMN_YEAR = "year";
     public static final String TOOL_COLUMN_MODEL = "model";
+    public static final String TOOL_COLUMN_BRAND = "brand";
 }
