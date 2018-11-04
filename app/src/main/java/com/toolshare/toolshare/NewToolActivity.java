@@ -121,5 +121,6 @@ public class NewToolActivity extends AppCompatActivity {
         Tool tool = new Tool(db, owner, toolType.getId(), name, year, model, brand.getId());
         tool.addTool(db);
         Toast.makeText(NewToolActivity.this, "New tool added", Toast.LENGTH_LONG).show();
+        finish();
     }
 }
