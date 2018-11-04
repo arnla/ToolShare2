@@ -62,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
         switch (item.getItemId()) {
             case R.id.new_tool_option:
                 Intent i = new Intent(ProfileActivity.this, NewToolActivity.class);
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 startActivity(i);
                 return true;
             case R.id.new_ad_option:

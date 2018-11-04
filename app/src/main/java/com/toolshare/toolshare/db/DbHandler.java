@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -59,6 +59,8 @@ public class DbHandler extends SQLiteOpenHelper {
     }
 
     // MIGRATIONS
+
+    // 1 to 2
     private static final String MIGRATION_1_TO_2_PART_1 = "CREATE TABLE "
             + TABLE_TOOLS + " ("
             + TOOL_COLUMN_ID + " integer primary key, "
@@ -80,10 +82,12 @@ public class DbHandler extends SQLiteOpenHelper {
             + AD_COLUMN_POST_DATE + " text, "
             + AD_COLUMN_EXPIRATION_DATE + " integer);";
 
+    // 2 to 3
     private static final String MIGRATION_2_TO_3 = "ALTER TABLE "
             + TABLE_TOOLS
             + " ADD " + TOOL_COLUMN_BRAND + " text;";
 
+    // 3 to 4
     private static final String MIGRATION_3_TO_4_PART_1 = "CREATE TABLE "
             + TABLE_BRANDS + " ("
             + BRAND_COLUMN_ID + " integer primary key, "
@@ -93,6 +97,33 @@ public class DbHandler extends SQLiteOpenHelper {
             + BRAND_COLUMN_ID + ", "
             + BRAND_COLUMN_NAME + ") VALUES "
             + "(1, \"Other\"),(2, \"Ryobi\"),(3, \"DeWalt\"),(4, \"Bosch\");";
+
+    // 4 to 5
+    private static final String MIGRATION_4_TO_5_PART_1 = "DROP TABLE "
+            + TABLE_TOOLS + ";";
+    private static final String MIGRATION_4_TO_5_PART_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key, "
+            + TOOL_COLUMN_OWNER + " integer, "
+            + TOOL_COLUMN_TYPE_ID + " integer, "
+            + TOOL_COLUMN_NAME + " text, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text, "
+            + TOOL_COLUMN_BRAND + " integer);";
+
+    // 5 to 6
+    private static final String MIGRATION_5_TO_6_PART_1 = "DROP TABLE "
+            + TABLE_TOOLS + ";";
+    private static final String MIGRATION_5_TO_6_PART_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key, "
+            + TOOL_COLUMN_OWNER + " text, "
+            + TOOL_COLUMN_TYPE_ID + " integer, "
+            + TOOL_COLUMN_NAME + " text, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text, "
+            + TOOL_COLUMN_BRAND + " integer);";
+
 
     // Creating Tables
     @Override
@@ -122,6 +153,16 @@ public class DbHandler extends SQLiteOpenHelper {
         if (oldVersion < 4) {
             db.execSQL(MIGRATION_3_TO_4_PART_1);
             db.execSQL(MIGRATION_3_TO_4_PART_2);
+        }
+
+        if (oldVersion < 5) {
+            db.execSQL(MIGRATION_4_TO_5_PART_1);
+            db.execSQL(MIGRATION_4_TO_5_PART_2);
+        }
+
+        if (oldVersion < 6) {
+            db.execSQL(MIGRATION_5_TO_6_PART_1);
+            db.execSQL(MIGRATION_5_TO_6_PART_2);
         }
     }
 }

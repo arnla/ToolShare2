@@ -1,5 +1,11 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.toolshare.toolshare.db.DbHandler;
+
 public class Tool {
     private int Id;
     private String Owner;
@@ -7,7 +13,7 @@ public class Tool {
     private String Name;
     private int Year;
     private String Model;
-    private String Brand;
+    private int Brand;
 
     public Tool() {
         this.Id = -1;
@@ -16,11 +22,11 @@ public class Tool {
         this.Name = null;
         this.Year = -1;
         this.Model = null;
-        this.Brand = null;
+        this.Brand = -1;
     }
     
-    public Tool(int id, String owner, int typeId, String name, int year, String model, String brand) {
-        this.Id = id;
+    public Tool(DbHandler dbHandler, String owner, int typeId, String name, int year, String model, int brand) {
+        Id = getNextId(dbHandler);
         this.Owner = owner;
         this.TypeId = typeId;
         this.Name = name;
@@ -77,11 +83,11 @@ public class Tool {
         this.Model = model;
     }
 
-    public String getBrand() {
+    public int getBrand() {
         return Brand;
     }
 
-    public void setBrand(String brand) {
+    public void setBrand(int brand) {
         this.Brand = brand;
     }
 
@@ -100,4 +106,31 @@ public class Tool {
     public static final String TOOL_COLUMN_YEAR = "year";
     public static final String TOOL_COLUMN_MODEL = "model";
     public static final String TOOL_COLUMN_BRAND = "brand";
+
+    private int getNextId(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select max(id) from tools", null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        return cursor.getInt(0) + 1;
+    }
+
+    public void addTool(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TOOL_COLUMN_ID, this.getId());
+        values.put(TOOL_COLUMN_OWNER, this.getOwner());
+        values.put(TOOL_COLUMN_TYPE_ID, this.getTypeId());
+        values.put(TOOL_COLUMN_NAME, this.getName());
+        values.put(TOOL_COLUMN_YEAR, this.getYear());
+        values.put(TOOL_COLUMN_MODEL, this.getModel());
+        values.put(TOOL_COLUMN_BRAND, this.getBrand());
+
+        // Inserting Row
+        db.insert("tools", null, values);
+        db.close();
+    }
 }
