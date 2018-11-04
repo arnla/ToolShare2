@@ -91,6 +91,7 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
     }
 
     private void loadTools() {
+        mMyTools.removeAllViews();
         Tool tool = new Tool();
         List<Tool> tools = tool.getAllToolsByPk(db, bundle.getString("userEmail"));
 
@@ -115,5 +116,11 @@ public class ProfileActivity extends AppCompatActivity implements PopupMenu.OnMe
                 startActivity(intent);*/
             }
         });
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        loadTools();
     }
 }
