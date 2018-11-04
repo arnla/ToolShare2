@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.Spinner;
@@ -30,6 +31,7 @@ public class NewToolActivity extends AppCompatActivity {
     private Spinner mYearsSpinner;
     private Spinner mBrandSpinner;
     private TextView mModel;
+    private Button mCreateToolButton;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,6 +67,13 @@ public class NewToolActivity extends AppCompatActivity {
         mBrandSpinner = (Spinner) findViewById(R.id.s_tool_brand);
         mModel = (EditText) findViewById(R.id.et_tool_model);
         loadSpinners();
+        mCreateToolButton = (Button) findViewById(R.id.b_create_tool);
+        mCreateToolButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertTool();
+            }
+        });
     }
 
     private void loadSpinners() {
@@ -93,5 +102,8 @@ public class NewToolActivity extends AppCompatActivity {
         dataAdapter
                 .setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mBrandSpinner.setAdapter(brandsAdapter);
+    }
+
+    private void insertTool() {
     }
 }

@@ -91,6 +91,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"/>
+
+                <Button
+                    android:id="@+id/b_create_tool"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:text="Create Tool"/>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
