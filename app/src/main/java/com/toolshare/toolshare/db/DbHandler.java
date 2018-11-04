@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -111,6 +111,19 @@ public class DbHandler extends SQLiteOpenHelper {
             + TOOL_COLUMN_MODEL + " text, "
             + TOOL_COLUMN_BRAND + " integer);";
 
+    // 5 to 6
+    private static final String MIGRATION_5_TO_6_PART_1 = "DROP TABLE "
+            + TABLE_TOOLS + ";";
+    private static final String MIGRATION_5_TO_6_PART_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key, "
+            + TOOL_COLUMN_OWNER + " text, "
+            + TOOL_COLUMN_TYPE_ID + " integer, "
+            + TOOL_COLUMN_NAME + " text, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text, "
+            + TOOL_COLUMN_BRAND + " integer);";
+
 
     // Creating Tables
     @Override
@@ -145,6 +158,11 @@ public class DbHandler extends SQLiteOpenHelper {
         if (oldVersion < 5) {
             db.execSQL(MIGRATION_4_TO_5_PART_1);
             db.execSQL(MIGRATION_4_TO_5_PART_2);
+        }
+
+        if (oldVersion < 6) {
+            db.execSQL(MIGRATION_5_TO_6_PART_1);
+            db.execSQL(MIGRATION_5_TO_6_PART_2);
         }
     }
 }
