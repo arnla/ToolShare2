@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuInflater;
@@ -78,6 +79,10 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
     }
 
     private boolean loadFragment(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString("userEmail", this.bundle.getString("userEmail"));
+        bundle.putSerializable("db", db);
+        fragment.setArguments(bundle);
         //switching fragment
         if (fragment != null) {
             getSupportFragmentManager()

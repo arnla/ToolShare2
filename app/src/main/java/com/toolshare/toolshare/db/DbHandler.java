@@ -8,10 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.toolshare.toolshare.models.User;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbHandler extends SQLiteOpenHelper {
+public class DbHandler extends SQLiteOpenHelper implements Serializable {
     private static final int DATABASE_VERSION = 6;
     private static final String DATABASE_NAME = "ToolshareDB";
 
