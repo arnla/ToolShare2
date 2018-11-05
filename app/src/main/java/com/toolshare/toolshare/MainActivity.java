@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         mProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ProfileActivity.class);
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
                 i.putExtra("userEmail", bundle.getString("userEmail"));
                 startActivity(i);
             }
