@@ -44,17 +44,20 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
                 break;
 
             case R.id.navigation_add:
-                PopupMenu popup = new PopupMenu(NavigationActivity.this, findViewById(R.id.navigation_add));
-                popup.setOnMenuItemClickListener(NavigationActivity.this);
+/*                PopupMenu popup = new PopupMenu(NavigationActivity.this, findViewById(R.id.navigation_add));
+                //popup.setOnMenuItemClickListener(NavigationActivity.this);
                 MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.add_menu, popup.getMenu());
-                popup.show();
+                popup.show();*/
+                fragment = new NewToolFragment();
                 break;
 
             case R.id.navigation_dashboard:
+                fragment = new DashboardFragment();
                 break;
 
             case R.id.navigation_notifications:
+                fragment = new NotificationsFragment();
                 break;
         }
 
@@ -66,9 +69,6 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
         Fragment fragment = null;
         switch (item.getItemId()) {
             case R.id.new_tool_option:
-/*                Intent i = new Intent(NavigationActivity.this, NewToolActivity.class);
-                i.putExtra("userEmail", bundle.getString("userEmail"));
-                startActivity(i);*/
                 fragment = new NewToolFragment();
                 return loadFragment(fragment);
             case R.id.new_ad_option:
