@@ -45,11 +45,10 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
 
             case R.id.navigation_add:
 /*                PopupMenu popup = new PopupMenu(NavigationActivity.this, findViewById(R.id.navigation_add));
-                //popup.setOnMenuItemClickListener(NavigationActivity.this);
                 MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.add_menu, popup.getMenu());
                 popup.show();*/
-                fragment = new NewToolFragment();
+                fragment = new AddToolOrAdFragment();
                 break;
 
             case R.id.navigation_dashboard:
@@ -60,7 +59,6 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
                 fragment = new NotificationsFragment();
                 break;
         }
-
         return loadFragment(fragment);
     }
 
