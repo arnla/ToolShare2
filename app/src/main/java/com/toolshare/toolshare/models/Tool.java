@@ -215,4 +215,12 @@ public class Tool implements Serializable {
         db.close();
         return tool;
     }
+
+    public void deleteTool(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+        db.delete("tools",
+                "id = ?",
+                new String[] {Integer.toString(id)});
+        db.close();
+    }
 }
