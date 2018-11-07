@@ -13,7 +13,7 @@ import android.widget.PopupMenu;
 
 import com.toolshare.toolshare.db.DbHandler;
 
-public class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener  {
+public class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener/*, PopupMenu.OnMenuItemClickListener*/  {
 
     private Bundle bundle;
     private DbHandler db;
@@ -63,6 +63,19 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
     }
 
     @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
+
+/*    @Override
     public boolean onMenuItemClick(MenuItem item) {
         Fragment fragment = null;
         switch (item.getItemId()) {
@@ -74,7 +87,7 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             default:
                 return false;
         }
-    }
+    }*/
 
     private boolean loadFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
@@ -86,6 +99,7 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
             return true;
         }
