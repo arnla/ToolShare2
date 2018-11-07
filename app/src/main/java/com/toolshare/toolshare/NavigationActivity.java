@@ -13,7 +13,7 @@ import android.widget.PopupMenu;
 
 import com.toolshare.toolshare.db.DbHandler;
 
-public class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, PopupMenu.OnMenuItemClickListener  {
+public class NavigationActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener/*, PopupMenu.OnMenuItemClickListener*/  {
 
     private Bundle bundle;
     private DbHandler db;
@@ -45,11 +45,10 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
 
             case R.id.navigation_add:
 /*                PopupMenu popup = new PopupMenu(NavigationActivity.this, findViewById(R.id.navigation_add));
-                //popup.setOnMenuItemClickListener(NavigationActivity.this);
                 MenuInflater inflater = popup.getMenuInflater();
                 inflater.inflate(R.menu.add_menu, popup.getMenu());
                 popup.show();*/
-                fragment = new NewToolFragment();
+                fragment = new AddToolOrAdFragment();
                 break;
 
             case R.id.navigation_dashboard:
@@ -60,11 +59,23 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
                 fragment = new NotificationsFragment();
                 break;
         }
-
         return loadFragment(fragment);
     }
 
     @Override
+    public void onBackPressed() {
+
+        int count = getFragmentManager().getBackStackEntryCount();
+
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            getFragmentManager().popBackStack();
+        }
+
+    }
+
+/*    @Override
     public boolean onMenuItemClick(MenuItem item) {
         Fragment fragment = null;
         switch (item.getItemId()) {
@@ -76,7 +87,7 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             default:
                 return false;
         }
-    }
+    }*/
 
     private boolean loadFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
@@ -88,6 +99,7 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
                     .commit();
             return true;
         }

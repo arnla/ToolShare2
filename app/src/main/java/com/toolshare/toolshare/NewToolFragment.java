@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class NewToolFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_tool, null);
 
-/*        bundle = getArguments();
+        bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
 
         mName = (EditText) view.findViewById(R.id.et_tool_name);
@@ -55,12 +57,12 @@ public class NewToolFragment extends Fragment {
             public void onClick(View view) {
                 insertTool();
             }
-        });*/
+        });
 
         return view;
     }
 
-/*    private void loadSpinners() {
+    private void loadSpinners() {
         // Tool type spinner
         List<ToolType> toolTypes = ToolType.getAllToolTypes(db);
         ArrayAdapter<ToolType> dataAdapter = new ArrayAdapter<ToolType>(getActivity(),
@@ -100,5 +102,5 @@ public class NewToolFragment extends Fragment {
         tool.addTool(db);
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
-    }*/
+    }
 }
