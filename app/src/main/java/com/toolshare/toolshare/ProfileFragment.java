@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,14 +52,14 @@ public class ProfileFragment extends Fragment {
     private void loadTools() {
         mMyTools.removeAllViews();
         Tool tool = new Tool();
-        List<Tool> tools = tool.getAllToolsByPk((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
+        List<Tool> tools = tool.getAllToolsByOwner((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
 
         for (int i = 0; i < tools.size(); i++) {
             addButton(mMyTools, tools.get(i));
         }
     }
 
-    private void addButton(LinearLayout layout, Tool tool) {
+    private void addButton(LinearLayout layout, final Tool tool) {
         Button button = new Button(getActivity().getApplicationContext());
         button.setHeight(15000);
         layout.addView(button);
@@ -66,11 +68,15 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-/*                Intent intent = new Intent(ProfileActivity.this, EventActivity.class);
-                Bundle b = new Bundle();
-                b.putInt("eventId", event.getEventId());
-                intent.putExtras(b);
-                startActivity(intent);*/
+                bundle.putSerializable("tool", tool);
+                Fragment fragment = new ViewToolFragment();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
     }

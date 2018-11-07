@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.toolshare.toolshare.db.DbHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tool {
+public class Tool implements Serializable {
     private int Id;
     private String Owner;
     private int TypeId;
@@ -171,7 +172,7 @@ public class Tool {
         return tools;
     }
 
-    public List<Tool> getAllToolsByPk(DbHandler dbHandler, String owner) {
+    public List<Tool> getAllToolsByOwner(DbHandler dbHandler, String owner) {
         List<Tool> tools = new ArrayList<Tool>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from tools where owner = ?", new String[] {owner});
@@ -193,5 +194,33 @@ public class Tool {
         cursor.close();
         db.close();
         return tools;
+    }
+
+    public Tool getToolByPk(DbHandler dbHandler, int id) {
+        Tool tool = null;
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from tools where id = ?", new String[] {Integer.toString(id)});
+
+        if (cursor.moveToFirst()) {
+            tool = new Tool(cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getString(3),
+                    cursor.getInt(4),
+                    cursor.getString(5),
+                    cursor.getInt(6));
+        }
+
+        cursor.close();
+        db.close();
+        return tool;
+    }
+
+    public void deleteTool(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+        db.delete("tools",
+                "id = ?",
+                new String[] {Integer.toString(id)});
+        db.close();
     }
 }
