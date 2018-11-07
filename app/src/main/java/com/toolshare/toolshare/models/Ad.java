@@ -8,6 +8,7 @@ public class Ad {
     private int ToolId;
     private Date PostDate;
     private Date ExpirationDate;
+    private String Description;
 
     public int getId() {
         return Id;
@@ -49,6 +50,10 @@ public class Ad {
         this.ExpirationDate = expirationDate;
     }
 
+    public String getDescription() { return Description; }
+
+    public void setDescription(String description) { this.Description = description; }
+
 
     /*****************************************************************************
      * DB Functions
@@ -62,4 +67,5 @@ public class Ad {
     public static final String AD_COLUMN_TOOL_ID = "tool_id";
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
+    public static final String AD_COLUMN_DESCRIPTION = "description";
 }

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -48,6 +48,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String AD_COLUMN_TOOL_ID = "tool_id";
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
+    public static final String AD_COLUMN_DESCRIPTION = "description";
 
     // BRAND TABLE
     public static final String TABLE_BRANDS = "brands";
@@ -125,6 +126,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TOOL_COLUMN_MODEL + " text, "
             + TOOL_COLUMN_BRAND + " integer);";
 
+    private static final String MIGRATION_6_TO_7 = "ALTER TABLE "
+            + TABLE_ADS
+            + " ADD " + AD_COLUMN_DESCRIPTION + " text;";
+
 
     // Creating Tables
     @Override
@@ -164,6 +169,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         if (oldVersion < 6) {
             db.execSQL(MIGRATION_5_TO_6_PART_1);
             db.execSQL(MIGRATION_5_TO_6_PART_2);
+        }
+
+        if (oldVersion < 7) {
+            db.execSQL(MIGRATION_6_TO_7);
         }
     }
 }
