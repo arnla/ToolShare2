@@ -60,4 +60,19 @@ public class Brand {
         db.close();
         return brands;
     }
+
+    public static Brand getBrandByPk(DbHandler dbHandler, int id) {
+        Brand brand = null;
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from brands where id = ?", new String[] {Integer.toString(id)});
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            brand = new Brand(cursor.getInt(0), cursor.getString(1));
+        }
+
+        cursor.close();
+        db.close();
+        return brand;
+    }
 }
