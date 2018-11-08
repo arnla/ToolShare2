@@ -49,11 +49,32 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
     public static final String AD_COLUMN_DESCRIPTION = "description";
+    public static final String AD_COLUMN_TOOL_AVAILABILITY_ID = "tool_availability_id";
+    public static final String AD_COLUMN_TITLE = "title";
 
     // BRAND TABLE
     public static final String TABLE_BRANDS = "brands";
     public static final String BRAND_COLUMN_ID = "id";
     public static final String BRAND_COLUMN_NAME = "name";
+
+    // TOOL BUSY DATES TABLE
+/*    public static final String TABLE_TOOL_BUSY_DATES = "tool_busy_dates";
+    public static final String TOOL_BUSY_DATES_COLUMN_ID = "id";
+    public static final String TOOL_BUSY_DATES_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_BUSY_DATES_COLUMN_AD_ID = "ad_id";
+    public static final String TOOL_BUSY_DATES_COLUMN_MON = "mon";
+    public static final String TOOL_BUSY_DATES_COLUMN_TUE = "tue";
+    public static final String TOOL_BUSY_DATES_COLUMN_WED = "wed";
+    public static final String TOOL_BUSY_DATES_COLUMN_THU = "thu";
+    public static final String TOOL_BUSY_DATES_COLUMN_FRI = "fri";
+    public static final String TOOL_BUSY_DATES_COLUMN_SAT = "sat";
+    public static final String TOOL_BUSY_DATES_COLUMN_SUN = "sun";
+    public static final String TOOL_BUSY_DATES_COLUMN_START_TIME = "start_time";
+    public static final String TOOL_BUSY_DATES_COLUMN_END_TIME = "end_time";*/
+
+    // TOOL-AD AVAILABILITY TABLE
+
+    // AD-RENTER TABLE
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -126,9 +147,29 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TOOL_COLUMN_MODEL + " text, "
             + TOOL_COLUMN_BRAND + " integer);";
 
+    // 6 to 7
     private static final String MIGRATION_6_TO_7 = "ALTER TABLE "
             + TABLE_ADS
             + " ADD " + AD_COLUMN_DESCRIPTION + " text;";
+
+    // 7 to 8
+/*  private static final String MIGRATION_7_TO_8_PART_1 = "ALTER TABLE "
+            + TABLE_ADS
+            + " ADD " + AD_COLUMN_TITLE  + " text;";
+    private static final String MIGRATION_7_TO_8_PART_2 = "CREATE TABLE "
+            + TABLE_TOOL_BUSY_DATES + " ("
+            + TOOL_BUSY_DATES_COLUMN_ID + " integer primary key, "
+            + TOOL_BUSY_DATES_COLUMN_TOOL_ID + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_AD_ID + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_MON + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_TUE + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_WED + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_THU + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_FRI + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_SAT + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_SUN + " integer, "
+            + TOOL_BUSY_DATES_COLUMN_START_TIME + " real, "
+            + TOOL_BUSY_DATES_COLUMN_END_TIME + " real);";*/
 
 
     // Creating Tables
