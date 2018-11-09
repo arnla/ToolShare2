@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.NewAdFragment;
 
 
 public class AddToolOrAdFragment extends Fragment {
@@ -46,6 +47,19 @@ public class AddToolOrAdFragment extends Fragment {
             }
         });
         mNewAdButton = (Button) profile.findViewById(R.id.b_new_ad);
+        mNewAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new NewAdFragment();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return profile;
     }
