@@ -115,15 +115,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
 
         // Uncomment to add/delete tool types
-//        Button mNewToolTypeButton = (Button) findViewById(R.id.new_tool_type_button);
-//        mNewToolTypeButton.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ToolType toolType = new ToolType();
-//                toolType.addToolType(db);
-//                Toast.makeText(LoginActivity.this, "Tool type added", Toast.LENGTH_LONG).show();
-//            }
-//        });
+/*        Button mNewToolTypeButton = (Button) findViewById(R.id.new_tool_type_button);
+        mNewToolTypeButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //add
+                ToolType toolType = new ToolType(db, "Saws", "Cutting tools");
+                toolType.addToolType(db);
+                Toast.makeText(LoginActivity.this, "Tool type added", Toast.LENGTH_LONG).show();
+
+*//*                //delete
+                ToolType toolType = new ToolType(db, "", "");
+                toolType.setId(2);
+                toolType.deleteToolType(db);
+                Toast.makeText(LoginActivity.this, "Tool type deleted", Toast.LENGTH_LONG).show();*//*
+            }
+        });*/
     }
 
     private void populateAutoComplete() {
