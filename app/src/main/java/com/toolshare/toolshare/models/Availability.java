@@ -1,5 +1,6 @@
 package com.toolshare.toolshare.models;
 
+import java.sql.Date;
 import java.sql.Time;
 
 public class Availability {
@@ -10,8 +11,10 @@ public class Availability {
     private boolean Friday;
     private boolean Saturday;
     private boolean Sunday;
-    private Time Start;
-    private Time End;
+    private Date StartDate;
+    private Date EndDate;
+    private Time StartTime;
+    private Time EndTime;
 
     public boolean isAvailableMonday() {
         return Monday;
@@ -69,19 +72,58 @@ public class Availability {
         Sunday = available;
     }
 
-    public Time getStart() {
-        return Start;
+    public Date getStartDate() {
+        return StartDate;
     }
 
-    public void setStart(Time time) {
-        Start = time;
+    public void setStartDate(Date startDate) {
+        this.StartDate = startDate;
     }
 
-    public Time getEnd() {
-        return End;
+    public Date getEndDate() {
+        return EndDate;
     }
 
-    public void setEnd(Time time) {
-        End = time;
+    public void setEndDate(Date endDate) {
+        this.EndDate = endDate;
     }
+
+    public Time getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(Time time) {
+        StartTime = time;
+    }
+
+    public Time getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(Time time) {
+        EndTime = time;
+    }
+
+
+    /*****************************************************************************
+     * DB Functions
+     *
+     */
+
+    // AD TABLE
+    public static final String TABLE_AVAILABILITY = "availability";
+    public static final String AVAILABILITY_COLUMN_ID = "id";
+    public static final String AVAILABILITY_COLUMN_AD_ID = "ad_id";
+    public static final String AVAILABILITY_COLUMN_TOOL_ID = "tool_id";
+    public static final String AVAILABILITY_COLUMN_SUN = "sunday";
+    public static final String AVAILABILITY_COLUMN_MON = "monday";
+    public static final String AVAILABILITY_COLUMN_TUE = "tuesday";
+    public static final String AVAILABILITY_COLUMN_WED = "wednesday";
+    public static final String AVAILABILITY_COLUMN_THU = "thursday";
+    public static final String AVAILABILITY_COLUMN_FRI = "friday";
+    public static final String AVAILABILITY_COLUMN_SAT = "saturday";
+    public static final String AVAILABILITY_COLUMN_START_DATE = "start_date";
+    public static final String AVAILABILITY_COLUMN_END_DATE = "end_date";
+    public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
+    public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
 }

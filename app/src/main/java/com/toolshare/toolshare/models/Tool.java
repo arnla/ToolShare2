@@ -172,7 +172,7 @@ public class Tool implements Serializable {
         return tools;
     }
 
-    public List<Tool> getAllToolsByOwner(DbHandler dbHandler, String owner) {
+    public static List<Tool> getAllToolsByOwner(DbHandler dbHandler, String owner) {
         List<Tool> tools = new ArrayList<Tool>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from tools where owner = ?", new String[] {owner});
@@ -222,5 +222,10 @@ public class Tool implements Serializable {
                 "id = ?",
                 new String[] {Integer.toString(id)});
         db.close();
+    }
+
+    @Override
+    public String toString() {
+        return getName() + ": " + getModel();
     }
 }
