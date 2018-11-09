@@ -21,6 +21,13 @@ public class ToolType {
         this.Description = description;
     }
 
+    public ToolType(DbHandler dbHandler, int id, String type, String description) {
+        this.Id = id;
+        this.Type = type;
+        this.Description = description;
+    }
+
+
     public int getId() {
         return Id;
     }
@@ -67,8 +74,8 @@ public class ToolType {
 
         ContentValues values = new ContentValues();
         values.put("id", getNextId(dbHandler)); // Id
-        values.put("type", "Drills"); // Tool type
-        values.put("description", "Drilling tools"); // Description
+        values.put("type", this.getType()); // Tool type
+        values.put("description", this.getDescription()); // Description
 
         // Inserting Row
         db.insert("tool_types", null, values);
@@ -78,7 +85,7 @@ public class ToolType {
 
     public void deleteToolType(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
-        db.rawQuery("delete from tool_types where id = ?", new String[] {"0"}).moveToFirst();
+        db.rawQuery("delete from tool_types where id = ?", new String[] {Integer.toString(this.getId())}).moveToFirst();
         db.close();
     }
 
@@ -100,7 +107,7 @@ public class ToolType {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ToolType toolType = new ToolType(dbHandler, cursor.getString(1), cursor.getString(2));
+                ToolType toolType = new ToolType(dbHandler, cursor.getInt(0), cursor.getString(1), cursor.getString(2));
                 toolTypes.add(toolType);
             } while (cursor.moveToNext());
         }
