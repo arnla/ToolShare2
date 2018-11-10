@@ -146,8 +146,15 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
         mTimeOkButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
+                calendar.set(Calendar.MINUTE, selectedMinute);
+                Time time = new Time(calendar.getTimeInMillis());
                 if (timeButtonClicked.equals("start")) {
-                    ad.getAvailability().setEndTime(new Time(selectedHour, selectedMinute, 0));
+                    ad.getAvailability().setStartTime(time);
+                    mStartTimeButton.setText(mStartTimeButton.getText() + ": " + time.toString());
+                } else {
+                    ad.getAvailability().setEndTime(time);
+                    mEndTimeButton.setText(mEndTimeButton.getText() + ": " + time.toString());
                 }
                 mAdLinearLayout.setVisibility(View.VISIBLE);
                 mTimePickerRelativeLayout.setVisibility(View.GONE);
@@ -189,7 +196,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.b_sunday:
-                ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableSunday(), v));
+                ad.getAvailability().setAvailableSunday(repeatDayClicked(ad.getAvailability().isAvailableSunday(), v));
                 break;
             case R.id.b_monday:
                 ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableMonday(), v));
@@ -198,16 +205,16 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
                 ad.getAvailability().setAvailableTuesday(repeatDayClicked(ad.getAvailability().isAvailableTuesday(), v));
                 break;
             case R.id.b_wednesday:
-                ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableWednesday(), v));
+                ad.getAvailability().setAvailableWednesday(repeatDayClicked(ad.getAvailability().isAvailableWednesday(), v));
                 break;
             case R.id.b_thursday:
-                ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableThursday(), v));
+                ad.getAvailability().setAvailableThursday(repeatDayClicked(ad.getAvailability().isAvailableThursday(), v));
                 break;
             case R.id.b_friday:
-                ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableFriday(), v));
+                ad.getAvailability().setAvailableFriday(repeatDayClicked(ad.getAvailability().isAvailableFriday(), v));
                 break;
             case R.id.b_saturday:
-                ad.getAvailability().setAvailableMonday(repeatDayClicked(ad.getAvailability().isAvailableSaturday(), v));
+                ad.getAvailability().setAvailableSaturday(repeatDayClicked(ad.getAvailability().isAvailableSaturday(), v));
                 break;
         }
     }
@@ -239,10 +246,8 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
         Tool tool = (Tool) mTool.getSelectedItem();
         ad.setToolId(tool.getId());
         ad.setDescription(mDescription.getText().toString());
-        java.util.Date today = new java.util.Date();
-        ad.setPostDate(today);
-        ad.getAvailability().setStartTime(new java.sql.Time(today.getTime()));
-        ad.getAvailability().setEndTime(new java.sql.Time(today.getTime()));
+        Calendar today = Calendar.getInstance();
+        ad.setPostDate(today.getTime());
         ad.setExpirationDate(ad.getAvailability().getEndDate());
 
         Ad finalAd = ad;

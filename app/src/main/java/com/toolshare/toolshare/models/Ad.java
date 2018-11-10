@@ -131,4 +131,22 @@ public class Ad {
 
         return cursor.getInt(0) + 1;
     }
+
+    public void addAd(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(AD_COLUMN_ID, this.getId());
+        values.put(AD_COLUMN_OWNER, this.getOwner());
+        values.put(AD_COLUMN_TOOL_ID, this.getToolId());
+        values.put(AD_COLUMN_POST_DATE, this.getPostDate().toString());
+        //values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate());
+        values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
+        values.put(AD_COLUMN_AVAILABILITY_ID, this.getAvailabilityId());
+        values.put(AD_COLUMN_TITLE, this.getTitle());
+
+        // Inserting Row
+        db.insert("tools", null, values);
+        db.close();
+    }
 }
