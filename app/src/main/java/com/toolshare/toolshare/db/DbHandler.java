@@ -61,7 +61,6 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TABLE_AVAILABILITY = "availability";
     public static final String AVAILABILITY_COLUMN_ID = "id";
     public static final String AVAILABILITY_COLUMN_AD_ID = "ad_id";
-    public static final String AVAILABILITY_COLUMN_TOOL_ID = "tool_id";
     public static final String AVAILABILITY_COLUMN_SUN = "sunday";
     public static final String AVAILABILITY_COLUMN_MON = "monday";
     public static final String AVAILABILITY_COLUMN_TUE = "tuesday";
@@ -155,7 +154,6 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TABLE_AVAILABILITY + " ("
             + AVAILABILITY_COLUMN_ID + " integer primary key, "
             + AVAILABILITY_COLUMN_AD_ID + " integer NOT NULL, "
-            + AVAILABILITY_COLUMN_TOOL_ID + " integer NOT NULL, "
             + AVAILABILITY_COLUMN_SUN + " integer NOT NULL, "
             + AVAILABILITY_COLUMN_MON + " integer NOT NULL, "
             + AVAILABILITY_COLUMN_TUE + " integer NOT NULL, "

@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class Availability {
+    private int Id;
+    private int AdId;
     private boolean Monday;
     private boolean Tuesday;
     private boolean Wednesday;
@@ -15,6 +17,22 @@ public class Availability {
     private Date EndDate;
     private Time StartTime;
     private Time EndTime;
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        this.Id = id;
+    }
+
+    public int getAdId() {
+        return AdId;
+    }
+
+    public void setAdId(int adId) {
+        this.AdId = adId;
+    }
 
     public boolean isAvailableMonday() {
         return Monday;
@@ -114,7 +132,6 @@ public class Availability {
     public static final String TABLE_AVAILABILITY = "availability";
     public static final String AVAILABILITY_COLUMN_ID = "id";
     public static final String AVAILABILITY_COLUMN_AD_ID = "ad_id";
-    public static final String AVAILABILITY_COLUMN_TOOL_ID = "tool_id";
     public static final String AVAILABILITY_COLUMN_SUN = "sunday";
     public static final String AVAILABILITY_COLUMN_MON = "monday";
     public static final String AVAILABILITY_COLUMN_TUE = "tuesday";
