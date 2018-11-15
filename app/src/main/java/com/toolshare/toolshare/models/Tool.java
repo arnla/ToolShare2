@@ -118,7 +118,7 @@ public class Tool implements Serializable {
     public static final String TOOL_COLUMN_NAME = "name";
     public static final String TOOL_COLUMN_YEAR = "year";
     public static final String TOOL_COLUMN_MODEL = "model";
-    public static final String TOOL_COLUMN_BRAND = "brand";
+    public static final String TOOL_COLUMN_BRAND_ID = "brand_id";
 
     public void addTool(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
@@ -129,7 +129,7 @@ public class Tool implements Serializable {
         values.put(TOOL_COLUMN_NAME, this.getName());
         values.put(TOOL_COLUMN_YEAR, this.getYear());
         values.put(TOOL_COLUMN_MODEL, this.getModel());
-        values.put(TOOL_COLUMN_BRAND, this.getBrand());
+        values.put(TOOL_COLUMN_BRAND_ID, this.getBrand());
 
         // Inserting Row
         db.insert("tools", null, values);
