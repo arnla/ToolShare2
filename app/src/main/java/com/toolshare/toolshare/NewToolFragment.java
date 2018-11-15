@@ -98,7 +98,7 @@ public class NewToolFragment extends Fragment {
         String model = mModel.getText().toString();
         Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
-        Tool tool = new Tool(owner, toolType.getId(), name, year, model, brand.getId());
+        Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model);
         tool.addTool(db);
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
