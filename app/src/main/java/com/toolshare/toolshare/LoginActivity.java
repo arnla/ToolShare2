@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
 
@@ -127,6 +128,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 //delete
                 ToolType.deleteToolType(db);
                 Toast.makeText(LoginActivity.this, "Tool type deleted", Toast.LENGTH_LONG).show();
+            }
+        });*/
+
+        // Uncomment to add/delete brands
+/*        Button mNewBrandButton = (Button) findViewById(R.id.new_brand_button);
+        mNewBrandButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //add
+                Brand brand = new Brand("Dewalt");
+                brand.addBrand(db);
+                Toast.makeText(LoginActivity.this, "Brand added", Toast.LENGTH_LONG).show();
+
+                //delete
+*//*                ToolType.deleteToolType(db);
+                Toast.makeText(LoginActivity.this, "Brand deleted", Toast.LENGTH_LONG).show();*//*
             }
         });*/
     }
