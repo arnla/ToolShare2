@@ -51,8 +51,7 @@ public class ProfileFragment extends Fragment {
 
     private void loadTools() {
         mMyTools.removeAllViews();
-        Tool tool = new Tool();
-        List<Tool> tools = tool.getAllToolsByOwner((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
+        List<Tool> tools = Tool.getAllToolsByOwner((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
 
         for (int i = 0; i < tools.size(); i++) {
             addButton(mMyTools, tools.get(i));
