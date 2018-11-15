@@ -29,8 +29,7 @@ public class Tool implements Serializable {
         this.Brand = -1;
     }
     
-    public Tool(DbHandler dbHandler, String owner, int typeId, String name, int year, String model, int brand) {
-        Id = getNextId(dbHandler);
+    public Tool(String owner, int typeId, String name, int year, String model, int brand) {
         this.Owner = owner;
         this.TypeId = typeId;
         this.Name = name;
@@ -121,21 +120,10 @@ public class Tool implements Serializable {
     public static final String TOOL_COLUMN_MODEL = "model";
     public static final String TOOL_COLUMN_BRAND = "brand";
 
-    private int getNextId(DbHandler dbHandler) {
-        SQLiteDatabase db = dbHandler.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("select max(id) from tools", null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        return cursor.getInt(0) + 1;
-    }
-
     public void addTool(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(TOOL_COLUMN_ID, this.getId());
         values.put(TOOL_COLUMN_OWNER, this.getOwner());
         values.put(TOOL_COLUMN_TYPE_ID, this.getTypeId());
         values.put(TOOL_COLUMN_NAME, this.getName());
