@@ -124,11 +124,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 toolType.addToolType(db);
                 Toast.makeText(LoginActivity.this, "Tool type added", Toast.LENGTH_LONG).show();
 
-*//*                //delete
-                ToolType toolType = new ToolType(db, "", "");
-                toolType.setId(2);
-                toolType.deleteToolType(db);
-                Toast.makeText(LoginActivity.this, "Tool type deleted", Toast.LENGTH_LONG).show();*//*
+                //delete
+                ToolType.deleteToolType(db);
+                Toast.makeText(LoginActivity.this, "Tool type deleted", Toast.LENGTH_LONG).show();
             }
         });*/
     }
