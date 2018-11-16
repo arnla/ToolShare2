@@ -73,7 +73,6 @@ public class ToolType {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("id", getNextId(dbHandler)); // Id
         values.put("type", this.getType()); // Tool type
         values.put("description", this.getDescription()); // Description
 
@@ -83,9 +82,9 @@ public class ToolType {
         db.close(); // Closing database connection
     }
 
-    public void deleteToolType(DbHandler dbHandler) {
+    public static void deleteToolType(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
-        db.rawQuery("delete from tool_types where id = ?", new String[] {Integer.toString(this.getId())}).moveToFirst();
+        db.rawQuery("delete from tool_types where id = ?", new String[] {Integer.toString(1)}).moveToFirst();
         db.close();
     }
 

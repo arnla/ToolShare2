@@ -1,6 +1,11 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.AdapterView;
+
+import com.toolshare.toolshare.db.DbHandler;
 
 import java.util.Date;
 
@@ -12,6 +17,7 @@ public class Ad {
     private Date ExpirationDate;
     private String Description;
     private Availability Availability;
+    private int AvailabilityId;
     private String Title;
 
     public int getId() {
@@ -74,6 +80,14 @@ public class Ad {
         this.Title = title;
     }
 
+    public int getAvailabilityId() {
+        return AvailabilityId;
+    }
+
+    public void setAvailabilityId(int id) {
+        AvailabilityId = id;
+    }
+
 
     /*****************************************************************************
      * DB Functions
@@ -81,13 +95,41 @@ public class Ad {
      */
 
     // AD TABLE
+    // AD TABLE
     public static final String TABLE_ADS = "ads";
     public static final String AD_COLUMN_ID = "id";
     public static final String AD_COLUMN_OWNER = "owner";
     public static final String AD_COLUMN_TOOL_ID = "tool_id";
+    public static final String AD_COLUMN_AVAILABILITY_ID = "tool_availability_id";
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
     public static final String AD_COLUMN_DESCRIPTION = "description";
-    public static final String AD_COLUMN_TOOL_AVAILABILITY_ID = "tool_availability_id";
     public static final String AD_COLUMN_TITLE = "title";
+
+
+    public int addAd(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(AD_COLUMN_OWNER, this.getOwner());
+        values.put(AD_COLUMN_TOOL_ID, this.getToolId());
+        values.put(AD_COLUMN_POST_DATE, this.getPostDate().toString());
+        values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate().toString());
+        values.put(AD_COLUMN_TITLE, this.getTitle());
+        values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
+
+        // Inserting Row
+        db.insert("ads", null, values);
+        int id = -1;
+
+        Cursor cursor = db.rawQuery("select max(id) from ads", null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        id =  cursor.getInt(0);
+
+        db.close();
+
+        return id;
+    }
 }

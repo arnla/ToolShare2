@@ -1,8 +1,16 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.toolshare.toolshare.db.DbHandler;
+
+import java.sql.Date;
 import java.sql.Time;
 
 public class Availability {
+    private int Id;
+    private int AdId;
     private boolean Monday;
     private boolean Tuesday;
     private boolean Wednesday;
@@ -10,8 +18,26 @@ public class Availability {
     private boolean Friday;
     private boolean Saturday;
     private boolean Sunday;
-    private Time Start;
-    private Time End;
+    private Date StartDate;
+    private Date EndDate;
+    private Time StartTime;
+    private Time EndTime;
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        this.Id = id;
+    }
+
+    public int getAdId() {
+        return AdId;
+    }
+
+    public void setAdId(int adId) {
+        this.AdId = adId;
+    }
 
     public boolean isAvailableMonday() {
         return Monday;
@@ -69,19 +95,79 @@ public class Availability {
         Sunday = available;
     }
 
-    public Time getStart() {
-        return Start;
+    public Date getStartDate() {
+        return StartDate;
     }
 
-    public void setStart(Time time) {
-        Start = time;
+    public void setStartDate(Date startDate) {
+        this.StartDate = startDate;
     }
 
-    public Time getEnd() {
-        return End;
+    public Date getEndDate() {
+        return EndDate;
     }
 
-    public void setEnd(Time time) {
-        End = time;
+    public void setEndDate(Date endDate) {
+        this.EndDate = endDate;
+    }
+
+    public Time getStartTime() {
+        return StartTime;
+    }
+
+    public void setStartTime(Time time) {
+        StartTime = time;
+    }
+
+    public Time getEndTime() {
+        return EndTime;
+    }
+
+    public void setEndTime(Time time) {
+        EndTime = time;
+    }
+
+
+    /*****************************************************************************
+     * DB Functions
+     *
+     */
+
+    // AD TABLE
+    public static final String TABLE_AVAILABILITY = "availability";
+    public static final String AVAILABILITY_COLUMN_ID = "id";
+    public static final String AVAILABILITY_COLUMN_AD_ID = "ad_id";
+    public static final String AVAILABILITY_COLUMN_SUN = "sunday";
+    public static final String AVAILABILITY_COLUMN_MON = "monday";
+    public static final String AVAILABILITY_COLUMN_TUE = "tuesday";
+    public static final String AVAILABILITY_COLUMN_WED = "wednesday";
+    public static final String AVAILABILITY_COLUMN_THU = "thursday";
+    public static final String AVAILABILITY_COLUMN_FRI = "friday";
+    public static final String AVAILABILITY_COLUMN_SAT = "saturday";
+    public static final String AVAILABILITY_COLUMN_START_DATE = "start_date";
+    public static final String AVAILABILITY_COLUMN_END_DATE = "end_date";
+    public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
+    public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
+
+    public void addAvailability(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(AVAILABILITY_COLUMN_AD_ID, this.getAdId());
+        values.put(AVAILABILITY_COLUMN_SUN, this.isAvailableSunday());
+        values.put(AVAILABILITY_COLUMN_MON, this.isAvailableMonday());
+        values.put(AVAILABILITY_COLUMN_TUE, this.isAvailableTuesday());
+        values.put(AVAILABILITY_COLUMN_WED, this.isAvailableWednesday());
+        values.put(AVAILABILITY_COLUMN_THU, this.isAvailableThursday());
+        values.put(AVAILABILITY_COLUMN_FRI, this.isAvailableFriday());
+        values.put(AVAILABILITY_COLUMN_SAT, this.isAvailableSaturday());
+        values.put(AVAILABILITY_COLUMN_START_DATE, this.getStartDate().toString());
+        values.put(AVAILABILITY_COLUMN_END_DATE, this.getEndDate().toString());
+        values.put(AVAILABILITY_COLUMN_START_TIME, this.getStartTime().toString());
+        values.put(AVAILABILITY_COLUMN_END_TIME, this.getEndTime().toString());
+
+        // Inserting Row
+        db.insert("availability", null, values);
+        db.close();
     }
 }

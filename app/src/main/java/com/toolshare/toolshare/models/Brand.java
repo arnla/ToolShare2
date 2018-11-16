@@ -1,5 +1,6 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -11,6 +12,10 @@ import java.util.List;
 public class Brand {
     private int Id;
     private String Name;
+
+    public Brand(String name) {
+        this.Name = name;
+    }
 
     public Brand(int id, String name) {
         this.Id = id;
@@ -42,6 +47,17 @@ public class Brand {
      * DB Functions
      *
      */
+
+    public void addBrand(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", this.getName());
+
+        // Inserting Row
+        db.insert("brands", null, values);
+        db.close();
+    }
 
     public static List<Brand> getAllBrands(DbHandler dbHandler) {
         List<Brand> brands = new ArrayList<Brand>();
