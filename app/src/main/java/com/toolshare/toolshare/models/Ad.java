@@ -95,58 +95,41 @@ public class Ad {
      */
 
     // AD TABLE
+    // AD TABLE
     public static final String TABLE_ADS = "ads";
     public static final String AD_COLUMN_ID = "id";
     public static final String AD_COLUMN_OWNER = "owner";
     public static final String AD_COLUMN_TOOL_ID = "tool_id";
+    public static final String AD_COLUMN_AVAILABILITY_ID = "tool_availability_id";
     public static final String AD_COLUMN_POST_DATE = "post_date";
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
     public static final String AD_COLUMN_DESCRIPTION = "description";
-    public static final String AD_COLUMN_AVAILABILITY_ID = "availability_id";
     public static final String AD_COLUMN_TITLE = "title";
 
-    public void addTool(DbHandler dbHandler) {
+
+    public int addAd(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(AD_COLUMN_ID, this.getId());
         values.put(AD_COLUMN_OWNER, this.getOwner());
         values.put(AD_COLUMN_TOOL_ID, this.getToolId());
         values.put(AD_COLUMN_POST_DATE, this.getPostDate().toString());
-        values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
-        values.put(AD_COLUMN_AVAILABILITY_ID, this.getAvailabilityId());
+        values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate().toString());
         values.put(AD_COLUMN_TITLE, this.getTitle());
+        values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
 
         // Inserting Row
-        db.insert("tools", null, values);
-        db.close();
-    }
-
-    public static int getNextId(DbHandler dbHandler) {
-        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        db.insert("ads", null, values);
+        int id = -1;
 
         Cursor cursor = db.rawQuery("select max(id) from ads", null);
         if (cursor != null)
             cursor.moveToFirst();
 
-        return cursor.getInt(0) + 1;
-    }
+        id =  cursor.getInt(0);
 
-    public void addAd(DbHandler dbHandler) {
-        SQLiteDatabase db = dbHandler.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(AD_COLUMN_ID, this.getId());
-        values.put(AD_COLUMN_OWNER, this.getOwner());
-        values.put(AD_COLUMN_TOOL_ID, this.getToolId());
-        values.put(AD_COLUMN_POST_DATE, this.getPostDate().toString());
-        //values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate());
-        values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
-        values.put(AD_COLUMN_AVAILABILITY_ID, this.getAvailabilityId());
-        values.put(AD_COLUMN_TITLE, this.getTitle());
-
-        // Inserting Row
-        db.insert("tools", null, values);
         db.close();
+
+        return id;
     }
 }

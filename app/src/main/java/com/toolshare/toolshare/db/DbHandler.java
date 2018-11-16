@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -79,6 +79,31 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     }
 
     // MIGRATIONS
+    public static final String MIGRATION_1_TO_2_PART_1 = "alter table "
+            + TABLE_ADS + " rename to ads_old;";
+    public static final String MIGRATION_1_TO_2_PART_2 = "CREATE TABLE "
+            + TABLE_ADS + " ("
+            + AD_COLUMN_ID + " integer primary key autoincrement, "
+            + AD_COLUMN_OWNER + " text not null, "
+            + AD_COLUMN_TOOL_ID + " integer not null, "
+            + AD_COLUMN_POST_DATE + " text, "
+            + AD_COLUMN_EXPIRATION_DATE + " text, "
+            + AD_COLUMN_TITLE + " text not null, "
+            + AD_COLUMN_DESCRIPTION + " text, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + AD_COLUMN_OWNER + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "),"
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + AD_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
+    public static final String MIGRATION_1_TO_2_PART_3 = "insert into "
+            + TABLE_ADS + "("
+            + AD_COLUMN_ID + "," + AD_COLUMN_OWNER + "," + AD_COLUMN_TOOL_ID + ","
+            + AD_COLUMN_POST_DATE + "," + AD_COLUMN_EXPIRATION_DATE + "," + AD_COLUMN_TITLE + "," + AD_COLUMN_DESCRIPTION + ") "
+            + "select " + AD_COLUMN_ID + "," + AD_COLUMN_OWNER + "," + AD_COLUMN_TOOL_ID + ","
+            + AD_COLUMN_POST_DATE + "," + AD_COLUMN_EXPIRATION_DATE + "," + AD_COLUMN_TITLE + "," + AD_COLUMN_DESCRIPTION
+            + " from ads_old;";
+
 
     // Creating Tables
     @Override
@@ -167,6 +192,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            db.execSQL(MIGRATION_1_TO_2_PART_1);
+            db.execSQL(MIGRATION_1_TO_2_PART_2);
+            db.execSQL(MIGRATION_1_TO_2_PART_3);
+        }
     }
 }

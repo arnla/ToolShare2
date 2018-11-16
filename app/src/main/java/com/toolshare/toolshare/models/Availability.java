@@ -1,5 +1,10 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.toolshare.toolshare.db.DbHandler;
+
 import java.sql.Date;
 import java.sql.Time;
 
@@ -143,4 +148,26 @@ public class Availability {
     public static final String AVAILABILITY_COLUMN_END_DATE = "end_date";
     public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
     public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
+
+    public void addAvailability(DbHandler dbHandler) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(AVAILABILITY_COLUMN_AD_ID, this.getAdId());
+        values.put(AVAILABILITY_COLUMN_SUN, this.isAvailableSunday());
+        values.put(AVAILABILITY_COLUMN_MON, this.isAvailableMonday());
+        values.put(AVAILABILITY_COLUMN_TUE, this.isAvailableTuesday());
+        values.put(AVAILABILITY_COLUMN_WED, this.isAvailableWednesday());
+        values.put(AVAILABILITY_COLUMN_THU, this.isAvailableThursday());
+        values.put(AVAILABILITY_COLUMN_FRI, this.isAvailableFriday());
+        values.put(AVAILABILITY_COLUMN_SAT, this.isAvailableSaturday());
+        values.put(AVAILABILITY_COLUMN_START_DATE, this.getStartDate().toString());
+        values.put(AVAILABILITY_COLUMN_END_DATE, this.getEndDate().toString());
+        values.put(AVAILABILITY_COLUMN_START_TIME, this.getStartTime().toString());
+        values.put(AVAILABILITY_COLUMN_END_TIME, this.getEndTime().toString());
+
+        // Inserting Row
+        db.insert("availability", null, values);
+        db.close();
+    }
 }

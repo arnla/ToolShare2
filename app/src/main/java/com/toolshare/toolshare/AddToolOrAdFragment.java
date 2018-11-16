@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
-import com.toolshare.toolshare.models.NewAdFragment;
 
 
 public class AddToolOrAdFragment extends Fragment {

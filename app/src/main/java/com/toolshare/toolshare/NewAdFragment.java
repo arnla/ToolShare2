@@ -1,4 +1,4 @@
-package com.toolshare.toolshare.models;
+package com.toolshare.toolshare;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import com.toolshare.toolshare.LoginActivity;
 import com.toolshare.toolshare.R;
 import com.toolshare.toolshare.RegisterActivity;
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Ad;
+import com.toolshare.toolshare.models.Availability;
+import com.toolshare.toolshare.models.Tool;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -241,7 +244,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     }
 
     private void insertAd() {
-        ad.setId(Ad.getNextId(db));
         ad.setTitle(mTitle.getText().toString());
         Tool tool = (Tool) mTool.getSelectedItem();
         ad.setToolId(tool.getId());
@@ -250,6 +252,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
         ad.setPostDate(today.getTime());
         ad.setExpirationDate(ad.getAvailability().getEndDate());
 
-        Ad finalAd = ad;
+        ad.getAvailability().setAdId(ad.addAd(db));
+        ad.getAvailability().addAvailability(db);
     }
 }
