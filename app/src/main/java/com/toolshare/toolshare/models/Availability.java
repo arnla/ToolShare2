@@ -30,7 +30,7 @@ public class Availability {
 
     }
 
-    public Availability(int id, int adId, int mon, int tue, int wed, int thu, int fri, int sat, int sun,
+    public Availability(int id, int adId,int sun, int mon, int tue, int wed, int thu, int fri, int sat,
                         String startDate, String endDate, String startTime, String endTime) {
         this.Id = id;
         this.AdId = adId;
