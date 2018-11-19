@@ -197,4 +197,27 @@ public class Ad implements Serializable {
         deleteAvailabilityByAdId(dbHandler, id);
         db.close();
     }
+
+    public static List<Ad> getAllAdsThatAreNotOwners(DbHandler dbHandler, String owner) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        List<Ad> ads = new ArrayList<Ad>();
+
+        Cursor cursor = db.rawQuery("select * from ads where not owner = ?", new String[] {owner});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Ad ad = new Ad(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6));
+                ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+                ads.add(ad);
+            } while (cursor.moveToNext());
+        }
+
+        return ads;
+    }
 }
