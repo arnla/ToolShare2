@@ -7,9 +7,16 @@ import android.widget.AdapterView;
 
 import com.toolshare.toolshare.db.DbHandler;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-public class Ad {
+import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
+
+public class Ad implements Serializable {
     private int Id;
     private String Owner;
     private int ToolId;
@@ -19,6 +26,27 @@ public class Ad {
     private Availability Availability;
     private int AvailabilityId;
     private String Title;
+
+    public Ad() {
+
+    }
+
+    public Ad(int id, String owner, int toolId, String postDate, String expirationDate, String title, String description) {
+        this.Id = id;
+        this.Owner = owner;
+        this.ToolId = toolId;
+        this.PostDate = new Date(postDate);
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            date = df.parse(expirationDate);
+            this.ExpirationDate = date;
+        } catch (Exception e) {
+
+        }
+        this.Description = description;
+        this.Title = title;
+    }
 
     public int getId() {
         return Id;
@@ -106,6 +134,31 @@ public class Ad {
     public static final String AD_COLUMN_DESCRIPTION = "description";
     public static final String AD_COLUMN_TITLE = "title";
 
+
+    public static List<Ad> getAllAdsByOwner(DbHandler dbHandler, String owner) {
+        List<Ad> ads = new ArrayList<Ad>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from ads where owner = ?", new String[] {owner});
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Ad ad = new Ad(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6));
+                ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+                ads.add(ad);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return ads;
+    }
 
     public int addAd(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
