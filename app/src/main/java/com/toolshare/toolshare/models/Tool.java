@@ -184,7 +184,7 @@ public class Tool implements Serializable {
         return tools;
     }
 
-    public Tool getToolByPk(DbHandler dbHandler, int id) {
+    public static Tool getToolByPk(DbHandler dbHandler, int id) {
         Tool tool = null;
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from tools where id = ?", new String[] {Integer.toString(id)});

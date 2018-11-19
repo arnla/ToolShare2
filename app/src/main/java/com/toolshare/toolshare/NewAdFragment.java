@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.toolshare.toolshare.LoginActivity;
 import com.toolshare.toolshare.R;
@@ -29,6 +30,7 @@ import com.toolshare.toolshare.models.Tool;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -254,5 +256,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
 
         ad.getAvailability().setAdId(ad.addAd(db));
         ad.getAvailability().addAvailability(db);
+        Toast.makeText(getActivity(), "New ad added", Toast.LENGTH_LONG).show();
+        getActivity().onBackPressed();
     }
 }
