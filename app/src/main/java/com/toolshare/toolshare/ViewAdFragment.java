@@ -75,6 +75,12 @@ public class ViewAdFragment extends Fragment {
         mToolBrand = (TextView) view.findViewById(R.id.tv_ad_tool_brand);
         mToolModel = (TextView) view.findViewById(R.id.tv_ad_tool_model);
         mDeleteButton = (Button) view.findViewById(R.id.b_delete_ad);
+        mDeleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteAd();
+            }
+        });
         mEditButton = (Button) view.findViewById(R.id.b_edit_ad);
         mMonday = (Button) view.findViewById(R.id.b_ad_monday);
         mTuesday = (Button) view.findViewById(R.id.b_ad_tuesday);
@@ -112,5 +118,11 @@ public class ViewAdFragment extends Fragment {
             btn.setBackgroundColor(Color.BLACK);
             btn.setTextColor(Color.WHITE);
         }
+    }
+
+    private void deleteAd() {
+        Ad.deleteAd(db, ad.getId());
+        Toast.makeText(getActivity(), "Ad deleted", Toast.LENGTH_LONG).show();
+        getActivity().onBackPressed();
     }
 }

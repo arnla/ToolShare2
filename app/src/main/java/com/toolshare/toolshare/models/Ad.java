@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.toolshare.toolshare.models.Availability.deleteAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 
 public class Ad implements Serializable {
@@ -184,5 +185,16 @@ public class Ad implements Serializable {
         db.close();
 
         return id;
+    }
+
+    public static void deleteAd(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        // Inserting Row
+        db.delete("ads",
+                "id = ?",
+                new String[] {Integer.toString(id)});
+        deleteAvailabilityByAdId(dbHandler, id);
+        db.close();
     }
 }

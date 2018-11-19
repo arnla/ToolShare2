@@ -256,4 +256,12 @@ public class Availability {
         db.close();
         return availability;
     }
+
+    public static void deleteAvailabilityByAdId(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+        db.delete("availability",
+                "ad_id = ?",
+                new String[] {Integer.toString(id)});
+        db.close();
+    }
 }
