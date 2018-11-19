@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -73,6 +73,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
     public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
 
+    // REQUEST STATUS TABLE
+    public static final String TABLE_REQUEST_STATUSES = "request_statuses";
+    public static final String REQUEST_STATUS_COLUMN_ID = "id";
+    public static final String REQUEST_STATUS_COLUMN_NAME = "status_name";
+
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
@@ -104,6 +109,13 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + AD_COLUMN_POST_DATE + "," + AD_COLUMN_EXPIRATION_DATE + "," + AD_COLUMN_TITLE + "," + AD_COLUMN_DESCRIPTION
             + " from ads_old;";
 
+    public static final String MIGRATION_2_TO_3_PART_1 = "create table "
+            + TABLE_REQUEST_STATUSES + " ("
+            + REQUEST_STATUS_COLUMN_ID + " integer primary key autoincrement, "
+            + REQUEST_STATUS_COLUMN_NAME + " text not null);";
+    public static final String MIGRATION_2_TO_3_PART_2 = "insert into "
+            + TABLE_REQUEST_STATUSES + " ("
+            + REQUEST_STATUS_COLUMN_NAME + ") values (\"Pending\"), (\"Accepted\"), (\"Rejected\"), (\"Cancelled\");";
 
     // Creating Tables
     @Override
@@ -196,6 +208,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             db.execSQL(MIGRATION_1_TO_2_PART_1);
             db.execSQL(MIGRATION_1_TO_2_PART_2);
             db.execSQL(MIGRATION_1_TO_2_PART_3);
+        }
+
+        if (oldVersion < 3) {
+            db.execSQL(MIGRATION_2_TO_3_PART_1);
+            db.execSQL(MIGRATION_2_TO_3_PART_2);
         }
     }
 }
