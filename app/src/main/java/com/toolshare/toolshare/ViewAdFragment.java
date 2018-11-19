@@ -25,6 +25,7 @@ import com.toolshare.toolshare.models.Tool;
 
 import org.w3c.dom.Text;
 
+import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
 
@@ -57,13 +58,13 @@ public class ViewAdFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_tool, null);
+        View view = inflater.inflate(R.layout.fragment_view_ad, null);
 
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
         ad = (Ad) bundle.getSerializable("ad");
         tool = (Tool) getToolByPk(db, ad.getToolId());
-        availability = (Availability) getAvailabilityByPk(db, ad.getAvailabilityId());
+        availability = (Availability) getAvailabilityByAdId(db, ad.getId());
 
         mAdTitle = (TextView) view.findViewById(R.id.tv_ad_title);
         mAdDescription = (TextView) view.findViewById(R.id.tv_ad_description);
@@ -74,12 +75,6 @@ public class ViewAdFragment extends Fragment {
         mToolBrand = (TextView) view.findViewById(R.id.tv_ad_tool_brand);
         mToolModel = (TextView) view.findViewById(R.id.tv_ad_tool_model);
         mDeleteButton = (Button) view.findViewById(R.id.b_delete_ad);
-        mDeleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteTool();
-            }
-        });
         mEditButton = (Button) view.findViewById(R.id.b_edit_ad);
         mMonday = (Button) view.findViewById(R.id.b_ad_monday);
         mTuesday = (Button) view.findViewById(R.id.b_ad_tuesday);
@@ -110,12 +105,6 @@ public class ViewAdFragment extends Fragment {
         setAvailabilityDay(mFriday, availability.isAvailableFriday());
         setAvailabilityDay(mSaturday, availability.isAvailableSaturday());
         setAvailabilityDay(mSunday, availability.isAvailableSunday());
-    }
-
-    private void deleteTool() {
-        tool.deleteTool(db, tool.getId());
-        Toast.makeText(getActivity(), "Tool deleted", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
     }
 
     private void setAvailabilityDay(Button btn, boolean available) {

@@ -80,7 +80,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                bundle.putSerializable("tool", ad);
+                bundle.putSerializable("ad", ad);
                 Fragment fragment = new ViewAdFragment();
                 fragment.setArguments(bundle);
 
