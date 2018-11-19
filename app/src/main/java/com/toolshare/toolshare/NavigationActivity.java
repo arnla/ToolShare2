@@ -26,8 +26,11 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
         bundle = getIntent().getExtras();
         db = new DbHandler(this);
 
-        //loading the default fragment
-        loadFragment(new ProfileFragment());
+        if (bundle.getString("fragmentName").equals("profile")) {
+            loadFragment(new ProfileFragment());
+        } else if (bundle.getString("fragmentName").equals("dashboard")) {
+            loadFragment(new DashboardFragment());
+        }
 
         //getting bottom navigation view and attaching the listener
         BottomNavigationView navigation = findViewById(R.id.navigation);

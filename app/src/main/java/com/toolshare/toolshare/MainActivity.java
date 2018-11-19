@@ -31,11 +31,21 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NavigationActivity.class);
                 i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "profile");
                 startActivity(i);
             }
         });
         mRentToolsButton = findViewById(R.id.rent_tools_button);
-        mProfileButton = findViewById(R.id.rent_out_tools_button);
+        mRentToolsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
+                i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "dashboard");
+                startActivity(i);
+            }
+        });
+        mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
     }
 
 }
