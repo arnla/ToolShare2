@@ -229,13 +229,22 @@
                 android:id="@+id/b_edit_ad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Edit Ad"/>
+                android:text="Edit Ad"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/b_delete_ad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Delete Ad"/>
+                android:text="Delete Ad"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/b_rent_tool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rent Tool"
+                android:visibility="gone"/>
         </LinearLayout>
     </ScrollView>
 
