@@ -94,10 +94,10 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
 
                 if (dateButtonClicked.equals("start")) {
                     ad.getAvailability().setStartDate(date);
-                    mStartDateButton.setText(mStartDateButton.getText() + ": " + ad.getAvailability().getStartDate().toString());
+                    mStartDateButton.setText("Start Date: " + ad.getAvailability().getStartDate().toString());
                 } else {
                     ad.getAvailability().setEndDate(date);
-                    mEndDateButton.setText(mEndDateButton.getText() + ": " + ad.getAvailability().getEndDate().toString());
+                    mEndDateButton.setText("End Date: " + ad.getAvailability().getEndDate().toString());
                 }
                 mCalendar.setVisibility(View.GONE);
                 mAdLinearLayout.setVisibility(View.VISIBLE);
