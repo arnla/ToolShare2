@@ -20,7 +20,7 @@
                 android:gravity="center"/>
 
             <TextView
-                android:id="@+id/tv_rent_request_tool_name"
+                android:id="@+id/tv_rent_request_tool"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"

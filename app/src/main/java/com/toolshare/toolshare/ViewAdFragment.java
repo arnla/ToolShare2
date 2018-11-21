@@ -92,6 +92,21 @@ public class ViewAdFragment extends Fragment {
             mEditButton.setVisibility(View.VISIBLE);
         } else {
             mRentToolButton.setVisibility(View.VISIBLE);
+            mRentToolButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    bundle.putSerializable("tool", tool);
+                    bundle.putSerializable("availability", availability);
+                    Fragment fragment = new NewRentRequestFragment();
+                    fragment.setArguments(bundle);
+
+                    FragmentManager fm = getFragmentManager();
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    transaction.replace(R.id.fragment_container, fragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }
+            });
         }
         mMonday = (Button) view.findViewById(R.id.b_ad_monday);
         mTuesday = (Button) view.findViewById(R.id.b_ad_tuesday);

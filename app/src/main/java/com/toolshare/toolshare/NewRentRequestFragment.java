@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,86 +43,40 @@ public class NewRentRequestFragment extends Fragment {
     private Ad ad;
     private Tool tool;
     private Availability availability;
-    private TextView mAdTitle;
-    private TextView mAdOwner;
-    private TextView mAdDescription;
-    private TextView mAdStartDate;
-    private TextView mAdEndDate;
-    private TextView mToolName;
-    private TextView mToolYear;
-    private TextView mToolBrand;
-    private TextView mToolModel;
-    private Button mRentToolButton;
-    private Button mMonday;
-    private Button mTuesday;
-    private Button mWednesday;
-    private Button mThursday;
-    private Button mFriday;
-    private Button mSaturday;
-    private Button mSunday;
+    private TextView mAdLink;
+    private TextView mToolLink;
+
+    private CalendarView mCalendar;
+    private RelativeLayout mTimePickerLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_ad, null);
+        View view = inflater.inflate(R.layout.fragment_new_rent_request, null);
 
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
         ad = (Ad) bundle.getSerializable("ad");
-        tool = (Tool) getToolByPk(db, ad.getToolId());
-        availability = (Availability) getAvailabilityByAdId(db, ad.getId());
+        tool = (Tool) bundle.getSerializable("tool");
+        availability = (Availability) bundle.getSerializable("availability");
 
-        mAdTitle = (TextView) view.findViewById(R.id.tv_ad_title);
-        mAdOwner = (TextView) view.findViewById(R.id.tv_ad_owner);
-        mAdDescription = (TextView) view.findViewById(R.id.tv_ad_description);
-        mAdStartDate = (TextView) view.findViewById(R.id.tv_ad_start_date);
-        mAdEndDate = (TextView) view.findViewById(R.id.tv_ad_end_date);
-        mToolName = (TextView) view.findViewById(R.id.tv_ad_tool_name);
-        mToolYear = (TextView) view.findViewById(R.id.tv_ad_tool_year);
-        mToolBrand = (TextView) view.findViewById(R.id.tv_ad_tool_brand);
-        mToolModel = (TextView) view.findViewById(R.id.tv_ad_tool_model);
-        mMonday = (Button) view.findViewById(R.id.b_ad_monday);
-        mTuesday = (Button) view.findViewById(R.id.b_ad_tuesday);
-        mWednesday = (Button) view.findViewById(R.id.b_ad_wednesday);
-        mThursday = (Button) view.findViewById(R.id.b_ad_thursday);
-        mFriday = (Button) view.findViewById(R.id.b_ad_friday);
-        mSaturday = (Button) view.findViewById(R.id.b_ad_saturday);
-        mSunday = (Button) view.findViewById(R.id.b_ad_sunday);
+        mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
+        mToolLink = (TextView) view.findViewById(R.id.tv_rent_request_tool);
 
-        setAdValues();
+        mCalendar = (CalendarView) view.findViewById(R.id.simpleCalendarView);
+        mCalendar.setVisibility(View.GONE);
+        mTimePickerLayout = (RelativeLayout) view.findViewById(R.id.l_rent_request_time_picker);
+        mTimePickerLayout.setVisibility(View.GONE);
+
+        setValues();
 
         return view;
     }
 
-    private void setAdValues() {
-        mAdTitle.setText(ad.getTitle());
-        mAdOwner.setText(mAdOwner.getText() + getUserNameByPk(db, ad.getOwner()));
-        mToolName.setText(tool.getName());
-        mToolYear.setText(mToolYear.getText() + Integer.toString(tool.getYear()));
-        mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
-        mToolModel.setText(mToolModel.getText() + tool.getModel());
-        mAdDescription.setText(ad.getDescription());
-        mAdStartDate.setText(availability.getStartDate().toString());
-        mAdEndDate.setText(availability.getEndDate().toString());
-        setAvailabilityDay(mMonday, availability.isAvailableMonday());
-        setAvailabilityDay(mTuesday, availability.isAvailableTuesday());
-        setAvailabilityDay(mWednesday, availability.isAvailableWednesday());
-        setAvailabilityDay(mThursday, availability.isAvailableThursday());
-        setAvailabilityDay(mFriday, availability.isAvailableFriday());
-        setAvailabilityDay(mSaturday, availability.isAvailableSaturday());
-        setAvailabilityDay(mSunday, availability.isAvailableSunday());
-    }
-
-    private void setAvailabilityDay(Button btn, boolean available) {
-        if (available) {
-            btn.setBackgroundColor(Color.BLACK);
-            btn.setTextColor(Color.WHITE);
-        }
-    }
-
-    private void deleteAd() {
-        Ad.deleteAd(db, ad.getId());
-        Toast.makeText(getActivity(), "Ad deleted", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+    private void setValues() {
+        mAdLink.setText(ad.getTitle());
+        mAdLink.setClickable(true);
+        mToolLink.setText(tool.getName());
+        mToolLink.setClickable(true);
     }
 }
