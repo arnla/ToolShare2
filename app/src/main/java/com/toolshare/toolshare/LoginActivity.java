@@ -358,9 +358,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void seedData() {
-        User user1 = new User("angela@email.com","Angela", "Ranola", "4031234567", "00000");
-        user1.addUser(db);
-        User user2 = new User("john.smith@email.com","John", "Smith", "4031234567", "00000");
         ToolType toolType = new ToolType(db, "Saws", "Cutting tools");
         toolType.addToolType(db);
         ToolType toolType1 = new ToolType(db, "Drills", "Making holes");
