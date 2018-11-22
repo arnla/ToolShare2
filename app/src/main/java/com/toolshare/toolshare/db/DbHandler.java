@@ -290,6 +290,18 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(CREATE_ADS_TABLE);
         db.execSQL(CREATE_BRANDS_TABLE);
         db.execSQL(CREATE_AVAILABILITY_TABLE);
+
+        // execute migrations
+        db.execSQL(MIGRATION_1_TO_2_PART_1);
+        db.execSQL(MIGRATION_1_TO_2_PART_2);
+        db.execSQL(MIGRATION_1_TO_2_PART_3);
+        db.execSQL(MIGRATION_2_TO_3_PART_1);
+        db.execSQL(MIGRATION_2_TO_3_PART_2);
+        db.execSQL(MIGRATION_3_TO_4);
+        db.execSQL(MIGRATION_4_TO_5_PART_1);
+        db.execSQL(MIGRATION_4_TO_5_PART_2);
+        db.execSQL(MIGRATION_4_TO_5_PART_3);
+        db.execSQL(MIGRATION_4_TO_5_PART_4);
     }
 
     // Upgrading database

@@ -101,6 +101,15 @@
                     android:layout_marginTop="16dp"
                     android:text="New Brand"
                     android:textStyle="bold" />-->
+
+            <Button
+                    android:id="@+id/seed_button"
+                    style="?android:textAppearanceSmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Seed Data"
+                    android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
