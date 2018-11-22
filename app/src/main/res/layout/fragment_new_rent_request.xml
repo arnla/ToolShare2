@@ -207,8 +207,7 @@
                 android:id="@+id/b_rent_request_submit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Submit Request"
-                android:visibility="gone"/>
+                android:text="Submit Request"/>
         </LinearLayout>
     </ScrollView>
 
