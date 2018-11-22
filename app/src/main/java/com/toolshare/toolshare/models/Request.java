@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Request {
     private int Id;
-    private int RequesterId;
-    private int OwnerId;
+    private String RequesterId;
+    private String OwnerId;
     private User Requester;
     private User Owner;
     private int AdId;
@@ -19,19 +19,19 @@ public class Request {
         return Id;
     }
 
-    public void setRequesterId(int id) {
+    public void setRequesterId(String id) {
         this.RequesterId = id;
     }
 
-    public int getRequesterId() {
+    public String getRequesterId() {
         return RequesterId;
     }
 
-    public void setOwnerId(int id) {
+    public void setOwnerId(String id) {
         this.OwnerId = id;
     }
 
-    public int getOwnerId() {
+    public String getOwnerId() {
         return OwnerId;
     }
 
