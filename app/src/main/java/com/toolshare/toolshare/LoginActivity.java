@@ -118,19 +118,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mSeedDataButton.setOnClickListener(new OnClickListener() {
            @Override
            public void onClick(View v) {
-               //seed data
-               ToolType toolType = new ToolType(db, "Saws", "Cutting tools");
-               toolType.addToolType(db);
-               ToolType toolType1 = new ToolType(db, "Drills", "Making holes");
-               toolType1.addToolType(db);
-               Toast.makeText(LoginActivity.this, "Tool types added", Toast.LENGTH_LONG).show();
-               Brand brand = new Brand("Dewalt");
-               brand.addBrand(db);
-               Brand brand1 = new Brand("Bosch");
-               brand1.addBrand(db);
-               Brand brand2 = new Brand("Ryobi");
-               brand2.addBrand(db);
-               Toast.makeText(LoginActivity.this, "Brands added", Toast.LENGTH_LONG).show();
+               seedData();
            }
         });
 
@@ -369,6 +357,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         int IS_PRIMARY = 1;
     }
 
+    private void seedData() {
+        User user1 = new User("angela@email.com","Angela", "Ranola", "4031234567", "00000");
+        user1.addUser(db);
+        User user2 = new User("john.smith@email.com","John", "Smith", "4031234567", "00000");
+        ToolType toolType = new ToolType(db, "Saws", "Cutting tools");
+        toolType.addToolType(db);
+        ToolType toolType1 = new ToolType(db, "Drills", "Making holes");
+        toolType1.addToolType(db);
+        Toast.makeText(LoginActivity.this, "Tool types added", Toast.LENGTH_LONG).show();
+        Brand brand = new Brand("Dewalt");
+        brand.addBrand(db);
+        Brand brand1 = new Brand("Bosch");
+        brand1.addBrand(db);
+        Brand brand2 = new Brand("Ryobi");
+        brand2.addBrand(db);
+        Toast.makeText(LoginActivity.this, "Brands added", Toast.LENGTH_LONG).show();
+    }
+
     /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
@@ -400,9 +406,5 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             return true;
         }
     }
-
-
-
-    // Function to add tool - COMMENT OUT WHEN NOT NEEDED
 }
 
