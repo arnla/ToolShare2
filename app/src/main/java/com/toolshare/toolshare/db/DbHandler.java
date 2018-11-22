@@ -10,10 +10,11 @@ import com.toolshare.toolshare.models.User;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -73,6 +74,45 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
     public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
 
+    // REQUEST STATUS TABLE
+    public static final String TABLE_REQUEST_STATUSES = "request_statuses";
+    public static final String REQUEST_STATUS_COLUMN_ID = "id";
+    public static final String REQUEST_STATUS_COLUMN_NAME = "status_name";
+
+    // REQUEST TABLE
+    public static final String TABLE_REQUESTS = "requests";
+    public static final String REQUEST_COLUMN_ID = "id";
+    public static final String REQUEST_COLUMN_REQUESTER_ID = "requester_id";
+    public static final String REQUEST_COLUMN_OWNER_ID = "owner_id";
+    public static final String REQUEST_COLUMN_AD_ID = "ad_id";
+    public static final String REQUEST_COLUMN_REQUESTED_START_DATE = "requested_start_date";
+    public static final String REQUEST_COLUMN_REQUESTED_END_DATE = "requested_end_date";
+    public static final String REQUEST_COLUMN_DELIVERY_METHOD = "delivery_method";
+    public static final String REQUEST_COLUMN_STATUS_ID = "status_id";
+
+    // CARD TABLE
+    public static String TABLE_CARDS = "cards";
+    public static final String CARD_COLUMN_ID = "id";
+    public static final String CARD_COLUMN_OWNER_ID = "owner_id";
+    public static final String CARD_COLUMN_FULL_NAME = "full_name";
+    public static final String CARD_COLUMN_CARD_NUMBER = "card_number";
+    public static final String CARD_COLUMN_EXPIRY_MONTH = "expiry_month";
+    public static final String CARD_COLUMN_EXPIRY_YEAR = "expiry_year";
+    public static final String CARD_COLUMN_CVC = "cvc";
+
+    // TRANSACTION TABLE
+    public static String TABLE_TRANSACTIONS = "transactions";
+    public static final String TRANSACTION_COLUMN_ID = "id";
+    public static final String TRANSACTION_COLUMN_REQUEST_ID = "request_id";
+    public static final String TRANSACTION_COLUMN_CARD_ID = "card_id";
+    public static final String TRANSACTION_COLUMN_BILLING_ADDRESS = "billing_address";
+    public static final String TRANSACTION_COLUMN_STATUS_ID = "status_id";
+
+    // TRANSACTION STATUS TABLE
+    public static final String TABLE_TRANSACTION_STATUSES = "transaction_statuses";
+    public static final String TRANSACTION_STATUS_COLUMN_ID = "id";
+    public static final String TRANSACTION_STATUS_COLUMN_NAME = "status_name";
+
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
@@ -104,6 +144,69 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + AD_COLUMN_POST_DATE + "," + AD_COLUMN_EXPIRATION_DATE + "," + AD_COLUMN_TITLE + "," + AD_COLUMN_DESCRIPTION
             + " from ads_old;";
 
+    public static final String MIGRATION_2_TO_3_PART_1 = "create table "
+            + TABLE_REQUEST_STATUSES + " ("
+            + REQUEST_STATUS_COLUMN_ID + " integer primary key autoincrement, "
+            + REQUEST_STATUS_COLUMN_NAME + " text not null);";
+    public static final String MIGRATION_2_TO_3_PART_2 = "insert into "
+            + TABLE_REQUEST_STATUSES + " ("
+            + REQUEST_STATUS_COLUMN_NAME + ") values (\"Pending\"), (\"Accepted\"), (\"Rejected\"), (\"Cancelled\");";
+
+    public static final String MIGRATION_3_TO_4 = "create table "
+            + TABLE_REQUESTS + " ("
+            + REQUEST_COLUMN_ID + " integer primary key autoincrement, "
+            + REQUEST_COLUMN_REQUESTER_ID + " text not null, "
+            + REQUEST_COLUMN_OWNER_ID + " text not null, "
+            + REQUEST_COLUMN_AD_ID + " integer not null, "
+            + REQUEST_COLUMN_REQUESTED_START_DATE + " text not null, "
+            + REQUEST_COLUMN_REQUESTED_END_DATE + " text not null, "
+            + REQUEST_COLUMN_DELIVERY_METHOD + " text not null, "
+            + REQUEST_COLUMN_STATUS_ID + " integer not null, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "," + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_ads FOREIGN KEY ("
+            + REQUEST_COLUMN_AD_ID + ") REFERENCES "
+            + TABLE_ADS + "(" + AD_COLUMN_ID + "), "
+            + "CONSTRAINT fk_status FOREIGN KEY ("
+            + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";
+
+    public static final String MIGRATION_4_TO_5_PART_1 = "create table "
+            + TABLE_CARDS + " ("
+            + CARD_COLUMN_ID + " integer primary key autoincrement, "
+            + CARD_COLUMN_OWNER_ID + " text not null, "
+            + CARD_COLUMN_FULL_NAME + " text not null, "
+            + CARD_COLUMN_CARD_NUMBER + " text not null, "
+            + CARD_COLUMN_EXPIRY_MONTH + " integer not null, "
+            + CARD_COLUMN_EXPIRY_YEAR + " integer not null, "
+            + CARD_COLUMN_CVC + " integer not null, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + CARD_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "));";
+    public static final String MIGRATION_4_TO_5_PART_2 = "create table "
+            + TABLE_TRANSACTION_STATUSES + " ("
+            + TRANSACTION_STATUS_COLUMN_ID + " integer primary key autoincrement, "
+            + TRANSACTION_STATUS_COLUMN_NAME + " text not null);";
+    public static final String MIGRATION_4_TO_5_PART_3 = "insert into "
+            + TABLE_TRANSACTION_STATUSES + " ("
+            + TRANSACTION_STATUS_COLUMN_NAME + ") values (\"Pending\"), (\"Completed\"), (\"Cancelled\");";
+    public static final String MIGRATION_4_TO_5_PART_4 = "create table "
+            + TABLE_TRANSACTIONS + " ("
+            + TRANSACTION_COLUMN_ID + " integer primary key autoincrement, "
+            + TRANSACTION_COLUMN_REQUEST_ID + " integer not null, "
+            + TRANSACTION_COLUMN_CARD_ID + " integer not null, "
+            + TRANSACTION_COLUMN_BILLING_ADDRESS + " text not null, "
+            + TRANSACTION_COLUMN_STATUS_ID + " integer not null, "
+            + "CONSTRAINT fk_requests FOREIGN KEY ("
+            + TRANSACTION_COLUMN_REQUEST_ID + ") REFERENCES "
+            + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "), "
+            + "CONSTRAINT fk_cards FOREIGN KEY ("
+            + TRANSACTION_COLUMN_CARD_ID + ") REFERENCES "
+            + TABLE_CARDS + "(" + CARD_COLUMN_ID + "), "
+            + "CONSTRAINT fk_transaction_status FOREIGN KEY ("
+            + TRANSACTION_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_TRANSACTION_STATUSES + "(" + TRANSACTION_STATUS_COLUMN_ID + "));";
 
     // Creating Tables
     @Override
@@ -196,6 +299,22 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             db.execSQL(MIGRATION_1_TO_2_PART_1);
             db.execSQL(MIGRATION_1_TO_2_PART_2);
             db.execSQL(MIGRATION_1_TO_2_PART_3);
+        }
+
+        if (oldVersion < 3) {
+            db.execSQL(MIGRATION_2_TO_3_PART_1);
+            db.execSQL(MIGRATION_2_TO_3_PART_2);
+        }
+
+        if (oldVersion < 4) {
+            db.execSQL(MIGRATION_3_TO_4);
+        }
+
+        if (oldVersion < 5) {
+            db.execSQL(MIGRATION_4_TO_5_PART_1);
+            db.execSQL(MIGRATION_4_TO_5_PART_2);
+            db.execSQL(MIGRATION_4_TO_5_PART_3);
+            db.execSQL(MIGRATION_4_TO_5_PART_4);
         }
     }
 }

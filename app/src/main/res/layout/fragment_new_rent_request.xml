@@ -13,63 +13,23 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_ad_title"
+                android:id="@+id/tv_rent_request_ad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40dp"/>
-
-            <TextView
-                android:id="@+id/tv_ad_owner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Owner: "/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TOOL"
+                android:textSize="20dp"
                 android:gravity="center"/>
 
             <TextView
-                android:id="@+id/tv_ad_tool_name"
+                android:id="@+id/tv_rent_request_tool"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name: "/>
-
-            <TextView
-                android:id="@+id/tv_ad_tool_year"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Year: "/>
-
-            <TextView
-                android:id="@+id/tv_ad_tool_brand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Brand: "/>
-
-            <TextView
-                android:id="@+id/tv_ad_tool_model"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Model: "/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="DESCRIPTION"
+                android:textSize="20dp"
                 android:gravity="center"/>
 
             <TextView
-                android:id="@+id/tv_ad_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="AVAILABILITY"
+                android:text="REQUEST"
                 android:gravity="center"/>
 
             <LinearLayout
@@ -111,7 +71,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_ad_start_date"
+                        android:id="@+id/tv_rent_request_start_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -122,7 +82,7 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/tv_ad_end_date"
+                        android:id="@+id/tv_rent_request_end_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -139,7 +99,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_sunday"
+                        android:id="@+id/b_rent_request_sunday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="S"
@@ -152,7 +112,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_monday"
+                        android:id="@+id/b_rent_request_monday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="M"
@@ -165,7 +125,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_tuesday"
+                        android:id="@+id/b_rent_request_tuesday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="T"
@@ -178,7 +138,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_wednesday"
+                        android:id="@+id/b_rent_request_wednesday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="W"
@@ -191,7 +151,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_thursday"
+                        android:id="@+id/b_rent_request_thursday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="T"
@@ -204,7 +164,7 @@
                     android:layout_weight="1">
 
                     <Button
-                        android:id="@+id/b_ad_friday"
+                        android:id="@+id/b_rent_request_friday"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="F"
@@ -226,21 +186,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/b_edit_ad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Edit Ad"
-                android:visibility="gone"/>
-
-            <Button
-                android:id="@+id/b_delete_ad"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Delete Ad"
-                android:visibility="gone"/>
-
-            <Button
-                android:id="@+id/b_rent_tool"
+                android:id="@+id/b_rent_request_rent_tool"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Rent Tool"
@@ -248,4 +194,29 @@
         </LinearLayout>
     </ScrollView>
 
+    <CalendarView
+        android:id="@+id/simpleCalendarView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:firstDayOfWeek="1"
+        android:maxDate="01/01/2020"
+        android:minDate="01/01/2017"/>
+
+    <RelativeLayout
+        android:id="@+id/l_rent_request_time_picker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TimePicker
+            android:id="@+id/simpleTimePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/b_rent_request_time_picker_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/simpleTimePicker"
+            android:text="OK"/>
+    </RelativeLayout>
 </RelativeLayout>

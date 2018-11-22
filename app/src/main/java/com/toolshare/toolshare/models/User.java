@@ -191,4 +191,15 @@ public class User {
         // return count
         return cursor.getCount();
     }
+
+    public static String getUserNameByPk(DbHandler dbHandler, String owner) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select first_name, last_name from users where email = ?", new String[] {owner});
+
+        if (cursor.moveToFirst()) {
+            return cursor.getString(0) + " " + cursor.getString(1);
+        }
+
+        return "";
+    }
 }
