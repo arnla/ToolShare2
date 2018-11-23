@@ -96,7 +96,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
+<!--            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -124,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:text="End time"/>
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -230,6 +230,37 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:text="Price per day: "/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/et_ad_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"/>
+                </LinearLayout>
+            </LinearLayout>
+
             <Button
                 android:id="@+id/b_create_ad"
                 android:layout_height="wrap_content"
@@ -245,22 +276,4 @@
         android:firstDayOfWeek="1"
         android:maxDate="01/01/2020"
         android:minDate="01/01/2017"/>
-
-    <RelativeLayout
-        android:id="@+id/l_time_picker"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TimePicker
-            android:id="@+id/simpleTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/b_time_picker_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/simpleTimePicker"
-            android:text="OK"/>
-    </RelativeLayout>
 </RelativeLayout>
