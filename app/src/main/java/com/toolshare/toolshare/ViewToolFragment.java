@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class ViewToolFragment extends Fragment {
     private TextView mToolModel;
     private Button mDeleteButton;
     private Button mEditButton;
+    private Button mSubmitButton;
+    private RatingBar mToolRating;
 
     @Nullable
     @Override
@@ -43,7 +46,14 @@ public class ViewToolFragment extends Fragment {
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
         tool = (Tool) bundle.getSerializable("tool");
-
+        mToolRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
+        mSubmitButton = (Button) view.findViewById(R.id.b_submit_rating);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rateTool();
+            }
+        });
         mToolName = (TextView) view.findViewById(R.id.tv_tool_name);
         mToolYear = (TextView) view.findViewById(R.id.tv_tool_year);
         mToolBrand = (TextView) view.findViewById(R.id.tv_tool_brand);
@@ -73,5 +83,11 @@ public class ViewToolFragment extends Fragment {
         tool.deleteTool(db, tool.getId());
         Toast.makeText(getActivity(), "Tool deleted", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
+    }
+
+    private void rateTool(){
+        String totalStars = "Total Stars:: " + mToolRating.getNumStars();
+        String rating = "Rating :: " + mToolRating.getRating();
+        Toast.makeText(getActivity().getApplicationContext(), totalStars + "\n" + rating, Toast.LENGTH_LONG).show();
     }
 }

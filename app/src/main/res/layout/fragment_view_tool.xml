@@ -20,11 +20,19 @@
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/rb_tool_rating"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:numStars="5"
                 android:stepSize="1"
-                android:rating="3"/>
+                android:rating="1"
+            />
+
+            <Button
+                android:id="@+id/b_submit_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Submit"/>
 
             <TextView
                 android:id="@+id/tv_tool_name"
