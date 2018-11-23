@@ -56,6 +56,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private String dateButtonClicked;
     private Button mCreateAdButton;
     private Calendar calendar = Calendar.getInstance();
+    private EditText mPrice;
 
     @Nullable
     @Override
@@ -138,6 +139,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
                 insertAd();
             }
         });
+        mPrice = (EditText) view.findViewById(R.id.et_ad_price);
 
         loadSpinner();
 
@@ -199,6 +201,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
         Calendar today = Calendar.getInstance();
         ad.setPostDate(today.getTime());
         ad.setExpirationDate(ad.getAvailability().getEndDate());
+        ad.setPrice(Integer.parseInt(mPrice.getText().toString()));
 
         ad.getAvailability().setAdId(ad.addAd(db));
         ad.getAvailability().addAvailability(db);

@@ -57,6 +57,7 @@ public class ViewAdFragment extends Fragment {
     private Button mFriday;
     private Button mSaturday;
     private Button mSunday;
+    private TextView mPrice;
 
     @Nullable
     @Override
@@ -115,6 +116,7 @@ public class ViewAdFragment extends Fragment {
         mFriday = (Button) view.findViewById(R.id.b_ad_friday);
         mSaturday = (Button) view.findViewById(R.id.b_ad_saturday);
         mSunday = (Button) view.findViewById(R.id.b_ad_sunday);
+        mPrice = (TextView) view.findViewById(R.id.tv_ad_price);
 
         setAdValues();
 
@@ -124,11 +126,12 @@ public class ViewAdFragment extends Fragment {
     private void setAdValues() {
         mAdTitle.setText(ad.getTitle());
         mAdOwner.setText(mAdOwner.getText() + getUserNameByPk(db, ad.getOwner()));
-        mToolName.setText(tool.getName());
+        mToolName.setText(mToolName.getText() + tool.getName());
         mToolYear.setText(mToolYear.getText() + Integer.toString(tool.getYear()));
         mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
         mToolModel.setText(mToolModel.getText() + tool.getModel());
         mAdDescription.setText(ad.getDescription());
+        mPrice.setText(mPrice.getText() + "$" + Integer.toString(ad.getPrice()));
         mAdStartDate.setText(availability.getStartDate().toString());
         mAdEndDate.setText(availability.getEndDate().toString());
         setAvailabilityDay(mMonday, availability.isAvailableMonday());
