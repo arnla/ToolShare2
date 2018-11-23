@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 9;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -238,6 +238,36 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
     public static final String MIGRATION_6_TO_7 = "drop table ads_old;";
 
+    public static final String MIGRATION_7_TO_8_PART_1 = "alter table "
+            + TABLE_AVAILABILITY + " rename to availability_old;";
+    public static final String MIGRATION_7_TO_8_PART_2 = "create table "
+            + TABLE_AVAILABILITY + " ("
+            + AVAILABILITY_COLUMN_ID + " integer primary key autoincrement, "
+            + AVAILABILITY_COLUMN_AD_ID + " integer not null, "
+            + AVAILABILITY_COLUMN_SUN + " integer not null, "
+            + AVAILABILITY_COLUMN_MON + " integer not null, "
+            + AVAILABILITY_COLUMN_TUE + " integer not null, "
+            + AVAILABILITY_COLUMN_WED + " integer not null, "
+            + AVAILABILITY_COLUMN_THU + " integer not null, "
+            + AVAILABILITY_COLUMN_FRI + " integer not null, "
+            + AVAILABILITY_COLUMN_SAT + " integer not null, "
+            + AVAILABILITY_COLUMN_START_DATE + " text not null, "
+            + AVAILABILITY_COLUMN_END_DATE + " text not null, "
+            + "CONSTRAINT fk_ads FOREIGN KEY ("
+            + AVAILABILITY_COLUMN_AD_ID + ") REFERENCES "
+            + TABLE_ADS + "(" + AD_COLUMN_ID + "));";
+    public static final String MIGRATION_7_TO_8_PART_3 = "insert into "
+            + TABLE_AVAILABILITY + "("
+            + AVAILABILITY_COLUMN_ID + "," + AVAILABILITY_COLUMN_AD_ID + "," + AVAILABILITY_COLUMN_SUN + "," + AVAILABILITY_COLUMN_MON
+            + "," + AVAILABILITY_COLUMN_TUE + "," + AVAILABILITY_COLUMN_WED + "," + AVAILABILITY_COLUMN_THU + "," + AVAILABILITY_COLUMN_FRI
+            + "," + AVAILABILITY_COLUMN_SAT + "," + AVAILABILITY_COLUMN_START_DATE + "," + AVAILABILITY_COLUMN_END_DATE + ") "
+            + "select " + AVAILABILITY_COLUMN_ID + "," + AVAILABILITY_COLUMN_AD_ID + "," + AVAILABILITY_COLUMN_SUN + "," + AVAILABILITY_COLUMN_MON
+            + "," + AVAILABILITY_COLUMN_TUE + "," + AVAILABILITY_COLUMN_WED + "," + AVAILABILITY_COLUMN_THU + "," + AVAILABILITY_COLUMN_FRI
+            + "," + AVAILABILITY_COLUMN_SAT + "," + AVAILABILITY_COLUMN_START_DATE + "," + AVAILABILITY_COLUMN_END_DATE
+            + " from availability_old;";
+
+    public static final String MIGRATION_8_TO_9 = "drop table availability_old;";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -337,6 +367,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_5_TO_6_PART_3);
         db.execSQL(MIGRATION_5_TO_6_PART_4);
         db.execSQL(MIGRATION_6_TO_7);
+        db.execSQL(MIGRATION_7_TO_8_PART_1);
+        db.execSQL(MIGRATION_7_TO_8_PART_2);
+        db.execSQL(MIGRATION_7_TO_8_PART_3);
+        db.execSQL(MIGRATION_8_TO_9);
     }
 
     // Upgrading database
@@ -373,6 +407,16 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
         if (oldVersion < 7) {
             db.execSQL(MIGRATION_6_TO_7);
+        }
+
+        if (oldVersion < 8) {
+            db.execSQL(MIGRATION_7_TO_8_PART_1);
+            db.execSQL(MIGRATION_7_TO_8_PART_2);
+            db.execSQL(MIGRATION_7_TO_8_PART_3);
+        }
+
+        if (oldVersion < 9) {
+            db.execSQL(MIGRATION_8_TO_9);
         }
     }
 }

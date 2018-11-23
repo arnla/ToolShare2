@@ -55,14 +55,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private LinearLayout mAdLinearLayout;
     private String dateButtonClicked;
     private Button mCreateAdButton;
-    private TimePicker mTimePicker;
-    private Button mStartTimeButton;
-    private Button mEndTimeButton;
-    private String timeButtonClicked;
-    private Button mTimeOkButton;
-    private RelativeLayout mTimePickerRelativeLayout;
-    private int selectedHour;
-    private int selectedMinute;
     private Calendar calendar = Calendar.getInstance();
 
     @Nullable
@@ -144,52 +136,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 insertAd();
-            }
-        });
-        mTimePickerRelativeLayout = (RelativeLayout) view.findViewById(R.id.l_time_picker);
-        mTimeOkButton = (Button) view.findViewById(R.id.b_time_picker_ok);
-        mTimeOkButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                calendar.set(Calendar.HOUR_OF_DAY, selectedHour);
-                calendar.set(Calendar.MINUTE, selectedMinute);
-                Time time = new Time(calendar.getTimeInMillis());
-                if (timeButtonClicked.equals("start")) {
-                    ad.getAvailability().setStartTime(time);
-                    mStartTimeButton.setText(mStartTimeButton.getText() + ": " + time.toString());
-                } else {
-                    ad.getAvailability().setEndTime(time);
-                    mEndTimeButton.setText(mEndTimeButton.getText() + ": " + time.toString());
-                }
-                mAdLinearLayout.setVisibility(View.VISIBLE);
-                mTimePickerRelativeLayout.setVisibility(View.GONE);
-            }
-        });
-        mTimePicker = (TimePicker) view.findViewById(R.id.simpleTimePicker);
-        mTimePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                selectedHour = hourOfDay;
-                selectedMinute = minute;
-            }
-        });
-        mTimePickerRelativeLayout.setVisibility(View.GONE);
-        mStartTimeButton = (Button) view.findViewById(R.id.b_availability_start_time);
-        mStartTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timeButtonClicked = "start";
-                mAdLinearLayout.setVisibility(View.GONE);
-                mTimePickerRelativeLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mEndTimeButton = (Button) view.findViewById(R.id.b_availability_end_time);
-        mEndTimeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                timeButtonClicked = "end";
-                mAdLinearLayout.setVisibility(View.GONE);
-                mTimePickerRelativeLayout.setVisibility(View.VISIBLE);
             }
         });
 

@@ -25,15 +25,15 @@ public class Availability implements Serializable {
     private boolean Sunday;
     private Date StartDate;
     private Date EndDate;
-    private Time StartTime;
-    private Time EndTime;
+/*    private Time StartTime;
+    private Time EndTime;*/
 
     public Availability() {
 
     }
 
     public Availability(int id, int adId,int sun, int mon, int tue, int wed, int thu, int fri, int sat,
-                        String startDate, String endDate, String startTime, String endTime) {
+                        String startDate, String endDate) {
         this.Id = id;
         this.AdId = adId;
         this.Monday = mon == 1;
@@ -53,10 +53,6 @@ public class Availability implements Serializable {
         } catch (Exception e) {
 
         }
-        LocalTime localTime = LocalTime.parse(startTime);
-        this.StartTime = new Time(localTime.toSecondOfDay() * 1000);
-        localTime = LocalTime.parse(endTime);
-        this.EndTime = new Time(localTime.toSecondOfDay() * 1000);
     }
 
     public int getId() {
@@ -147,7 +143,7 @@ public class Availability implements Serializable {
         this.EndDate = endDate;
     }
 
-    public Time getStartTime() {
+/*    public Time getStartTime() {
         return StartTime;
     }
 
@@ -161,7 +157,7 @@ public class Availability implements Serializable {
 
     public void setEndTime(Time time) {
         EndTime = time;
-    }
+    }*/
 
 
     /*****************************************************************************
@@ -182,8 +178,8 @@ public class Availability implements Serializable {
     public static final String AVAILABILITY_COLUMN_SAT = "saturday";
     public static final String AVAILABILITY_COLUMN_START_DATE = "start_date";
     public static final String AVAILABILITY_COLUMN_END_DATE = "end_date";
-    public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
-    public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";
+/*    public static final String AVAILABILITY_COLUMN_START_TIME = "start_time";
+    public static final String AVAILABILITY_COLUMN_END_TIME = "end_time";*/
 
     public void addAvailability(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
@@ -199,8 +195,8 @@ public class Availability implements Serializable {
         values.put(AVAILABILITY_COLUMN_SAT, this.isAvailableSaturday());
         values.put(AVAILABILITY_COLUMN_START_DATE, this.getStartDate().toString());
         values.put(AVAILABILITY_COLUMN_END_DATE, this.getEndDate().toString());
-        values.put(AVAILABILITY_COLUMN_START_TIME, this.getStartTime().toString());
-        values.put(AVAILABILITY_COLUMN_END_TIME, this.getEndTime().toString());
+/*        values.put(AVAILABILITY_COLUMN_START_TIME, this.getStartTime().toString());
+        values.put(AVAILABILITY_COLUMN_END_TIME, this.getEndTime().toString());*/
 
         // Inserting Row
         db.insert("availability", null, values);
@@ -223,9 +219,7 @@ public class Availability implements Serializable {
                     cursor.getInt(7),
                     cursor.getInt(8),
                     cursor.getString(9),
-                    cursor.getString(10),
-                    cursor.getString(11),
-                    cursor.getString(12));
+                    cursor.getString(10));
         }
 
         cursor.close();
@@ -249,9 +243,7 @@ public class Availability implements Serializable {
                     cursor.getInt(7),
                     cursor.getInt(8),
                     cursor.getString(9),
-                    cursor.getString(10),
-                    cursor.getString(11),
-                    cursor.getString(12));
+                    cursor.getString(10));
         }
 
         cursor.close();
