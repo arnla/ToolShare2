@@ -27,12 +27,13 @@ public class Ad implements Serializable {
     private Availability Availability;
     private int AvailabilityId;
     private String Title;
+    private int Price;
 
     public Ad() {
 
     }
 
-    public Ad(int id, String owner, int toolId, String postDate, String expirationDate, String title, String description) {
+    public Ad(int id, String owner, int toolId, String postDate, String expirationDate, String title, String description, int price) {
         this.Id = id;
         this.Owner = owner;
         this.ToolId = toolId;
@@ -47,6 +48,7 @@ public class Ad implements Serializable {
         }
         this.Description = description;
         this.Title = title;
+        this.Price = price;
     }
 
     public int getId() {
@@ -117,6 +119,13 @@ public class Ad implements Serializable {
         AvailabilityId = id;
     }
 
+    public int getPrice() {
+        return Price;
+    }
+
+    public void setPrice(int price) {
+        Price = price;
+    }
 
     /*****************************************************************************
      * DB Functions
@@ -134,7 +143,7 @@ public class Ad implements Serializable {
     public static final String AD_COLUMN_EXPIRATION_DATE = "expiration_date";
     public static final String AD_COLUMN_DESCRIPTION = "description";
     public static final String AD_COLUMN_TITLE = "title";
-
+    public static final String AD_COLUMN_PRICE = "price";
 
     public static List<Ad> getAllAdsByOwner(DbHandler dbHandler, String owner) {
         List<Ad> ads = new ArrayList<Ad>();
@@ -150,7 +159,8 @@ public class Ad implements Serializable {
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
-                        cursor.getString(6));
+                        cursor.getString(6),
+                        cursor.getInt(7));
                 ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
                 ads.add(ad);
             } while (cursor.moveToNext());
@@ -171,6 +181,7 @@ public class Ad implements Serializable {
         values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate().toString());
         values.put(AD_COLUMN_TITLE, this.getTitle());
         values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
+        values.put(AD_COLUMN_PRICE, this.getPrice());
 
         // Inserting Row
         db.insert("ads", null, values);
@@ -212,7 +223,8 @@ public class Ad implements Serializable {
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
-                        cursor.getString(6));
+                        cursor.getString(6),
+                        cursor.getInt(7));
                 ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
                 ads.add(ad);
             } while (cursor.moveToNext());
