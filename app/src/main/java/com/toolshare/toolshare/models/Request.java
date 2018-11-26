@@ -1,5 +1,10 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.toolshare.toolshare.db.DbHandler;
+
 import java.util.Date;
 
 public class Request {
@@ -97,5 +102,42 @@ public class Request {
 
     public int getStatusId() {
         return StatusId;
+    }
+
+
+
+    /*****************************************************************************
+     * DB Functions
+     *
+     */
+
+    // REQUEST TABLE
+    public static final String TABLE_REQUESTS = "requests";
+    public static final String REQUEST_COLUMN_ID = "id";
+    public static final String REQUEST_COLUMN_REQUESTER_ID = "requester_id";
+    public static final String REQUEST_COLUMN_OWNER_ID = "owner_id";
+    public static final String REQUEST_COLUMN_AD_ID = "ad_id";
+    public static final String REQUEST_COLUMN_REQUESTED_START_DATE = "requested_start_date";
+    public static final String REQUEST_COLUMN_REQUESTED_END_DATE = "requested_end_date";
+    public static final String REQUEST_COLUMN_DELIVERY_METHOD = "delivery_method";
+    public static final String REQUEST_COLUMN_STATUS_ID = "status_id";
+
+    // code to add the new user
+    public static void addRequest(DbHandler dbHandler, Request request) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(REQUEST_COLUMN_REQUESTER_ID, request.getRequesterId());
+        values.put(REQUEST_COLUMN_OWNER_ID, request.getOwnerId());
+        values.put(REQUEST_COLUMN_AD_ID, request.getAdId());
+        values.put(REQUEST_COLUMN_REQUESTED_START_DATE, request.getRequestedStartDate().toString());
+        values.put(REQUEST_COLUMN_REQUESTED_END_DATE, request.getRequestedEndDate().toString());
+        values.put(REQUEST_COLUMN_DELIVERY_METHOD, request.getDeliveryMethod());
+        values.put(REQUEST_COLUMN_STATUS_ID, request.getStatusId());
+
+        // Inserting Row
+        db.insert(TABLE_REQUESTS, null, values);
+        //2nd argument is String containing nullColumnHack
+        db.close(); // Closing database connection
     }
 }
