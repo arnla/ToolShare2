@@ -189,15 +189,18 @@
             </LinearLayout>
 
             <RadioGroup
+                android:id="@+id/rg_delivery_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <RadioButton
+                    android:id="@+id/rb_delivery"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Delivery"/>
 
                 <RadioButton
+                    android:id="@+id/rb_pickup"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Pick Up"/>
@@ -219,21 +222,4 @@
         android:maxDate="01/01/2020"
         android:minDate="01/01/2017"/>
 
-    <RelativeLayout
-        android:id="@+id/l_rent_request_time_picker"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TimePicker
-            android:id="@+id/simpleTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/b_rent_request_time_picker_ok"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/simpleTimePicker"
-            android:text="OK"/>
-    </RelativeLayout>
 </RelativeLayout>

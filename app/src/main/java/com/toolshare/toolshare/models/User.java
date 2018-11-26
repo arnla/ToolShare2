@@ -104,7 +104,7 @@ public class User {
     }
 
     // code to get the single user
-    public User getUser(DbHandler dbHandler, String email) {
+    public static User getUser(DbHandler dbHandler, String email) {
         SQLiteDatabase db = dbHandler.getReadableDatabase();
 
 //        Cursor cursor = db.query("users",
