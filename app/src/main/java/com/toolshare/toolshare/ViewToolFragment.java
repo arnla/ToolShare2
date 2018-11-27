@@ -37,6 +37,7 @@ public class ViewToolFragment extends Fragment {
     private Button mEditButton;
     private Button mSubmitButton;
     private RatingBar mToolRating;
+    private Button mCardInfo;
 
     @Nullable
     @Override
@@ -66,6 +67,20 @@ public class ViewToolFragment extends Fragment {
             }
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
+        mCardInfo = (Button) view.findViewById(R.id.b_card_info);
+        mCardInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new AddCardFragment();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         setToolValues();
 
