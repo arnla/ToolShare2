@@ -29,7 +29,7 @@ public class Request implements Serializable {
     private int StatusId;
 
     public Request() {
-        
+
     }
 
     public Request(int id, String requesterId, String ownerId, int adId, String requestedStartDate, String requestedEndDate, String deliveryMethod, int statusId) {
@@ -176,6 +176,34 @@ public class Request implements Serializable {
         List<Request> requests = new ArrayList<Request>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + TABLE_REQUESTS + " where " + REQUEST_COLUMN_OWNER_ID + " = ?", new String[] {owner});
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Request request = new Request(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getInt(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getInt(7));
+                request.setAd(getAdByPk(dbHandler, request.getAdId()));
+                request.setOwner(User.getUser(dbHandler, request.getOwnerId()));
+                request.setRequester(User.getUser(dbHandler, request.getRequesterId()));
+                requests.add(request);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return requests;
+    }
+
+    public static List<Request> getAllRequestsByRequester(DbHandler dbHandler, String requester) {
+        List<Request> requests = new ArrayList<Request>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_REQUESTS + " where " + REQUEST_COLUMN_REQUESTER_ID + " = ?", new String[] {requester});
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {

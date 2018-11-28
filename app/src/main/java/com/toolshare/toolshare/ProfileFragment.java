@@ -88,7 +88,12 @@ public class ProfileFragment extends Fragment {
     }
 
     private void loadMyRequests() {
+        mMyRequests.removeAllViews();;
+        List<Request> requests = Request.getAllRequestsByRequester((DbHandler) bundle.getSerializable("db"), bundle.getString("userEmail"));
 
+        for (int i = 0; i < requests.size(); i++) {
+            addRequestButton(mMyRequests, requests.get(i));
+        }
     }
 
     private void addRequestButton(LinearLayout layout, final Request request) {

@@ -37,6 +37,8 @@ public class ViewRentRequestFragment extends Fragment {
     private Request request;
     private User requester;
     private User owner;
+    private Ad ad;
+    private Tool tool;
     private TextView mAdLink;
     private TextView mToolLink;
     private LinearLayout mRentRequestLayout;
@@ -54,6 +56,8 @@ public class ViewRentRequestFragment extends Fragment {
         request = (Request) bundle.getSerializable("request");
         requester = request.getRequester();
         owner = request.getOwner();
+        ad = request.getAd();
+        tool = Tool.getToolByPk(db, ad.getToolId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
 
@@ -62,6 +66,7 @@ public class ViewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new ViewAdFragment();
+                bundle.putSerializable("ad", ad);
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
@@ -76,6 +81,7 @@ public class ViewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new ViewToolFragment();
+                bundle.putSerializable("tool", tool);
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
@@ -103,7 +109,7 @@ public class ViewRentRequestFragment extends Fragment {
         mAdLink.setText(request.getAd().getTitle());
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
-        mToolLink.setText((Tool.getToolByPk(db, request.getAd().getToolId())).getName());
+        mToolLink.setText(tool.getName());
         mToolLink.setTextColor(Color.BLUE);
         mToolLink.setClickable(true);
         mStartDate.setText(request.getRequestedStartDate().toString());
