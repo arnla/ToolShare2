@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
+import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 
@@ -29,6 +30,8 @@ public class ProfileFragment extends Fragment {
     private TextView mUsername;
     private LinearLayout mMyTools;
     private LinearLayout mMyAds;
+    private LinearLayout mRentRequests;
+    private LinearLayout mMyRequests;
 
     @Nullable
     @Override
@@ -41,9 +44,13 @@ public class ProfileFragment extends Fragment {
 
         mMyTools = (LinearLayout) profile.findViewById(R.id.ll_my_tools);
         mMyAds = (LinearLayout) profile.findViewById(R.id.ll_my_ads);
+        mRentRequests = (LinearLayout) profile.findViewById(R.id.ll_rent_requests);
+        mMyRequests = (LinearLayout) profile.findViewById(R.id.ll_my_requests);
 
         loadTools();
         loadAds();
+        loadRentRequests();
+        loadMyRequests();
         return profile;
     }
 
@@ -69,6 +76,46 @@ public class ProfileFragment extends Fragment {
         for (int i = 0; i < ads.size(); i++) {
             addAdButton(mMyAds, ads.get(i));
         }
+    }
+
+    private void loadRentRequests() {
+        mRentRequests.removeAllViews();;
+        List<Request> requests = Request.getAllRequestsByOwner((DbHandler) bundle.getSerializable("db"), bundle.getString("userEmail"));
+
+        for (int i = 0; i < requests.size(); i++) {
+            addRequestButton(mRentRequests, requests.get(i));
+        }
+    }
+
+    private void loadMyRequests() {
+        mMyRequests.removeAllViews();;
+        List<Request> requests = Request.getAllRequestsByRequester((DbHandler) bundle.getSerializable("db"), bundle.getString("userEmail"));
+
+        for (int i = 0; i < requests.size(); i++) {
+            addRequestButton(mMyRequests, requests.get(i));
+        }
+    }
+
+    private void addRequestButton(LinearLayout layout, final Request request) {
+        Button button = new Button(getActivity().getApplicationContext());
+        button.setHeight(15000);
+        layout.addView(button);
+        button.setText(request.getAd().getTitle());
+        button.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                bundle.putSerializable("request", request);
+                Fragment fragment = new ViewRentRequestFragment();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
     }
 
     private void addAdButton(LinearLayout layout, final Ad ad) {

@@ -61,6 +61,42 @@
                         android:layout_height="match_parent"
                         android:orientation="horizontal"></LinearLayout>
                 </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/tv_rent_requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Rent Requests"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/v_rent_requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll_rent_requests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:id="@+id/tv_my_requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="My Requests"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/v_my_requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll_my_requests"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"></LinearLayout>
+                </HorizontalScrollView>
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
