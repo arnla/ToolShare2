@@ -29,6 +29,7 @@ import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -169,7 +170,8 @@ public class ViewRentRequestFragment extends Fragment {
         mToolLink.setText(tool.getName());
         mToolLink.setTextColor(Color.BLUE);
         mToolLink.setClickable(true);
-        mStartDate.setText(request.getRequestedStartDate().toString());
-        mEndDate.setText(request.getRequestedEndDate().toString());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        mStartDate.setText(formatter.format(request.getRequestedStartDate()));
+        mEndDate.setText(formatter.format(request.getRequestedEndDate()));
     }
 }

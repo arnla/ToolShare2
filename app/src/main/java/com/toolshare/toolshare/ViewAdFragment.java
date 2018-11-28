@@ -25,6 +25,8 @@ import com.toolshare.toolshare.models.Tool;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
@@ -132,8 +134,9 @@ public class ViewAdFragment extends Fragment {
         mToolModel.setText(mToolModel.getText() + tool.getModel());
         mAdDescription.setText(ad.getDescription());
         mPrice.setText(mPrice.getText() + "$" + Integer.toString(ad.getPrice()));
-        mAdStartDate.setText(availability.getStartDate().toString());
-        mAdEndDate.setText(availability.getEndDate().toString());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        mAdStartDate.setText(formatter.format(ad.getAvailability().getStartDate()));
+        mAdEndDate.setText(formatter.format(ad.getAvailability().getEndDate()));
         setAvailabilityDay(mMonday, availability.isAvailableMonday());
         setAvailabilityDay(mTuesday, availability.isAvailableTuesday());
         setAvailabilityDay(mWednesday, availability.isAvailableWednesday());

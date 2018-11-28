@@ -32,6 +32,7 @@ import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -87,13 +88,13 @@ public class NewRentRequestFragment extends Fragment {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
                 Date date = new Date(calendar.getTimeInMillis());
-
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if (dateButtonClicked.equals("start")) {
                     request.setRequestedStartDate(date);
-                    mStartDateButton.setText("Start Date: " + request.getRequestedStartDate().toString());
+                    mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
                 } else {
                     request.setRequestedEndDate(date);
-                    mEndDateButton.setText("End Date: " + request.getRequestedEndDate().toString());
+                    mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
                 }
                 mCalendar.setVisibility(View.GONE);
                 mRentRequestLayout.setVisibility(View.VISIBLE);
