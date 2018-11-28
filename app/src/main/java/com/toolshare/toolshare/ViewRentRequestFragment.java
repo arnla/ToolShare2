@@ -23,8 +23,11 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Request;
+import com.toolshare.toolshare.models.RequestStatus;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -45,6 +48,10 @@ public class ViewRentRequestFragment extends Fragment {
     private RadioGroup mDeliveryMethod;
     private TextView mStartDate;
     private TextView mEndDate;
+    private Button mAccept;
+    private Button mReject;
+    private Button mCancel;
+    private TextView mStatus;
 
     @Nullable
     @Override
@@ -92,6 +99,9 @@ public class ViewRentRequestFragment extends Fragment {
             }
         });
 
+        mStatus = (TextView) view.findViewById(R.id.tv_rent_request_status);
+        mStatus.setText("Status: " + RequestStatus.getStatusByPk(db, request.getStatusId()));
+
         mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
         for (int i = 0; i < mDeliveryMethod.getChildCount(); i++) {
             ((RadioButton) mDeliveryMethod.getChildAt(i)).setEnabled(false);
@@ -100,9 +110,56 @@ public class ViewRentRequestFragment extends Fragment {
         mStartDate = (TextView) view.findViewById(R.id.tv_rent_request_start_date);
         mEndDate = (TextView) view.findViewById(R.id.tv_rent_request_end_date);
 
+        mAccept = (Button) view.findViewById(R.id.b_rent_request_accept);
+        mAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptRequest();
+                Toast.makeText(getActivity(), "Request accepted!", Toast.LENGTH_LONG).show();
+            }
+        });
+        mReject = (Button) view.findViewById(R.id.b_rent_request_reject);
+        mReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectRequest();
+                Toast.makeText(getActivity(), "Request rejected!", Toast.LENGTH_LONG).show();
+            }
+        });
+        mCancel = (Button) view.findViewById(R.id.b_rent_request_cancel);
+        mCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelRequest();
+                Toast.makeText(getActivity(), "Request cancelled!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        if (request.getRequesterId().equals(bundle.getString("userEmail"))) {
+            mAccept.setVisibility(View.GONE);
+            mReject.setVisibility(View.GONE);
+        } else {
+            mCancel.setVisibility(View.GONE);
+        }
+
         setValues();
 
         return view;
+    }
+
+    private void acceptRequest() {
+        request.setStatusId(2);
+        Request.updateRequest(db, request);
+    }
+
+    private void rejectRequest() {
+        request.setStatusId(3);
+        Request.updateRequest(db, request);
+    }
+
+    private void cancelRequest() {
+        request.setStatusId(4);
+        Request.updateRequest(db, request);
     }
 
     private void setValues() {
