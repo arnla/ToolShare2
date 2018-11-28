@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
 
@@ -358,18 +359,43 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void seedData() {
-        ToolType toolType = new ToolType(db, "Saws", "Cutting tools");
+        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000");
+        user1.addUser(db);
+        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000");
+        user2.addUser(db);
+
+        ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
         toolType.addToolType(db);
-        ToolType toolType1 = new ToolType(db, "Drills", "Making holes");
-        toolType1.addToolType(db);
-        Toast.makeText(LoginActivity.this, "Tool types added", Toast.LENGTH_LONG).show();
-        Brand brand = new Brand("Dewalt");
+        toolType = new ToolType("Drills", "Tools primarily used for making round holes or driving fasteners.");
+        toolType.addToolType(db);
+        toolType = new ToolType("Compressors", "Mechanical devices that increases the pressure of a gas by reducing its volume.");
+        toolType.addToolType(db);
+        toolType = new ToolType("Sanders", "Power tools used to smooth surfaces by abrasion with sandpaper.");
+        toolType.addToolType(db);
+
+        Brand brand = new Brand("DEWALT");
         brand.addBrand(db);
-        Brand brand1 = new Brand("Bosch");
-        brand1.addBrand(db);
-        Brand brand2 = new Brand("Ryobi");
-        brand2.addBrand(db);
-        Toast.makeText(LoginActivity.this, "Brands added", Toast.LENGTH_LONG).show();
+        brand = new Brand("Bosch");
+        brand.addBrand(db);
+        brand = new Brand("RYOBI");
+        brand.addBrand(db);
+        brand = new Brand("RIDGID");
+        brand.addBrand(db);
+        brand = new Brand("Black & Decker");
+        brand.addBrand(db);
+
+        Tool tool = new Tool("john.smith@google.com", 1, 3, "10 in. Table Saw with Folding Stand", 2018, "RTS11");
+        tool.addTool(db);
+        tool = new Tool("jane.doe@google.com", 2, 1, "9 Amp 1/2 in. Spade Handle Drill", 2018, "DW130V");
+        tool.addTool(db);
+        tool = new Tool("jane.doe@google.com", 2, 1, "7.8 Amp 1/2 in. Variable Speed Reversing Drill", 2017, "DW235G");
+        tool.addTool(db);
+        tool = new Tool("john.smith@google.com", 1, 3, "4.8 Amp Variable Speed Orbital Jig Saw", 2018, "JS481LG");
+        tool.addTool(db);
+        tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305");
+        tool.addTool(db);
+
+        Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }
 
     /**
