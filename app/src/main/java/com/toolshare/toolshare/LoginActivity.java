@@ -394,6 +394,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         tool.addTool(db);
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305");
         tool.addTool(db);
+
+        Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }
 
     /**
