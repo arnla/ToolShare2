@@ -227,4 +227,20 @@ public class Request implements Serializable {
         db.close();
         return requests;
     }
+
+    public static void updateRequest(DbHandler dbHandler, Request request) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(REQUEST_COLUMN_REQUESTER_ID, request.getRequesterId());
+        values.put(REQUEST_COLUMN_OWNER_ID, request.getOwnerId());
+        values.put(REQUEST_COLUMN_AD_ID, request.getAdId());
+        values.put(REQUEST_COLUMN_REQUESTED_START_DATE, request.getRequestedStartDate().toString());
+        values.put(REQUEST_COLUMN_REQUESTED_END_DATE, request.getRequestedEndDate().toString());
+        values.put(REQUEST_COLUMN_DELIVERY_METHOD, request.getDeliveryMethod());
+        values.put(REQUEST_COLUMN_STATUS_ID, request.StatusId);
+
+        // updating row
+        db.update(TABLE_REQUESTS, values, REQUEST_COLUMN_ID + " = ?", new String[] {Integer.toString(request.getId())});
+    }
 }
