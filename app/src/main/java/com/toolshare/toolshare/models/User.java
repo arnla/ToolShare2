@@ -24,7 +24,7 @@ public class User {
         this.Password = null;
     }
 
-    public User( String email,String firstName, String lastName, String phone, String password) {
+    public User(String email, String firstName, String lastName, String phone, String password) {
         this.Email = email;
         this.FirstName = firstName;
         this.LastName = lastName;
