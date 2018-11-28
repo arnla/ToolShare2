@@ -107,14 +107,6 @@ public class User {
     public static User getUser(DbHandler dbHandler, String email) {
         SQLiteDatabase db = dbHandler.getReadableDatabase();
 
-//        Cursor cursor = db.query("users",
-//                new String[] {"email", "first_name", "last_name", "phone", "password"},
-//                "email =?",
-//                new String[] {email},
-//                null,
-//                null,
-//                null,
-//                null);
         Cursor cursor = db.rawQuery("select * from users where email = ?", new String[] {email});
         if (cursor != null)
             cursor.moveToFirst();
