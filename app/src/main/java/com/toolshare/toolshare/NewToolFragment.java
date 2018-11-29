@@ -1,6 +1,8 @@
 package com.toolshare.toolshare;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -98,7 +100,8 @@ public class NewToolFragment extends Fragment {
         String model = mModel.getText().toString();
         Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
-        Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
+        Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
         tool.addTool(db);
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();

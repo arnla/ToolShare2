@@ -1,6 +1,7 @@
 package com.toolshare.toolshare;
 
 import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +36,7 @@ public class ViewToolFragment extends Fragment {
     private TextView mToolModel;
     private Button mDeleteButton;
     private Button mEditButton;
+    private ImageView mImage;
 
     @Nullable
     @Override
@@ -56,6 +59,7 @@ public class ViewToolFragment extends Fragment {
             }
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
+        mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
 
         setToolValues();
 
@@ -67,6 +71,7 @@ public class ViewToolFragment extends Fragment {
         mToolYear.setText(mToolYear.getText() + Integer.toString(tool.getYear()));
         mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
         mToolModel.setText(mToolModel.getText() + tool.getModel());
+        mImage.setImageBitmap(tool.getPicture());
     }
 
     private void deleteTool() {
