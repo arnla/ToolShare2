@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,11 +32,13 @@ import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
+import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
 import static com.toolshare.toolshare.models.User.getUserNameByPk;
 
@@ -54,12 +58,11 @@ public class NewRentRequestFragment extends Fragment {
     private Button mStartDateButton;
     private Button mEndDateButton;
     private LinearLayout mRentRequestLayout;
-
     private String dateButtonClicked = "";
-
     private CalendarView mCalendar;
-    private RelativeLayout mTimePickerLayout;
     private Calendar calendar = Calendar.getInstance();
+    private Button mSubmitRequest;
+    private RadioGroup mDeliveryMethod;
 
     @Nullable
     @Override
@@ -70,6 +73,8 @@ public class NewRentRequestFragment extends Fragment {
         db = (DbHandler) bundle.getSerializable("db");
         ad = (Ad) bundle.getSerializable("ad");
         tool = (Tool) bundle.getSerializable("tool");
+        requester = User.getUser(db, bundle.getString("userEmail"));
+        owner = User.getUser(db, ad.getOwner());
         availability = (Availability) bundle.getSerializable("availability");
         request = new Request();
         request.setRequesterId(bundle.getString("userEmail"));
@@ -83,21 +88,19 @@ public class NewRentRequestFragment extends Fragment {
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
                 Date date = new Date(calendar.getTimeInMillis());
-
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 if (dateButtonClicked.equals("start")) {
                     request.setRequestedStartDate(date);
-                    mStartDateButton.setText("Start Date: " + request.getRequestedStartDate().toString());
+                    mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
                 } else {
                     request.setRequestedEndDate(date);
-                    mEndDateButton.setText("End Date: " + request.getRequestedEndDate().toString());
+                    mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
                 }
                 mCalendar.setVisibility(View.GONE);
                 mRentRequestLayout.setVisibility(View.VISIBLE);
             }
         });
         mCalendar.setVisibility(View.GONE);
-        mTimePickerLayout = (RelativeLayout) view.findViewById(R.id.l_rent_request_time_picker);
-        mTimePickerLayout.setVisibility(View.GONE);
 
         mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
@@ -147,9 +150,39 @@ public class NewRentRequestFragment extends Fragment {
             }
         });
 
+        mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
+        mSubmitRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitRequest();
+            }
+        });
+
+        mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
+        mDeliveryMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_delivery:
+                        request.setDeliveryMethod("Delivery");
+                        break;
+                    case R.id.rb_pickup:
+                        request.setDeliveryMethod("Pickup");
+                        break;
+                }
+            }
+        });
+
         setValues();
 
         return view;
+    }
+
+    private void submitRequest() {
+        request.setStatusId(1);
+        String test = request.getRequestedStartDate().toString();
+        addRequest(db, request);
+        Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
     }
 
     private void setValues() {

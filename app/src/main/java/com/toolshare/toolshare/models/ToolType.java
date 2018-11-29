@@ -15,13 +15,12 @@ public class ToolType {
     private String Type;
     private String Description;
 
-    public ToolType(DbHandler dbHandler, String type, String description) {
-        Id = getNextId(dbHandler);
-        this.Type = type;
-        this.Description = description;
+    public ToolType(String type, String description) {
+        Type = type;
+        Description = description;
     }
 
-    public ToolType(DbHandler dbHandler, int id, String type, String description) {
+    public ToolType(int id, String type, String description) {
         this.Id = id;
         this.Type = type;
         this.Description = description;
@@ -106,7 +105,7 @@ public class ToolType {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ToolType toolType = new ToolType(dbHandler, cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+                ToolType toolType = new ToolType(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
                 toolTypes.add(toolType);
             } while (cursor.moveToNext());
         }

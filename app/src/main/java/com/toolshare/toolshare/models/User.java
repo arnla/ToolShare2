@@ -24,7 +24,7 @@ public class User {
         this.Password = null;
     }
 
-    public User( String email,String firstName, String lastName, String phone, String password) {
+    public User(String email, String firstName, String lastName, String phone, String password) {
         this.Email = email;
         this.FirstName = firstName;
         this.LastName = lastName;
@@ -104,17 +104,9 @@ public class User {
     }
 
     // code to get the single user
-    public User getUser(DbHandler dbHandler, String email) {
+    public static User getUser(DbHandler dbHandler, String email) {
         SQLiteDatabase db = dbHandler.getReadableDatabase();
 
-//        Cursor cursor = db.query("users",
-//                new String[] {"email", "first_name", "last_name", "phone", "password"},
-//                "email =?",
-//                new String[] {email},
-//                null,
-//                null,
-//                null,
-//                null);
         Cursor cursor = db.rawQuery("select * from users where email = ?", new String[] {email});
         if (cursor != null)
             cursor.moveToFirst();

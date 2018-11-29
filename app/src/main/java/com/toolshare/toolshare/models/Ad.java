@@ -37,10 +37,11 @@ public class Ad implements Serializable {
         this.Id = id;
         this.Owner = owner;
         this.ToolId = toolId;
-        this.PostDate = new Date(postDate);
         try {
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
+            date = df.parse(postDate);
+            this.PostDate = df.parse(postDate);
             date = df.parse(expirationDate);
             this.ExpirationDate = date;
         } catch (Exception e) {
@@ -177,8 +178,9 @@ public class Ad implements Serializable {
         ContentValues values = new ContentValues();
         values.put(AD_COLUMN_OWNER, this.getOwner());
         values.put(AD_COLUMN_TOOL_ID, this.getToolId());
-        values.put(AD_COLUMN_POST_DATE, this.getPostDate().toString());
-        values.put(AD_COLUMN_EXPIRATION_DATE, this.getExpirationDate().toString());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        values.put(AD_COLUMN_POST_DATE, formatter.format(this.getPostDate()));
+        values.put(AD_COLUMN_EXPIRATION_DATE, formatter.format(this.getExpirationDate()));
         values.put(AD_COLUMN_TITLE, this.getTitle());
         values.put(AD_COLUMN_DESCRIPTION, this.getDescription());
         values.put(AD_COLUMN_PRICE, this.getPrice());
@@ -231,5 +233,26 @@ public class Ad implements Serializable {
         }
 
         return ads;
+    }
+
+    public static Ad getAdByPk(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_ADS + " where " + AD_COLUMN_ID + " = ?", new String[] {Integer.toString(id)});
+
+        if (cursor.moveToFirst()) {
+            Ad ad = new Ad(cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getInt(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6),
+                    cursor.getInt(7));
+            ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+
+            return ad;
+        }
+
+        return null;
     }
 }

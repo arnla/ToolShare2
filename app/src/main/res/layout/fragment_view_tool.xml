@@ -12,11 +12,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <ImageView
+                android:id="@+id/iv_tool_picture"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="IMAGE GOES HERE"
-                android:gravity="center" />
+                android:layout_height="300dp" />
 
             <android.support.v7.widget.AppCompatRatingBar
                 android:id="@+id/rb_tool_rating"

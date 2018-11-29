@@ -3,6 +3,7 @@ package com.toolshare.toolshare;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +50,7 @@ public class ViewToolFragment extends Fragment {
     private LinearLayout linearLayout;
     private int currentRating;
     private RatingBar mSavedRating;
+    private ImageView mImage;
 
     @Nullable
     @Override
@@ -133,6 +136,7 @@ public class ViewToolFragment extends Fragment {
             }
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
+        mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
 
         mCardInfo = (Button) view.findViewById(R.id.b_card_info);
         mCardInfo.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +163,7 @@ public class ViewToolFragment extends Fragment {
         mToolYear.setText(mToolYear.getText() + Integer.toString(tool.getYear()));
         mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
         mToolModel.setText(mToolModel.getText() + tool.getModel());
+        mImage.setImageBitmap(tool.getPicture());
     }
 
     private void deleteTool() {

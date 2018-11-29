@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -35,6 +35,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TOOL_COLUMN_YEAR = "year";
     public static final String TOOL_COLUMN_MODEL = "model";
     public static final String TOOL_COLUMN_BRAND_ID = "brand_id";
+    public static final String TOOL_COLUMN_PICTURE = "picture";
 
     // TOOL TYPE TABLE
     public static final String TABLE_TOOL_TYPES = "tool_types";
@@ -268,6 +269,36 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
     public static final String MIGRATION_8_TO_9 = "drop table availability_old;";
 
+    public static final String MIGRATION_9_TO_10_PART_1 = "alter table "
+            + TABLE_TOOLS + " rename to tools_old;";
+    public static final String MIGRATION_9_TO_10_PART_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_COLUMN_OWNER + " text not null, "
+            + TOOL_COLUMN_TYPE_ID + " integer not null, "
+            + TOOL_COLUMN_BRAND_ID + " integer not null,"
+            + TOOL_COLUMN_NAME + " text not null, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text, "
+            + TOOL_COLUMN_PICTURE + " blob, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + TOOL_COLUMN_OWNER + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "),"
+            + "CONSTRAINT fk_tool_types FOREIGN KEY ("
+            + TOOL_COLUMN_TYPE_ID + ") REFERENCES "
+            + TABLE_TOOL_TYPES + "(" + TOOL_TYPE_COLUMN_ID + "),"
+            + "CONSTRAINT fk_brands FOREIGN KEY ("
+            + TOOL_COLUMN_BRAND_ID + ") REFERENCES "
+            + TABLE_BRANDS + "(" + BRAND_COLUMN_ID + "));";
+    public static final String MIGRATION_9_TO_10_PART_3 = "insert into "
+            + TABLE_TOOLS + "("
+            + TOOL_COLUMN_ID + "," + TOOL_COLUMN_OWNER + "," + TOOL_COLUMN_TYPE_ID + ","
+            + TOOL_COLUMN_BRAND_ID + "," + TOOL_COLUMN_NAME + "," + TOOL_COLUMN_YEAR + "," + TOOL_COLUMN_MODEL + ") "
+            + "select " + TOOL_COLUMN_ID + "," + TOOL_COLUMN_OWNER + "," + TOOL_COLUMN_TYPE_ID + ","
+            + TOOL_COLUMN_BRAND_ID + "," + TOOL_COLUMN_NAME + "," + TOOL_COLUMN_YEAR + "," + TOOL_COLUMN_MODEL
+            + " from tools_old;";
+    public static final String MIGRATION_9_TO_10_PART_4 = "drop table tools_old;";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -371,6 +402,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_7_TO_8_PART_2);
         db.execSQL(MIGRATION_7_TO_8_PART_3);
         db.execSQL(MIGRATION_8_TO_9);
+        db.execSQL(MIGRATION_9_TO_10_PART_1);
+        db.execSQL(MIGRATION_9_TO_10_PART_2);
+        db.execSQL(MIGRATION_9_TO_10_PART_3);
+        db.execSQL(MIGRATION_9_TO_10_PART_4);
     }
 
     // Upgrading database
@@ -417,6 +452,13 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
         if (oldVersion < 9) {
             db.execSQL(MIGRATION_8_TO_9);
+        }
+
+        if (oldVersion < 10) {
+            db.execSQL(MIGRATION_9_TO_10_PART_1);
+            db.execSQL(MIGRATION_9_TO_10_PART_2);
+            db.execSQL(MIGRATION_9_TO_10_PART_3);
+            db.execSQL(MIGRATION_9_TO_10_PART_4);
         }
     }
 }
