@@ -388,17 +388,18 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         brand.addBrand(db);
 
         Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
-/*        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] imageInBytes = stream.toByteArray();*/
         Tool tool = new Tool("john.smith@google.com", 1, 3, "10 in. Table Saw with Folding Stand", 2018, "RTS11", image);
         tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_power_drills_dw130v_64_1000);
         tool = new Tool("jane.doe@google.com", 2, 1, "9 Amp 1/2 in. Spade Handle Drill", 2018, "DW130V", image);
         tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_power_drills_dw235g_64_1000);
         tool = new Tool("jane.doe@google.com", 2, 1, "7.8 Amp 1/2 in. Variable Speed Reversing Drill", 2017, "DW235G", image);
         tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_jig_saws_js481lg_64_1000);
         tool = new Tool("john.smith@google.com", 1, 3, "4.8 Amp Variable Speed Orbital Jig Saw", 2018, "JS481LG", image);
         tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_reciprocating_saws_dwe305_64_1000);
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305", image);
         tool.addTool(db);
 
