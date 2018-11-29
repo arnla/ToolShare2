@@ -9,14 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
     private Bundle bundle;
 
-    private Button mProfileButton;
-    private Button mRentToolsButton;
-    private Button mRentOutToolsButton;
+    private ImageButton mProfileButton;
+    private ImageButton mRentToolsButton;
+    private ImageButton mRentOutToolsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
