@@ -58,6 +58,12 @@
                 android:layout_height="wrap_content"
                 android:text="Model: "/>
 
+            <TextView
+                android:id="@+id/tv_rate_tool"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rating: "/>
+
             <Button
                 android:id="@+id/b_edit_tool"
                 android:layout_width="match_parent"
