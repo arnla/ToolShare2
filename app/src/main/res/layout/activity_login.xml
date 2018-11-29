@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,10 +21,16 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/transparentpic" />
+
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -54,7 +61,7 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_password"
+                    android:hint="Password"
                     android:imeActionId="6"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionUnspecified"
@@ -83,7 +90,7 @@
                 android:textStyle="bold" />
 
             <!--Uncomment to add/delete tool types-->
-<!--            <Button
+            <!--            <Button
                 android:id="@+id/new_tool_type_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
@@ -93,7 +100,7 @@
                 android:textStyle="bold" />-->
 
             <!--Uncomment to add/delete brands-->
-<!--                <Button
+            <!--                <Button
                     android:id="@+id/new_brand_button"
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
@@ -103,13 +110,13 @@
                     android:textStyle="bold" />-->
 
             <Button
-                    android:id="@+id/seed_button"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Seed Data"
-                    android:textStyle="bold" />
+                android:id="@+id/seed_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Seed Data"
+                android:textStyle="bold" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
