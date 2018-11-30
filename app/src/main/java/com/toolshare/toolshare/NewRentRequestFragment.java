@@ -194,7 +194,6 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
         mToolName.setText(tool.getName());
-        daysNotAllowed = getBusyDaysByToolId(db, tool.getId());
     }
 
     private void setCalendar() {
@@ -228,6 +227,8 @@ public class NewRentRequestFragment extends Fragment {
         if (ad.getAvailability().isAvailableSaturday()) {
             daysAllowed.add(Calendar.SATURDAY);
         }
+
+        daysNotAllowed = getBusyDaysByToolId(db, tool.getId());
 
         mCalendar.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
             @Override

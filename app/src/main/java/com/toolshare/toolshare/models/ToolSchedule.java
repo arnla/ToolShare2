@@ -133,8 +133,8 @@ public class ToolSchedule {
         SQLiteDatabase db = dbHandler.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("select " + TOOL_SCHEDULE_COLUMN_DATE + " from " + TABLE_TOOL_SCHEDULE + " where "
-                        + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " = ? and " + TOOL_SCHEDULE_COLUMN_STATUS + " = ?" ,
-                new String[] {Integer.toString(id), "Pending"});
+                        + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " = ?" ,
+                new String[] {Integer.toString(id)});
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -154,5 +154,15 @@ public class ToolSchedule {
         cursor.close();
         db.close();
         return dates;
+    }
+
+    public static void updateToolScheduleStatus(DbHandler dbHandler, int requestId, String status) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(TOOL_SCHEDULE_COLUMN_STATUS, status);
+
+        // updating row
+        db.update(TABLE_TOOL_SCHEDULE, values, TOOL_SCHEDULE_COLUMN_REQUEST_ID + " = ?", new String[] {Integer.toString(requestId)});
     }
 }

@@ -25,6 +25,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.RequestStatus;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.ToolSchedule.getDaysByRequestId;
+import static com.toolshare.toolshare.models.ToolSchedule.updateToolScheduleStatus;
 
 public class ViewRentRequestFragment extends Fragment {
     private Bundle bundle;
@@ -151,6 +153,7 @@ public class ViewRentRequestFragment extends Fragment {
     private void acceptRequest() {
         request.setStatusId(2);
         Request.updateRequest(db, request);
+        updateToolScheduleStatus(db, request.getId(), "Busy");
     }
 
     private void rejectRequest() {
