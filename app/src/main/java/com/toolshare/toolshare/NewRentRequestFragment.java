@@ -245,7 +245,6 @@ public class NewRentRequestFragment extends Fragment {
         c.setTime(ad.getAvailability().getEndDate());
         c.add(Calendar.DATE, 1);
         mCalendar.init(ad.getAvailability().getStartDate(), c.getTime())
-                .withSelectedDate(ad.getAvailability().getStartDate())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
     }
 
