@@ -58,8 +58,8 @@ public class NewRentRequestFragment extends Fragment {
     private Button mStartDateButton;
     private Button mEndDateButton;
     private LinearLayout mRentRequestLayout;
-    private String dateButtonClicked = "";
-    private CalendarView mCalendar;
+    private CalendarView mCalendarStart;
+    private CalendarView mCalendarEnd;
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
@@ -82,25 +82,38 @@ public class NewRentRequestFragment extends Fragment {
         request.setAdId(ad.getId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
-        mCalendar = (CalendarView) view.findViewById(R.id.simpleCalendarView);
-        mCalendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        mCalendarStart = (CalendarView) view.findViewById(R.id.cv_start_date);
+        mCalendarStart.setMinDate(ad.getAvailability().getStartDate().getTime());
+        mCalendarStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 calendar.set(year, month, dayOfMonth);
                 Date date = new Date(calendar.getTimeInMillis());
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                if (dateButtonClicked.equals("start")) {
-                    request.setRequestedStartDate(date);
-                    mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
-                } else {
-                    request.setRequestedEndDate(date);
-                    mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
-                }
-                mCalendar.setVisibility(View.GONE);
+                request.setRequestedStartDate(date);
+                mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
+                mCalendarEnd.setMinDate(date.getTime());
+                mCalendarStart.setVisibility(View.GONE);
                 mRentRequestLayout.setVisibility(View.VISIBLE);
             }
         });
-        mCalendar.setVisibility(View.GONE);
+        mCalendarStart.setVisibility(View.GONE);
+
+        mCalendarEnd = (CalendarView) view.findViewById(R.id.cv_end_date);
+        mCalendarEnd.setMaxDate(ad.getAvailability().getEndDate().getTime());
+        mCalendarEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                calendar.set(year, month, dayOfMonth);
+                Date date = new Date(calendar.getTimeInMillis());
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                request.setRequestedEndDate(date);
+                mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
+                mCalendarEnd.setVisibility(View.GONE);
+                mRentRequestLayout.setVisibility(View.VISIBLE);
+            }
+        });
+        mCalendarEnd.setVisibility(View.GONE);
 
         mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
@@ -135,18 +148,16 @@ public class NewRentRequestFragment extends Fragment {
         mStartDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dateButtonClicked = "start";
                 mRentRequestLayout.setVisibility(View.GONE);
-                mCalendar.setVisibility(View.VISIBLE);
+                mCalendarStart.setVisibility(View.VISIBLE);
             }
         });
         mEndDateButton = (Button) view.findViewById(R.id.b_rent_request_end_date);
         mEndDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dateButtonClicked = "end";
                 mRentRequestLayout.setVisibility(View.GONE);
-                mCalendar.setVisibility(View.VISIBLE);
+                mCalendarEnd.setVisibility(View.VISIBLE);
             }
         });
 
