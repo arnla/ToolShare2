@@ -36,8 +36,10 @@ import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
@@ -68,6 +70,8 @@ public class NewRentRequestFragment extends Fragment {
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
+    private List<Integer> daysAllowed = new ArrayList<Integer>() {};
+    private List<Integer> daysNotAllowed = new ArrayList<Integer>() {};
 
     @Nullable
     @Override
@@ -89,25 +93,7 @@ public class NewRentRequestFragment extends Fragment {
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
         mRentRequestLayout.setVisibility(View.GONE);
         mCalendarStart = (CalendarPickerView) view.findViewById(R.id.cv_start_date);
-/*        mCalendarStart.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
-            @Override
-            public boolean isDateSelectable(Date date) {
-                if ((date.after(ad.getAvailability().getStartDate()) || date.equals(ad.getAvailability().getStartDate())) &&
-                        (date.before(ad.getAvailability().getEndDate()) || date.equals(ad.getAvailability().getEndDate()))) {
-                    return true;
-                }
-                return false;
-            }
-        });*/
-
-        // get the end date plus 1 day
-        Calendar c = Calendar.getInstance();
-        c.setTime(ad.getAvailability().getEndDate());
-        c.add(Calendar.DATE, 1);
-        mCalendarStart.init(ad.getAvailability().getStartDate(), c.getTime())
-                .withSelectedDate(ad.getAvailability().getStartDate())
-                .inMode(CalendarPickerView.SelectionMode.RANGE);
-        //mCalendarStart.setVisibility(View.GONE);
+        setCalendars();
 
         mCalendarEnd = (CalendarPickerView) view.findViewById(R.id.cv_end_date);
         mCalendarEnd.setVisibility(View.GONE);
@@ -201,5 +187,55 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
         mToolName.setText(tool.getName());
+    }
+
+    private void setCalendars() {
+        final Calendar c = Calendar.getInstance();
+
+        //set the days allows mtwtfs
+        if (ad.getAvailability().isAvailableSunday()) {
+            daysAllowed.add(Calendar.SUNDAY);
+        }
+
+        if (ad.getAvailability().isAvailableMonday()) {
+            daysAllowed.add(Calendar.MONDAY);
+        }
+
+        if (ad.getAvailability().isAvailableTuesday()) {
+            daysAllowed.add(Calendar.TUESDAY);
+        }
+
+        if (ad.getAvailability().isAvailableWednesday()) {
+            daysAllowed.add(Calendar.WEDNESDAY);
+        }
+
+        if (ad.getAvailability().isAvailableThursday()) {
+            daysAllowed.add(Calendar.THURSDAY);
+        }
+
+        if (ad.getAvailability().isAvailableFriday()) {
+            daysAllowed.add(Calendar.FRIDAY);
+        }
+
+        if (ad.getAvailability().isAvailableSaturday()) {
+            daysAllowed.add(Calendar.SATURDAY);
+        }
+
+        mCalendarStart.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+            @Override
+            public boolean isDateSelectable(Date date) {
+                c.setTime(date);
+                int dow = c.get(Calendar.DAY_OF_WEEK);
+                return daysAllowed.contains(dow);
+            }
+        });
+
+        // get the end date plus 1 day
+        c.setTime(ad.getAvailability().getEndDate());
+        c.add(Calendar.DATE, 1);
+        mCalendarStart.init(ad.getAvailability().getStartDate(), c.getTime())
+                .withSelectedDate(ad.getAvailability().getStartDate())
+                .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
+        //mCalendarStart.setVisibility(View.GONE);
     }
 }
