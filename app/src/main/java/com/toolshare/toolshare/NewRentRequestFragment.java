@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -54,7 +55,9 @@ public class NewRentRequestFragment extends Fragment {
     private Tool tool;
     private Availability availability;
     private TextView mAdLink;
-    private TextView mToolLink;
+    private LinearLayout mToolLink;
+    private TextView mToolName;
+    private ImageView mToolImage;
     private Button mStartDateButton;
     private Button mEndDateButton;
     private LinearLayout mRentRequestLayout;
@@ -129,7 +132,7 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-        mToolLink = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
         mToolLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,6 +146,9 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
+        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mToolImage.setImageBitmap(tool.getPicture());
 
         mStartDateButton = (Button) view.findViewById(R.id.b_rent_request_start_date);
         mStartDateButton.setOnClickListener(new View.OnClickListener() {
@@ -200,8 +206,6 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setText(ad.getTitle());
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
-        mToolLink.setText(tool.getName());
-        mToolLink.setTextColor(Color.BLUE);
-        mToolLink.setClickable(true);
+        mToolName.setText(tool.getName());
     }
 }
