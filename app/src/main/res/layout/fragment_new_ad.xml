@@ -270,10 +270,16 @@
     </ScrollView>
 
     <CalendarView
-        android:id="@+id/simpleCalendarView"
+        android:id="@+id/cv_start_date"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:firstDayOfWeek="1"
-        android:maxDate="01/01/2020"
-        android:minDate="01/01/2017"/>
+        android:maxDate="01/01/2020"/>
+
+    <CalendarView
+        android:id="@+id/cv_end_date"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:firstDayOfWeek="1"
+        android:maxDate="01/01/2020"/>
 </RelativeLayout>
