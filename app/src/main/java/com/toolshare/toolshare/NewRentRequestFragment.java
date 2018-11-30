@@ -62,11 +62,11 @@ public class NewRentRequestFragment extends Fragment {
     private LinearLayout mToolLink;
     private TextView mToolName;
     private ImageView mToolImage;
-    private Button mStartDateButton;
-    private Button mEndDateButton;
     private LinearLayout mRentRequestLayout;
+    private LinearLayout mDatesLayout;
+    private Button mSelectDates;
+    private Button mDatesOk;
     private CalendarPickerView mCalendarStart;
-    private CalendarPickerView mCalendarEnd;
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
@@ -91,12 +91,28 @@ public class NewRentRequestFragment extends Fragment {
         request.setAdId(ad.getId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
-        mRentRequestLayout.setVisibility(View.GONE);
-        mCalendarStart = (CalendarPickerView) view.findViewById(R.id.cv_start_date);
-        setCalendars();
+        mCalendarStart = (CalendarPickerView) view.findViewById(R.id.cv_dates);
+        setCalendar();
 
-        mCalendarEnd = (CalendarPickerView) view.findViewById(R.id.cv_end_date);
-        mCalendarEnd.setVisibility(View.GONE);
+        mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
+        mDatesLayout.setVisibility(View.GONE);
+        mSelectDates = (Button) view.findViewById(R.id.b_select_dates);
+        mSelectDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mRentRequestLayout.setVisibility(View.GONE);
+                mDatesLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+        mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
+        mDatesOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatesLayout.setVisibility(View.GONE);
+                mRentRequestLayout.setVisibility(View.VISIBLE);
+            }
+        });
 
         mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
@@ -129,23 +145,6 @@ public class NewRentRequestFragment extends Fragment {
         mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
         mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
         mToolImage.setImageBitmap(tool.getPicture());
-
-        mStartDateButton = (Button) view.findViewById(R.id.b_rent_request_start_date);
-        mStartDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRentRequestLayout.setVisibility(View.GONE);
-                mCalendarStart.setVisibility(View.VISIBLE);
-            }
-        });
-        mEndDateButton = (Button) view.findViewById(R.id.b_rent_request_end_date);
-        mEndDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRentRequestLayout.setVisibility(View.GONE);
-                mCalendarEnd.setVisibility(View.VISIBLE);
-            }
-        });
 
         mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
         mSubmitRequest.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +188,7 @@ public class NewRentRequestFragment extends Fragment {
         mToolName.setText(tool.getName());
     }
 
-    private void setCalendars() {
+    private void setCalendar() {
         final Calendar c = Calendar.getInstance();
 
         //set the days allows mtwtfs
@@ -236,6 +235,5 @@ public class NewRentRequestFragment extends Fragment {
         mCalendarStart.init(ad.getAvailability().getStartDate(), c.getTime())
                 .withSelectedDate(ad.getAvailability().getStartDate())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
-        //mCalendarStart.setVisibility(View.GONE);
     }
 }

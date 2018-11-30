@@ -60,35 +60,11 @@
                 android:text="REQUEST"
                 android:gravity="center"/>
 
-            <LinearLayout
+            <Button
+                android:id="@+id/b_select_dates"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <Button
-                        android:id="@+id/b_rent_request_start_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Start date"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
-
-                    <Button
-                        android:id="@+id/b_rent_request_end_date"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="End date"/>
-                </LinearLayout>
-            </LinearLayout>
+                android:text="Select dates"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,26 +120,23 @@
         </LinearLayout>
     </ScrollView>
 
-<!--    <CalendarView
-        android:id="@+id/cv_start_date"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:firstDayOfWeek="1"
-        android:maxDate="01/01/2020"/>
-
-    <CalendarView
-        android:id="@+id/cv_end_date"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:firstDayOfWeek="1"/>-->
-
-    <com.squareup.timessquare.CalendarPickerView
-        android:id="@+id/cv_start_date"
+    <LinearLayout
+        android:id="@+id/ll_dates"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.squareup.timessquare.CalendarPickerView
-        android:id="@+id/cv_end_date"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <com.squareup.timessquare.CalendarPickerView
+            android:id="@+id/cv_dates"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="9"/>
+
+        <Button
+            android:id="@+id/b_dates_ok"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:layout_weight="1"/>
+    </LinearLayout>
 </RelativeLayout>
