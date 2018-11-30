@@ -144,7 +144,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <CalendarView
+<!--    <CalendarView
         android:id="@+id/cv_start_date"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -155,5 +155,15 @@
         android:id="@+id/cv_end_date"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:firstDayOfWeek="1"/>
+        android:firstDayOfWeek="1"/>-->
+
+    <com.squareup.timessquare.CalendarPickerView
+        android:id="@+id/cv_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.squareup.timessquare.CalendarPickerView
+        android:id="@+id/cv_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </RelativeLayout>

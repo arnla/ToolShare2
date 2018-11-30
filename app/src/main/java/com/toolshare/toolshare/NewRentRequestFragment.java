@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.timessquare.CalendarPickerView;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
@@ -34,6 +35,7 @@ import com.toolshare.toolshare.models.User;
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -61,8 +63,8 @@ public class NewRentRequestFragment extends Fragment {
     private Button mStartDateButton;
     private Button mEndDateButton;
     private LinearLayout mRentRequestLayout;
-    private CalendarView mCalendarStart;
-    private CalendarView mCalendarEnd;
+    private CalendarPickerView mCalendarStart;
+    private CalendarPickerView mCalendarEnd;
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
@@ -85,37 +87,29 @@ public class NewRentRequestFragment extends Fragment {
         request.setAdId(ad.getId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
-        mCalendarStart = (CalendarView) view.findViewById(R.id.cv_start_date);
-        mCalendarStart.setMinDate(ad.getAvailability().getStartDate().getTime());
-        mCalendarStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        mRentRequestLayout.setVisibility(View.GONE);
+        mCalendarStart = (CalendarPickerView) view.findViewById(R.id.cv_start_date);
+/*        mCalendarStart.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                request.setRequestedStartDate(date);
-                mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
-                mCalendarEnd.setMinDate(date.getTime());
-                mCalendarStart.setVisibility(View.GONE);
-                mRentRequestLayout.setVisibility(View.VISIBLE);
+            public boolean isDateSelectable(Date date) {
+                if ((date.after(ad.getAvailability().getStartDate()) || date.equals(ad.getAvailability().getStartDate())) &&
+                        (date.before(ad.getAvailability().getEndDate()) || date.equals(ad.getAvailability().getEndDate()))) {
+                    return true;
+                }
+                return false;
             }
-        });
-        mCalendarStart.setVisibility(View.GONE);
+        });*/
 
-        mCalendarEnd = (CalendarView) view.findViewById(R.id.cv_end_date);
-        mCalendarEnd.setMaxDate(ad.getAvailability().getEndDate().getTime());
-        mCalendarEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                request.setRequestedEndDate(date);
-                mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
-                mCalendarEnd.setVisibility(View.GONE);
-                mRentRequestLayout.setVisibility(View.VISIBLE);
-            }
-        });
+        // get the end date plus 1 day
+        Calendar c = Calendar.getInstance();
+        c.setTime(ad.getAvailability().getEndDate());
+        c.add(Calendar.DATE, 1);
+        mCalendarStart.init(ad.getAvailability().getStartDate(), c.getTime())
+                .withSelectedDate(ad.getAvailability().getStartDate())
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
+        //mCalendarStart.setVisibility(View.GONE);
+
+        mCalendarEnd = (CalendarPickerView) view.findViewById(R.id.cv_end_date);
         mCalendarEnd.setVisibility(View.GONE);
 
         mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
