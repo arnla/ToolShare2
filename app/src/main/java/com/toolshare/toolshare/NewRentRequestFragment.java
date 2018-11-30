@@ -76,6 +76,7 @@ public class NewRentRequestFragment extends Fragment {
     private List<Integer> daysAllowed = new ArrayList<Integer>() {};
     private List<Date> daysNotAllowed;
     private List<ToolSchedule> toolSchedules = new ArrayList<ToolSchedule>() {};
+    private TextView mRequestedDates;
 
     @Nullable
     @Override
@@ -97,6 +98,7 @@ public class NewRentRequestFragment extends Fragment {
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
         mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);
         setCalendar();
+        mRequestedDates = (TextView) view.findViewById(R.id.tv_requested_dates);
 
         mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
         mDatesLayout.setVisibility(View.GONE);
@@ -249,6 +251,12 @@ public class NewRentRequestFragment extends Fragment {
 
     private void setSelectedDates() {
         List<Date> dates = mCalendar.getSelectedDates();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String datesString = "";
+        for (int i = 0; i < dates.size(); i++) {
+            datesString += formatter.format(dates.get(i)) + "\n";
+        }
+        mRequestedDates.setText(datesString);
         for (int i = 0; i < dates.size(); i++) {
             ToolSchedule toolSchedule = new ToolSchedule();
             toolSchedule.setStatus("Pending");

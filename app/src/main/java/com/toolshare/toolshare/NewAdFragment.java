@@ -52,8 +52,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private Button mFriday;
     private Button mSaturday;
     private Button mSunday;
-    private CalendarView mCalendarStart;
-    private CalendarView mCalendarEnd;
     private LinearLayout mAdLinearLayout;
     private Button mCreateAdButton;
     private Calendar calendar = Calendar.getInstance();
@@ -79,34 +77,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
 
         mAdLinearLayout = (LinearLayout) view.findViewById(R.id.l_new_ad);
         mAdLinearLayout.setVisibility(View.VISIBLE);
-        mCalendarStart = (CalendarView) view.findViewById(R.id.cv_start_date);
-        mCalendarStart.setMinDate(System.currentTimeMillis());
-        mCalendarStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                ad.getAvailability().setStartDate(date);
-                mStartDateButton.setText("Start Date: " + ad.getAvailability().getStartDate().toString());
-                mCalendarEnd.setMinDate(ad.getAvailability().getStartDate().getTime());
-                mCalendarStart.setVisibility(View.GONE);
-                mAdLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mCalendarStart.setVisibility(View.GONE);
-        mCalendarEnd = (CalendarView) view.findViewById(R.id.cv_end_date);
-        mCalendarEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                ad.getAvailability().setEndDate(date);
-                mEndDateButton.setText("End Date: " + ad.getAvailability().getEndDate().toString());
-                mCalendarEnd.setVisibility(View.GONE);
-                mAdLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mCalendarEnd.setVisibility(View.GONE);
         mTitle = (EditText) view.findViewById(R.id.et_ad_title);
         mTool = (Spinner) view.findViewById(R.id.s_ad_tool);
         mDescription = (EditText) view.findViewById(R.id.et_ad_description);
@@ -115,7 +85,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 mAdLinearLayout.setVisibility(View.GONE);
-                mCalendarStart.setVisibility(View.VISIBLE);
+                //mCalendarStart.setVisibility(View.VISIBLE);
             }
         });
         mEndDateButton = (Button) view.findViewById(R.id.b_ad_end_date);
@@ -123,7 +93,7 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 mAdLinearLayout.setVisibility(View.GONE);
-                mCalendarEnd.setVisibility(View.VISIBLE);
+                //mCalendarEnd.setVisibility(View.VISIBLE);
             }
         });
         mMonday = (Button) view.findViewById(R.id.b_monday);

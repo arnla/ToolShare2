@@ -174,10 +174,11 @@ public class ViewRentRequestFragment extends Fragment {
         mToolLink.setTextColor(Color.BLUE);
         mToolLink.setClickable(true);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        mRequestedDays.setText("");
         List<Date> dates = getDaysByRequestId(db, request.getId());
+        String datesString = "";
         for (int i = 0; i < dates.size(); i++) {
-            mRequestedDays.setText(mRequestedDays.getText() + "\n" + formatter.format(dates.get(i)));
+            datesString += formatter.format(dates.get(i)) + "\n";
         }
+        mRequestedDays.setText(datesString);
     }
 }
