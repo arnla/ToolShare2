@@ -32,6 +32,24 @@ public class Request implements Serializable {
 
     }
 
+    public Request(String requesterId, String ownerId, int adId, String requestedStartDate, String requestedEndDate, String deliveryMethod, int statusId) {
+        RequesterId = requesterId;
+        OwnerId = ownerId;
+        AdId = adId;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            date = df.parse(requestedStartDate);
+            RequestedStartDate = date;
+            date = df.parse(requestedEndDate);
+            RequestedEndDate = date;
+        } catch (Exception e) {
+
+        }
+        DeliveryMethod = deliveryMethod;
+        StatusId = statusId;
+    }
+
     public Request(int id, String requesterId, String ownerId, int adId, String requestedStartDate, String requestedEndDate, String deliveryMethod, int statusId) {
         Id = id;
         RequesterId = requesterId;

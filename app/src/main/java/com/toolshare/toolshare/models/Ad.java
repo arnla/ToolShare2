@@ -33,6 +33,24 @@ public class Ad implements Serializable {
 
     }
 
+    public Ad(String owner, int toolId, String postDate, String expirationDate, String title, String description, int price) {
+        this.Owner = owner;
+        this.ToolId = toolId;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            date = df.parse(postDate);
+            this.PostDate = df.parse(postDate);
+            date = df.parse(expirationDate);
+            this.ExpirationDate = date;
+        } catch (Exception e) {
+
+        }
+        this.Description = description;
+        this.Title = title;
+        this.Price = price;
+    }
+
     public Ad(int id, String owner, int toolId, String postDate, String expirationDate, String title, String description, int price) {
         this.Id = id;
         this.Owner = owner;
