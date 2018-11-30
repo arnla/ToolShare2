@@ -30,6 +30,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
@@ -45,6 +46,7 @@ import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
+import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 import static com.toolshare.toolshare.models.User.getUserNameByPk;
 
 
@@ -66,12 +68,13 @@ public class NewRentRequestFragment extends Fragment {
     private LinearLayout mDatesLayout;
     private Button mSelectDates;
     private Button mDatesOk;
-    private CalendarPickerView mCalendarStart;
+    private CalendarPickerView mCalendar;
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
     private List<Integer> daysAllowed = new ArrayList<Integer>() {};
     private List<Integer> daysNotAllowed = new ArrayList<Integer>() {};
+    private List<ToolSchedule> toolSchedules = new ArrayList<ToolSchedule>() {};
 
     @Nullable
     @Override
@@ -91,7 +94,7 @@ public class NewRentRequestFragment extends Fragment {
         request.setAdId(ad.getId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
-        mCalendarStart = (CalendarPickerView) view.findViewById(R.id.cv_dates);
+        mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);
         setCalendar();
 
         mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
@@ -111,6 +114,7 @@ public class NewRentRequestFragment extends Fragment {
             public void onClick(View v) {
                 mDatesLayout.setVisibility(View.GONE);
                 mRentRequestLayout.setVisibility(View.VISIBLE);
+                setSelectedDates();
             }
         });
 
@@ -176,8 +180,11 @@ public class NewRentRequestFragment extends Fragment {
 
     private void submitRequest() {
         request.setStatusId(1);
-        String test = request.getRequestedStartDate().toString();
-        addRequest(db, request);
+        int requestId = addRequest(db, request);
+        for (int i = 0; i < toolSchedules.size(); i++) {
+            toolSchedules.get(i).setRequestId(requestId);
+            insertToolSchedule(db, toolSchedules.get(i));
+        }
         Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
     }
 
@@ -220,7 +227,7 @@ public class NewRentRequestFragment extends Fragment {
             daysAllowed.add(Calendar.SATURDAY);
         }
 
-        mCalendarStart.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+        mCalendar.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
             @Override
             public boolean isDateSelectable(Date date) {
                 c.setTime(date);
@@ -232,8 +239,18 @@ public class NewRentRequestFragment extends Fragment {
         // get the end date plus 1 day
         c.setTime(ad.getAvailability().getEndDate());
         c.add(Calendar.DATE, 1);
-        mCalendarStart.init(ad.getAvailability().getStartDate(), c.getTime())
+        mCalendar.init(ad.getAvailability().getStartDate(), c.getTime())
                 .withSelectedDate(ad.getAvailability().getStartDate())
                 .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
+    }
+
+    private void setSelectedDates() {
+        List<Date> dates = mCalendar.getSelectedDates();
+        for (int i = 0; i < dates.size(); i++) {
+            ToolSchedule toolSchedule = new ToolSchedule();
+            toolSchedule.setStatus("Pending");
+            toolSchedule.setDate(dates.get(i));
+            toolSchedules.add(toolSchedule);
+        }
     }
 }

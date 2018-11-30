@@ -421,9 +421,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         availability = new Availability(3, 0, 1, 1, 1, 1, 1, 0, "2018-11-29", "2019-05-31");
         availability.addAvailability(db);
 
-        Request request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "2019-01-26", "2019-01-27", "Pickup", 1);
+        Request request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "Pickup", 1);
         addRequest(db, request);
-        request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "2018-12-17", "2018-12-19", "Pickup", 1);
+        request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "Pickup", 1);
         addRequest(db, request);
 
 

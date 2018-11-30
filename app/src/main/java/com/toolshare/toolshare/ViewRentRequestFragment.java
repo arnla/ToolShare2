@@ -171,7 +171,7 @@ public class ViewRentRequestFragment extends Fragment {
         mToolLink.setTextColor(Color.BLUE);
         mToolLink.setClickable(true);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        mStartDate.setText(formatter.format(request.getRequestedStartDate()));
-        mEndDate.setText(formatter.format(request.getRequestedEndDate()));
+        mStartDate.setText("TEST");
+        mEndDate.setText("TEST");
     }
 }
