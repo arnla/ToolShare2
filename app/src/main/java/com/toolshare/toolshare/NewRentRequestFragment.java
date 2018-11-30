@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -22,24 +23,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.timessquare.CalendarPickerView;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
+import static com.toolshare.toolshare.models.ToolSchedule.getBusyDaysByToolId;
+import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 import static com.toolshare.toolshare.models.User.getUserNameByPk;
 
 
@@ -54,15 +62,21 @@ public class NewRentRequestFragment extends Fragment {
     private Tool tool;
     private Availability availability;
     private TextView mAdLink;
-    private TextView mToolLink;
-    private Button mStartDateButton;
-    private Button mEndDateButton;
+    private LinearLayout mToolLink;
+    private TextView mToolName;
+    private ImageView mToolImage;
     private LinearLayout mRentRequestLayout;
-    private CalendarView mCalendarStart;
-    private CalendarView mCalendarEnd;
+    private LinearLayout mDatesLayout;
+    private Button mSelectDates;
+    private Button mDatesOk;
+    private CalendarPickerView mCalendar;
     private Calendar calendar = Calendar.getInstance();
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
+    private List<Integer> daysAllowed = new ArrayList<Integer>() {};
+    private List<Date> daysNotAllowed;
+    private List<ToolSchedule> toolSchedules = new ArrayList<ToolSchedule>() {};
+    private TextView mRequestedDates;
 
     @Nullable
     @Override
@@ -82,38 +96,30 @@ public class NewRentRequestFragment extends Fragment {
         request.setAdId(ad.getId());
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
-        mCalendarStart = (CalendarView) view.findViewById(R.id.cv_start_date);
-        mCalendarStart.setMinDate(ad.getAvailability().getStartDate().getTime());
-        mCalendarStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                request.setRequestedStartDate(date);
-                mStartDateButton.setText("Start Date: " + formatter.format(request.getRequestedStartDate()));
-                mCalendarEnd.setMinDate(date.getTime());
-                mCalendarStart.setVisibility(View.GONE);
-                mRentRequestLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mCalendarStart.setVisibility(View.GONE);
+        mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);
+        setCalendar();
+        mRequestedDates = (TextView) view.findViewById(R.id.tv_requested_dates);
 
-        mCalendarEnd = (CalendarView) view.findViewById(R.id.cv_end_date);
-        mCalendarEnd.setMaxDate(ad.getAvailability().getEndDate().getTime());
-        mCalendarEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
+        mDatesLayout.setVisibility(View.GONE);
+        mSelectDates = (Button) view.findViewById(R.id.b_select_dates);
+        mSelectDates.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                request.setRequestedEndDate(date);
-                mEndDateButton.setText("End Date: " + formatter.format(request.getRequestedEndDate()));
-                mCalendarEnd.setVisibility(View.GONE);
-                mRentRequestLayout.setVisibility(View.VISIBLE);
+            public void onClick(View v) {
+                mRentRequestLayout.setVisibility(View.GONE);
+                mDatesLayout.setVisibility(View.VISIBLE);
             }
         });
-        mCalendarEnd.setVisibility(View.GONE);
+
+        mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
+        mDatesOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatesLayout.setVisibility(View.GONE);
+                mRentRequestLayout.setVisibility(View.VISIBLE);
+                setSelectedDates();
+            }
+        });
 
         mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +135,7 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-        mToolLink = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
         mToolLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,23 +149,9 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-
-        mStartDateButton = (Button) view.findViewById(R.id.b_rent_request_start_date);
-        mStartDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRentRequestLayout.setVisibility(View.GONE);
-                mCalendarStart.setVisibility(View.VISIBLE);
-            }
-        });
-        mEndDateButton = (Button) view.findViewById(R.id.b_rent_request_end_date);
-        mEndDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mRentRequestLayout.setVisibility(View.GONE);
-                mCalendarEnd.setVisibility(View.VISIBLE);
-            }
-        });
+        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mToolImage.setImageBitmap(tool.getPicture());
 
         mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
         mSubmitRequest.setOnClickListener(new View.OnClickListener() {
@@ -191,8 +183,11 @@ public class NewRentRequestFragment extends Fragment {
 
     private void submitRequest() {
         request.setStatusId(1);
-        String test = request.getRequestedStartDate().toString();
-        addRequest(db, request);
+        int requestId = addRequest(db, request);
+        for (int i = 0; i < toolSchedules.size(); i++) {
+            toolSchedules.get(i).setRequestId(requestId);
+            insertToolSchedule(db, toolSchedules.get(i));
+        }
         Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
     }
 
@@ -200,8 +195,74 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setText(ad.getTitle());
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
-        mToolLink.setText(tool.getName());
-        mToolLink.setTextColor(Color.BLUE);
-        mToolLink.setClickable(true);
+        mToolName.setText(tool.getName());
+    }
+
+    private void setCalendar() {
+        final Calendar c = Calendar.getInstance();
+
+        //set the days allows mtwtfs
+        if (ad.getAvailability().isAvailableSunday()) {
+            daysAllowed.add(Calendar.SUNDAY);
+        }
+
+        if (ad.getAvailability().isAvailableMonday()) {
+            daysAllowed.add(Calendar.MONDAY);
+        }
+
+        if (ad.getAvailability().isAvailableTuesday()) {
+            daysAllowed.add(Calendar.TUESDAY);
+        }
+
+        if (ad.getAvailability().isAvailableWednesday()) {
+            daysAllowed.add(Calendar.WEDNESDAY);
+        }
+
+        if (ad.getAvailability().isAvailableThursday()) {
+            daysAllowed.add(Calendar.THURSDAY);
+        }
+
+        if (ad.getAvailability().isAvailableFriday()) {
+            daysAllowed.add(Calendar.FRIDAY);
+        }
+
+        if (ad.getAvailability().isAvailableSaturday()) {
+            daysAllowed.add(Calendar.SATURDAY);
+        }
+
+        daysNotAllowed = getBusyDaysByToolId(db, tool.getId());
+
+        mCalendar.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+            @Override
+            public boolean isDateSelectable(Date date) {
+                c.setTime(date);
+                int dow = c.get(Calendar.DAY_OF_WEEK);
+                return daysAllowed.contains(dow) && !daysNotAllowed.contains(date);
+            }
+        });
+
+        // get the end date plus 1 day
+        c.setTime(ad.getAvailability().getEndDate());
+        c.add(Calendar.DATE, 1);
+        mCalendar.init(ad.getAvailability().getStartDate(), c.getTime())
+                .inMode(CalendarPickerView.SelectionMode.MULTIPLE);
+    }
+
+    private void setSelectedDates() {
+        List<Date> dates = mCalendar.getSelectedDates();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String datesString = "";
+        for (int i = 0; i < dates.size(); i++) {
+            datesString += formatter.format(dates.get(i)) + "\n";
+        }
+        mRequestedDates.setText(datesString);
+        for (int i = 0; i < dates.size(); i++) {
+            ToolSchedule toolSchedule = new ToolSchedule();
+            toolSchedule.setStatus("Pending");
+            toolSchedule.setDate(dates.get(i));
+            toolSchedule.setToolId(tool.getId());
+            toolSchedule.setTool(tool);
+            toolSchedules.add(toolSchedule);
+        }
     }
 }

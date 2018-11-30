@@ -39,6 +39,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
 
@@ -48,6 +49,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.toolshare.toolshare.models.Request.addRequest;
+import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 
 /**
  * A login screen that offers login via email/password.
@@ -421,11 +423,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         availability = new Availability(3, 0, 1, 1, 1, 1, 1, 0, "2018-11-29", "2019-05-31");
         availability.addAvailability(db);
 
-        Request request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "2019-01-26", "2019-01-27", "Pickup", 1);
+        Request request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "Pickup", 1);
         addRequest(db, request);
-        request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "2018-12-17", "2018-12-19", "Pickup", 1);
+        request = new Request("jane.doe@google.com", "john.smith@google.com", 2, "Delivery", 1);
+        addRequest(db, request);
+        request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "Pickup", 2);
         addRequest(db, request);
 
+        ToolSchedule toolSchedule = new ToolSchedule(2, 1, "2018-12-17", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(2, 1, "2018-12-18", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(2, 1, "2018-12-19", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-25", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-26", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-27", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(1, 3, "2019-03-02", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(1, 3, "2019-03-03", "Busy");
+        insertToolSchedule(db, toolSchedule);
 
         Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }

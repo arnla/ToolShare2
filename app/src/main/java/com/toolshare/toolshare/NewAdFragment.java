@@ -17,9 +17,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.squareup.timessquare.CalendarPickerView;
 import com.toolshare.toolshare.LoginActivity;
 import com.toolshare.toolshare.R;
 import com.toolshare.toolshare.RegisterActivity;
@@ -27,6 +29,9 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
+
+import org.w3c.dom.Text;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -34,6 +39,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.toolshare.toolshare.models.ToolSchedule.getBusyDaysByToolId;
 
 public class NewAdFragment extends Fragment implements View.OnClickListener {
 
@@ -43,8 +50,6 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private EditText mTitle;
     private Spinner mTool;
     private EditText mDescription;
-    private Button mStartDateButton;
-    private Button mEndDateButton;
     private Button mMonday;
     private Button mTuesday;
     private Button mWednesday;
@@ -52,12 +57,16 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private Button mFriday;
     private Button mSaturday;
     private Button mSunday;
-    private CalendarView mCalendarStart;
-    private CalendarView mCalendarEnd;
     private LinearLayout mAdLinearLayout;
     private Button mCreateAdButton;
+    private CalendarPickerView mCalendar;
     private Calendar calendar = Calendar.getInstance();
     private EditText mPrice;
+    private LinearLayout mDatesLayout;
+    private Button mSelectDates;
+    private Button mDatesOk;
+    private TextView mStartDate;
+    private TextView mEndDate;
 
     @Nullable
     @Override
@@ -79,53 +88,34 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
 
         mAdLinearLayout = (LinearLayout) view.findViewById(R.id.l_new_ad);
         mAdLinearLayout.setVisibility(View.VISIBLE);
-        mCalendarStart = (CalendarView) view.findViewById(R.id.cv_start_date);
-        mCalendarStart.setMinDate(System.currentTimeMillis());
-        mCalendarStart.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                ad.getAvailability().setStartDate(date);
-                mStartDateButton.setText("Start Date: " + ad.getAvailability().getStartDate().toString());
-                mCalendarEnd.setMinDate(ad.getAvailability().getStartDate().getTime());
-                mCalendarStart.setVisibility(View.GONE);
-                mAdLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mCalendarStart.setVisibility(View.GONE);
-        mCalendarEnd = (CalendarView) view.findViewById(R.id.cv_end_date);
-        mCalendarEnd.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-                calendar.set(year, month, dayOfMonth);
-                Date date = new Date(calendar.getTimeInMillis());
-                ad.getAvailability().setEndDate(date);
-                mEndDateButton.setText("End Date: " + ad.getAvailability().getEndDate().toString());
-                mCalendarEnd.setVisibility(View.GONE);
-                mAdLinearLayout.setVisibility(View.VISIBLE);
-            }
-        });
-        mCalendarEnd.setVisibility(View.GONE);
+        mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
+        mDatesLayout.setVisibility(View.GONE);
         mTitle = (EditText) view.findViewById(R.id.et_ad_title);
         mTool = (Spinner) view.findViewById(R.id.s_ad_tool);
         mDescription = (EditText) view.findViewById(R.id.et_ad_description);
-        mStartDateButton = (Button) view.findViewById(R.id.b_ad_start_date);
-        mStartDateButton.setOnClickListener(new View.OnClickListener() {
+        mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);
+        setCalendar();
+
+        mSelectDates = (Button) view.findViewById(R.id.b_select_dates);
+        mSelectDates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAdLinearLayout.setVisibility(View.GONE);
-                mCalendarStart.setVisibility(View.VISIBLE);
+                mDatesLayout.setVisibility(View.VISIBLE);
             }
         });
-        mEndDateButton = (Button) view.findViewById(R.id.b_ad_end_date);
-        mEndDateButton.setOnClickListener(new View.OnClickListener() {
+        mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
+        mDatesOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAdLinearLayout.setVisibility(View.GONE);
-                mCalendarEnd.setVisibility(View.VISIBLE);
+                mDatesLayout.setVisibility(View.GONE);
+                mAdLinearLayout.setVisibility(View.VISIBLE);
+                setSelectedDates();
             }
         });
+        mStartDate = (TextView) view.findViewById(R.id.tv_start_date);
+        mEndDate = (TextView) view.findViewById(R.id.tv_end_date);
+
         mMonday = (Button) view.findViewById(R.id.b_monday);
         mMonday.setOnClickListener(this);
         mTuesday = (Button) view.findViewById(R.id.b_tuesday);
@@ -215,5 +205,28 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
         ad.getAvailability().addAvailability(db);
         Toast.makeText(getActivity(), "New ad added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
+    }
+
+    private void setCalendar() {
+        final Calendar c = Calendar.getInstance();
+        Date today = new Date(c.getTimeInMillis());
+        // get the end date plus 1 day
+        c.setTime(today);
+        c.add(Calendar.YEAR, 1);
+        mCalendar.init(today, c.getTime())
+                .inMode(CalendarPickerView.SelectionMode.RANGE);
+    }
+
+    private void setSelectedDates() {
+        List<java.util.Date> dates = mCalendar.getSelectedDates();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String datesString = "";
+        for (int i = 0; i < dates.size(); i++) {
+            datesString += formatter.format(dates.get(i)) + "\n";
+        }
+        ad.getAvailability().setStartDate(dates.get(0));
+        mStartDate.setText(formatter.format(ad.getAvailability().getStartDate()));
+        ad.getAvailability().setEndDate(dates.get(dates.size()-1));
+        mEndDate.setText(formatter.format(ad.getAvailability().getEndDate()));
     }
 }

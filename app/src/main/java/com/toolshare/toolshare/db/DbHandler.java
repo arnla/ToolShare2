@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -114,6 +114,14 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TABLE_TRANSACTION_STATUSES = "transaction_statuses";
     public static final String TRANSACTION_STATUS_COLUMN_ID = "id";
     public static final String TRANSACTION_STATUS_COLUMN_NAME = "status_name";
+
+    // TOOL SCHEDULE TABLE
+    public static final String TABLE_TOOL_SCHEDULE = "tool_schedule";
+    public static final String TOOL_SCHEDULE_COLUMN_ID = "id";
+    public static final String TOOL_SCHEDULE_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_SCHEDULE_COLUMN_REQUEST_ID = "request_id";
+    public static final String TOOL_SCHEDULE_COLUMN_DATE = "date";
+    public static final String TOOL_SCHEDULE_COLUMN_STATUS = "status";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -299,6 +307,47 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + " from tools_old;";
     public static final String MIGRATION_9_TO_10_PART_4 = "drop table tools_old;";
 
+    public static final String MIGRATION_10_TO_11_PART_1 = "alter table "
+            + TABLE_REQUESTS + " rename to requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_2 = "create table "
+            + TABLE_REQUESTS + " ("
+            + REQUEST_COLUMN_ID + " integer primary key autoincrement, "
+            + REQUEST_COLUMN_REQUESTER_ID + " text not null, "
+            + REQUEST_COLUMN_OWNER_ID + " text not null, "
+            + REQUEST_COLUMN_AD_ID + " integer not null, "
+            + REQUEST_COLUMN_DELIVERY_METHOD + " text not null, "
+            + REQUEST_COLUMN_STATUS_ID + " integer not null, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "," + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_ads FOREIGN KEY ("
+            + REQUEST_COLUMN_AD_ID + ") REFERENCES "
+            + TABLE_ADS + "(" + AD_COLUMN_ID + "), "
+            + "CONSTRAINT fk_status FOREIGN KEY ("
+            + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";
+    public static final String MIGRATION_10_TO_11_PART_3 = "insert into "
+            + TABLE_REQUESTS + "("
+            + REQUEST_COLUMN_ID + "," + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ","
+            + REQUEST_COLUMN_AD_ID + "," + REQUEST_COLUMN_DELIVERY_METHOD + "," + REQUEST_COLUMN_STATUS_ID + ") "
+            + "select " + REQUEST_COLUMN_ID + "," + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ","
+            + REQUEST_COLUMN_AD_ID + "," + REQUEST_COLUMN_DELIVERY_METHOD + "," + REQUEST_COLUMN_STATUS_ID
+            + " from requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_4 = "drop table requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_5 = "create table "
+            + TABLE_TOOL_SCHEDULE + " ("
+            + TOOL_SCHEDULE_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + " integer not null, "
+            + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " int not null, "
+            + TOOL_SCHEDULE_COLUMN_DATE + " text not null, "
+            + TOOL_SCHEDULE_COLUMN_STATUS + " text not null, "
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "), "
+            + "CONSTRAINT fk_requests FOREIGN KEY ("
+            + TOOL_SCHEDULE_COLUMN_REQUEST_ID + ") REFERENCES "
+            + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "));";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -406,6 +455,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_9_TO_10_PART_2);
         db.execSQL(MIGRATION_9_TO_10_PART_3);
         db.execSQL(MIGRATION_9_TO_10_PART_4);
+        db.execSQL(MIGRATION_10_TO_11_PART_1);
+        db.execSQL(MIGRATION_10_TO_11_PART_2);
+        db.execSQL(MIGRATION_10_TO_11_PART_3);
+        db.execSQL(MIGRATION_10_TO_11_PART_4);
+        db.execSQL(MIGRATION_10_TO_11_PART_5);
     }
 
     // Upgrading database
@@ -459,6 +513,14 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             db.execSQL(MIGRATION_9_TO_10_PART_2);
             db.execSQL(MIGRATION_9_TO_10_PART_3);
             db.execSQL(MIGRATION_9_TO_10_PART_4);
+        }
+
+        if (oldVersion < 11) {
+            db.execSQL(MIGRATION_10_TO_11_PART_1);
+            db.execSQL(MIGRATION_10_TO_11_PART_2);
+            db.execSQL(MIGRATION_10_TO_11_PART_3);
+            db.execSQL(MIGRATION_10_TO_11_PART_4);
+            db.execSQL(MIGRATION_10_TO_11_PART_5);
         }
     }
 }
