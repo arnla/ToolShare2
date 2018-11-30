@@ -127,4 +127,32 @@ public class ToolSchedule {
         db.close();
         return dates;
     }
+
+    public static List<Date> getDaysByRequestId(DbHandler dbHandler, int id) {
+        List<Date> dates = new ArrayList<Date>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select " + TOOL_SCHEDULE_COLUMN_DATE + " from " + TABLE_TOOL_SCHEDULE + " where "
+                        + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " = ? and " + TOOL_SCHEDULE_COLUMN_STATUS + " = ?" ,
+                new String[] {Integer.toString(id), "Pending"});
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    Date date = new Date();
+                    date = df.parse(cursor.getString(0));
+                    dates.add(date);
+                } catch (Exception e) {
+
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return dates;
+    }
 }
