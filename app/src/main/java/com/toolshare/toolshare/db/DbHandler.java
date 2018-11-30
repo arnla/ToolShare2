@@ -118,6 +118,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     // TOOL SCHEDULE TABLE
     public static final String TABLE_TOOL_SCHEDULE = "tool_schedule";
     public static final String TOOL_SCHEDULE_COLUMN_ID = "id";
+    public static final String TOOL_SCHEDULE_COLUMN_TOOL_ID = "tool_id";
     public static final String TOOL_SCHEDULE_COLUMN_REQUEST_ID = "request_id";
     public static final String TOOL_SCHEDULE_COLUMN_DATE = "date";
     public static final String TOOL_SCHEDULE_COLUMN_STATUS = "status";
@@ -336,9 +337,13 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String MIGRATION_10_TO_11_PART_5 = "create table "
             + TABLE_TOOL_SCHEDULE + " ("
             + TOOL_SCHEDULE_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + " integer not null, "
             + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " int not null, "
             + TOOL_SCHEDULE_COLUMN_DATE + " text not null, "
             + TOOL_SCHEDULE_COLUMN_STATUS + " text not null, "
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "), "
             + "CONSTRAINT fk_requests FOREIGN KEY ("
             + TOOL_SCHEDULE_COLUMN_REQUEST_ID + ") REFERENCES "
             + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "));";

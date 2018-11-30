@@ -10,6 +10,8 @@ import java.util.Date;
 
 public class ToolSchedule {
     private int Id;
+    private int ToolId;
+    private Tool Tool;
     private int RequestId;
     private Date Date;
     private String Status;
@@ -20,6 +22,22 @@ public class ToolSchedule {
 
     public int getId() {
         return Id;
+    }
+
+    public int getToolId() {
+        return ToolId;
+    }
+
+    public void setToolId(int toolId) {
+        ToolId = toolId;
+    }
+
+    public com.toolshare.toolshare.models.Tool getTool() {
+        return Tool;
+    }
+
+    public void setTool(com.toolshare.toolshare.models.Tool tool) {
+        Tool = tool;
     }
 
     public void setRequestId(int requestId) {
@@ -55,6 +73,7 @@ public class ToolSchedule {
     // TOOL SCHEDULE TABLE
     public static final String TABLE_TOOL_SCHEDULE = "tool_schedule";
     public static final String TOOL_SCHEDULE_COLUMN_ID = "id";
+    public static final String TOOL_SCHEDULE_COLUMN_TOOL_ID = "tool_id";
     public static final String TOOL_SCHEDULE_COLUMN_REQUEST_ID = "request_id";
     public static final String TOOL_SCHEDULE_COLUMN_DATE = "date";
     public static final String TOOL_SCHEDULE_COLUMN_STATUS = "status";
@@ -64,6 +83,7 @@ public class ToolSchedule {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put(TOOL_SCHEDULE_COLUMN_TOOL_ID, toolSchedule.getToolId());
         values.put(TOOL_SCHEDULE_COLUMN_REQUEST_ID, toolSchedule.getRequestId());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         values.put(TOOL_SCHEDULE_COLUMN_DATE, formatter.format(toolSchedule.getDate()));

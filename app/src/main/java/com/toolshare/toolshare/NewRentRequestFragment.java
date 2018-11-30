@@ -250,6 +250,8 @@ public class NewRentRequestFragment extends Fragment {
             ToolSchedule toolSchedule = new ToolSchedule();
             toolSchedule.setStatus("Pending");
             toolSchedule.setDate(dates.get(i));
+            toolSchedule.setToolId(tool.getId());
+            toolSchedule.setTool(tool);
             toolSchedules.add(toolSchedule);
         }
     }
