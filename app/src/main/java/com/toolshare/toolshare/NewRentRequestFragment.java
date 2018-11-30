@@ -46,6 +46,7 @@ import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
+import static com.toolshare.toolshare.models.ToolSchedule.getBusyDaysByToolId;
 import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 import static com.toolshare.toolshare.models.User.getUserNameByPk;
 
@@ -73,7 +74,7 @@ public class NewRentRequestFragment extends Fragment {
     private Button mSubmitRequest;
     private RadioGroup mDeliveryMethod;
     private List<Integer> daysAllowed = new ArrayList<Integer>() {};
-    private List<Integer> daysNotAllowed = new ArrayList<Integer>() {};
+    private List<Date> daysNotAllowed;
     private List<ToolSchedule> toolSchedules = new ArrayList<ToolSchedule>() {};
 
     @Nullable
@@ -193,6 +194,7 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
         mToolName.setText(tool.getName());
+        daysNotAllowed = getBusyDaysByToolId(db, tool.getId());
     }
 
     private void setCalendar() {
@@ -232,7 +234,7 @@ public class NewRentRequestFragment extends Fragment {
             public boolean isDateSelectable(Date date) {
                 c.setTime(date);
                 int dow = c.get(Calendar.DAY_OF_WEEK);
-                return daysAllowed.contains(dow);
+                return daysAllowed.contains(dow) && !daysNotAllowed.contains(date);
             }
         });
 

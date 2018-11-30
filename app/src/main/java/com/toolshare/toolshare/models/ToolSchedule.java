@@ -1,12 +1,18 @@
 package com.toolshare.toolshare.models;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.toolshare.toolshare.db.DbHandler;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 
 public class ToolSchedule {
     private int Id;
@@ -92,5 +98,33 @@ public class ToolSchedule {
         // Inserting Row
         db.insert(TABLE_TOOL_SCHEDULE, null, values);
         db.close();
+    }
+
+    public static List<Date> getBusyDaysByToolId(DbHandler dbHandler, int id) {
+        List<Date> dates = new ArrayList<Date>();
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select " + TOOL_SCHEDULE_COLUMN_DATE + " from " + TABLE_TOOL_SCHEDULE + " where "
+                + TOOL_SCHEDULE_COLUMN_TOOL_ID + " = ? and " + TOOL_SCHEDULE_COLUMN_STATUS + " = ?" ,
+                new String[] {Integer.toString(id), "Busy"});
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                try {
+                    Date date = new Date();
+                    date = df.parse(cursor.getString(0));
+                    dates.add(date);
+                } catch (Exception e) {
+
+                }
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+        return dates;
     }
 }
