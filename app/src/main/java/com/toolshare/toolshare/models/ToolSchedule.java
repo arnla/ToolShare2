@@ -22,6 +22,22 @@ public class ToolSchedule {
     private Date Date;
     private String Status;
 
+    public ToolSchedule() {}
+
+    public ToolSchedule(int toolId, int requestId, String date, String status) {
+        ToolId = toolId;
+        RequestId = requestId;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date d = new Date();
+            d = df.parse(date);
+            Date = d;
+        } catch (Exception e) {
+
+        }
+        Status = status;
+    }
+
     public void setId(int id) {
         Id = id;
     }
