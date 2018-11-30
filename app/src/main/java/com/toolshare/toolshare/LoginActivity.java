@@ -34,7 +34,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Ad;
+import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
@@ -44,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.toolshare.toolshare.models.Request.addRequest;
 
 /**
  * A login screen that offers login via email/password.
@@ -402,6 +406,26 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_reciprocating_saws_dwe305_64_1000);
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305", image);
         tool.addTool(db);
+
+        Ad ad = new Ad("john.smith@google.com", 1, "2018-11-29", "2019-12-29", "Table saw available weekends", "Available only on the weekends. Can keep from Saturday to Sunday", 5);
+        ad.addAd(db);
+        ad = new Ad("john.smith@google.com", 5, "2018-11-29", "2019-05-31", "Reciprocating saw $5/day", "You can keep it as long as needed", 5);
+        ad.addAd(db);
+        ad = new Ad("jane.doe@google.com", 2, "2018-11-29", "2019-05-31", "Spade drill", "Only available weekdays", 7);
+        ad.addAd(db);
+
+        Availability availability = new Availability(1, 1, 0, 0, 0, 0, 0, 1, "2018-12-01", "2019-12-29");
+        availability.addAvailability(db);
+        availability = new Availability(2, 1, 1, 1, 1, 1, 1, 1, "2018-11-29", "2019-05-31");
+        availability.addAvailability(db);
+        availability = new Availability(3, 0, 1, 1, 1, 1, 1, 0, "2018-11-29", "2019-05-31");
+        availability.addAvailability(db);
+
+        Request request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "2019-01-26", "2019-01-27", "Pickup", 1);
+        addRequest(db, request);
+        request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "2018-12-17", "2018-12-19", "Pickup", 1);
+        addRequest(db, request);
+
 
         Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }

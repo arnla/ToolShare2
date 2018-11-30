@@ -32,6 +32,28 @@ public class Availability implements Serializable {
 
     }
 
+    public Availability(int adId,int sun, int mon, int tue, int wed, int thu, int fri, int sat,
+                        String startDate, String endDate) {
+        this.AdId = adId;
+        this.Monday = mon == 1;
+        this.Tuesday = tue == 1;
+        this.Wednesday = wed == 1;
+        this.Thursday = thu == 1;
+        this.Friday = fri == 1;
+        this.Saturday = sat == 1;
+        this.Sunday = sun == 1;
+        try {
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = new Date();
+            date = df.parse(startDate);
+            this.StartDate = date;
+            date = df.parse(endDate);
+            this.EndDate = date;
+        } catch (Exception e) {
+
+        }
+    }
+
     public Availability(int id, int adId,int sun, int mon, int tue, int wed, int thu, int fri, int sat,
                         String startDate, String endDate) {
         this.Id = id;
@@ -193,8 +215,9 @@ public class Availability implements Serializable {
         values.put(AVAILABILITY_COLUMN_THU, this.isAvailableThursday());
         values.put(AVAILABILITY_COLUMN_FRI, this.isAvailableFriday());
         values.put(AVAILABILITY_COLUMN_SAT, this.isAvailableSaturday());
-        values.put(AVAILABILITY_COLUMN_START_DATE, this.getStartDate().toString());
-        values.put(AVAILABILITY_COLUMN_END_DATE, this.getEndDate().toString());
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        values.put(AVAILABILITY_COLUMN_START_DATE, formatter.format(this.getStartDate()));
+        values.put(AVAILABILITY_COLUMN_END_DATE, formatter.format(this.getEndDate()));
 /*        values.put(AVAILABILITY_COLUMN_START_TIME, this.getStartTime().toString());
         values.put(AVAILABILITY_COLUMN_END_TIME, this.getEndTime().toString());*/
 
