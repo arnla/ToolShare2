@@ -1,10 +1,14 @@
 package com.toolshare.toolshare;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,6 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -27,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 
 public class NewToolFragment extends Fragment {
 
@@ -38,6 +46,10 @@ public class NewToolFragment extends Fragment {
     private Spinner mBrandSpinner;
     private EditText mModel;
     private Button mCreateToolButton;
+    private ImageButton mAddImage;
+    private ImageView mImage;
+    private static final int CAMERA_REQUEST = 1888;
+    private Bitmap image;
 
     @Nullable
     @Override
@@ -60,8 +72,28 @@ public class NewToolFragment extends Fragment {
                 insertTool();
             }
         });
+        mAddImage = (ImageButton) view.findViewById(R.id.ib_add_image);
+        mAddImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+        mImage = (ImageView) view.findViewById(R.id.iv_image);
+        mImage.setVisibility(View.GONE);
 
         return view;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            mAddImage.setVisibility(View.GONE);
+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+            image = photo;
+            mImage.setImageBitmap(photo);
+            mImage.setVisibility(View.VISIBLE);
+        }
     }
 
     private void loadSpinners() {
@@ -100,7 +132,10 @@ public class NewToolFragment extends Fragment {
         String model = mModel.getText().toString();
         Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
+        if (image == null) {
+            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
+            image = photo;
+        }
         Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
         tool.addTool(db);
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();

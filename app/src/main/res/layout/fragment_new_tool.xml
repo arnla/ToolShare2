@@ -91,6 +91,17 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"/>
 
+                <ImageButton
+                    android:id="@+id/ib_add_image"
+                    android:src="@drawable/add_tool_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
+
+                <ImageView
+                    android:id="@+id/iv_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp" />
+
                 <Button
                     android:id="@+id/b_create_tool"
                     android:layout_height="wrap_content"
