@@ -28,6 +28,7 @@ public class Ad implements Serializable {
     private int AvailabilityId;
     private String Title;
     private int Price;
+    private Tool Tool;
 
     public Ad() {
 
@@ -146,6 +147,14 @@ public class Ad implements Serializable {
         Price = price;
     }
 
+    public void setTool(com.toolshare.toolshare.models.Tool tool) {
+        Tool = tool;
+    }
+
+    public com.toolshare.toolshare.models.Tool getTool() {
+        return Tool;
+    }
+
     /*****************************************************************************
      * DB Functions
      *
@@ -181,6 +190,7 @@ public class Ad implements Serializable {
                         cursor.getString(6),
                         cursor.getInt(7));
                 ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+                ad.setTool(com.toolshare.toolshare.models.Tool.getToolByPk(dbHandler, cursor.getInt(2)));
                 ads.add(ad);
             } while (cursor.moveToNext());
         }
@@ -246,6 +256,7 @@ public class Ad implements Serializable {
                         cursor.getString(6),
                         cursor.getInt(7));
                 ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+                ad.setTool(com.toolshare.toolshare.models.Tool.getToolByPk(dbHandler, cursor.getInt(2)));
                 ads.add(ad);
             } while (cursor.moveToNext());
         }
@@ -267,6 +278,7 @@ public class Ad implements Serializable {
                     cursor.getString(6),
                     cursor.getInt(7));
             ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+            ad.setTool(com.toolshare.toolshare.models.Tool.getToolByPk(dbHandler, cursor.getInt(2)));
 
             return ad;
         }
