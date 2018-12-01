@@ -87,16 +87,6 @@ public class ToolType {
         db.close();
     }
 
-    private int getNextId(DbHandler dbHandler) {
-        SQLiteDatabase db = dbHandler.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery("select max(id) from tool_types", null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        return cursor.getInt(0) + 1;
-    }
-
     public static List<ToolType> getAllToolTypes(DbHandler dbHandler) {
         List<ToolType> toolTypes = new ArrayList<ToolType>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
