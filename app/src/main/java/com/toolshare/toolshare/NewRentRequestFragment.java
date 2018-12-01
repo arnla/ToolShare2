@@ -97,12 +97,18 @@ public class NewRentRequestFragment extends Fragment {
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
         mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);
-        setCalendar();
         mRequestedDates = (TextView) view.findViewById(R.id.tv_requested_dates);
-
         mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
-        mDatesLayout.setVisibility(View.GONE);
         mSelectDates = (Button) view.findViewById(R.id.b_select_dates);
+        mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
+        mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
+        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
+        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
+        mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
+        
+        mDatesLayout.setVisibility(View.GONE);
         mSelectDates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +117,6 @@ public class NewRentRequestFragment extends Fragment {
             }
         });
 
-        mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
         mDatesOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +126,6 @@ public class NewRentRequestFragment extends Fragment {
             }
         });
 
-        mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,7 +139,7 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
+
         mToolLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,11 +153,7 @@ public class NewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
-        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
-        mToolImage.setImageBitmap(tool.getPicture());
 
-        mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
         mSubmitRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +161,6 @@ public class NewRentRequestFragment extends Fragment {
             }
         });
 
-        mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
         mDeliveryMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -177,6 +176,7 @@ public class NewRentRequestFragment extends Fragment {
         });
 
         setValues();
+        setCalendar();
 
         return view;
     }
@@ -196,6 +196,7 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
         mToolName.setText(tool.getName());
+        mToolImage.setImageBitmap(tool.getPicture());
     }
 
     private void setCalendar() {
