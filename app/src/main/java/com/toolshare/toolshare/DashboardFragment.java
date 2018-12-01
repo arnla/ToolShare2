@@ -69,7 +69,7 @@ public class DashboardFragment extends Fragment {
 
             TextView textView = new TextView(getActivity().getApplicationContext());
             textView.setText(ad.getTitle());
-            textView.setGravity(Gravity.CENTER);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setLayoutParams(textViewParams);
 
             linearLayout.addView(imageView);
@@ -91,24 +91,6 @@ public class DashboardFragment extends Fragment {
                 }
             });
 
-/*            Button button = new Button(getActivity().getApplicationContext());
-            button.setHeight(500);
-            button.setText(ads.get(i).getTitle());
-            button.setOnClickListener(new View.OnClickListener(){
-
-                @Override
-                public void onClick(View v) {
-                    bundle.putSerializable("ad", ad);
-                    Fragment fragment = new ViewAdFragment();
-                    fragment.setArguments(bundle);
-
-                    FragmentManager fm = getFragmentManager();
-                    FragmentTransaction transaction = fm.beginTransaction();
-                    transaction.replace(R.id.fragment_container, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });*/
             if ((i % 2) == 0) {
                 mAdsLeft.addView(linearLayout);
             } else {
