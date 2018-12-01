@@ -50,6 +50,7 @@ public class ViewToolFragment extends Fragment {
     private ImageView mImage;
     private TextView mLeaveReview;
     private RatingBar mRating;
+    private TextView mOwner;
 
     @Nullable
     @Override
@@ -75,6 +76,7 @@ public class ViewToolFragment extends Fragment {
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
         mLeaveReview = (TextView) view.findViewById(R.id.tv_ratings);
         mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
+        mOwner = (TextView) view.findViewById(R.id.tv_owner);
 
         setToolValues();
 
@@ -151,6 +153,8 @@ public class ViewToolFragment extends Fragment {
             mLeaveReview.setText("Leave a review");
         }
         mLeaveReview.setTextColor(Color.BLUE);
+        mOwner.setText(tool.getOwner());
+        mOwner.setTextColor(Color.BLUE);
     }
 
     private void deleteTool() {
