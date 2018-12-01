@@ -1,6 +1,9 @@
 package com.toolshare.toolshare;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolReview;
 
 import org.w3c.dom.Text;
 
@@ -38,7 +42,7 @@ public class ViewToolFragment extends Fragment {
     private Button mDeleteButton;
     private Button mEditButton;
     private ImageView mImage;
-    private TextView mNoRatings;
+    private TextView mLeaveReview;
     private RatingBar mRating;
 
     @Nullable
@@ -63,10 +67,53 @@ public class ViewToolFragment extends Fragment {
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
-        mNoRatings = (TextView) view.findViewById(R.id.tv_no_ratings);
+        mLeaveReview = (TextView) view.findViewById(R.id.tv_ratings);
         mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
 
         setToolValues();
+
+        mLeaveReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View reviewView = li.inflate(R.layout.dialog_review, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(reviewView);
+
+                final EditText userInput = (EditText) reviewView.findViewById(R.id.et_review);
+                final RatingBar userRating = (RatingBar) reviewView.findViewById(R.id.rb_tool_rating) ;
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(true)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    ToolReview review = new ToolReview();
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        review.setReview(userInput.getText().toString());
+                                        review.setRating(userRating.getNumStars());
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
 
         return view;
     }
@@ -78,10 +125,12 @@ public class ViewToolFragment extends Fragment {
         mToolModel.setText(mToolModel.getText() + tool.getModel());
         mImage.setImageBitmap(tool.getPicture());
         if (tool.getRating() == 0) {
-            mNoRatings.setVisibility(View.VISIBLE);
+            mLeaveReview.setText("Be the first to review");
         } else {
             mRating.setRating(tool.getRating());
+            mLeaveReview.setText("Leave a review");
         }
+        mLeaveReview.setTextColor(Color.BLUE);
     }
 
     private void deleteTool() {

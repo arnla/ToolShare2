@@ -31,12 +31,10 @@
                     android:stepSize="1.0"/>
 
                 <TextView
-                    android:id="@+id/tv_no_ratings"
+                    android:id="@+id/tv_ratings"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="No ratings to show"
-                    android:gravity="center_horizontal"
-                    android:visibility="gone"/>
+                    android:gravity="center_horizontal"/>
             </LinearLayout>
 
             <TextView
