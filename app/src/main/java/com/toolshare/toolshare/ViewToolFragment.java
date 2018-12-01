@@ -29,6 +29,12 @@ import com.toolshare.toolshare.models.ToolReview;
 
 import org.w3c.dom.Text;
 
+import java.util.List;
+
+import static com.toolshare.toolshare.models.Tool.updateTool;
+import static com.toolshare.toolshare.models.ToolReview.addToolReview;
+import static com.toolshare.toolshare.models.ToolReview.getAllRatingsByToolId;
+
 
 public class ViewToolFragment extends Fragment {
 
@@ -96,8 +102,22 @@ public class ViewToolFragment extends Fragment {
                                     public void onClick(DialogInterface dialog,int id) {
                                         // get user input and set it to result
                                         // edit text
+                                        review.setToolId(tool.getId());
                                         review.setReview(userInput.getText().toString());
-                                        review.setRating(userRating.getNumStars());
+                                        review.setRating((int) userRating.getRating());
+
+                                        addToolReview(db, review);
+
+                                        // get new average of tool's ratings
+                                        List<Integer> allRatings = getAllRatingsByToolId(db, tool.getId());
+                                        float avg = 0;
+                                        for (int i = 0; i < allRatings.size(); i++) {
+                                            avg += allRatings.get(i);
+                                        }
+                                        avg = avg / allRatings.size();
+                                        tool.setRating(avg);
+
+                                        updateTool(db, tool);
                                     }
                                 })
                         .setNegativeButton("Cancel",

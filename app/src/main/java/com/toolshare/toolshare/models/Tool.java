@@ -246,6 +246,27 @@ public class Tool implements Serializable {
         db.close();
     }
 
+    public static void updateTool(DbHandler dbHandler, Tool tool) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        tool.getPicture().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInBytes = stream.toByteArray();
+
+        ContentValues values = new ContentValues();
+        values.put(TOOL_COLUMN_OWNER, tool.getOwner());
+        values.put(TOOL_COLUMN_TYPE_ID, tool.getTypeId());
+        values.put(TOOL_COLUMN_NAME, tool.getName());
+        values.put(TOOL_COLUMN_YEAR, tool.getYear());
+        values.put(TOOL_COLUMN_MODEL, tool.getModel());
+        values.put(TOOL_COLUMN_BRAND_ID, tool.getBrand());
+        values.put(TOOL_COLUMN_PICTURE, imageInBytes);
+        values.put(TOOL_COLUMN_RATING, tool.getRating());
+
+        // updating row
+        db.update(TABLE_TOOLS, values, TOOL_COLUMN_ID + " = ?", new String[] {Integer.toString(tool.getId())});
+    }
+
     @Override
     public String toString() {
         return getName() + ": " + getModel();
