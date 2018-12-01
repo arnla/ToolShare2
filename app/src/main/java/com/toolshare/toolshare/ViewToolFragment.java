@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ public class ViewToolFragment extends Fragment {
     private Button mDeleteButton;
     private Button mEditButton;
     private ImageView mImage;
+    private TextView mNoRatings;
+    private RatingBar mRating;
 
     @Nullable
     @Override
@@ -60,6 +63,8 @@ public class ViewToolFragment extends Fragment {
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mNoRatings = (TextView) view.findViewById(R.id.tv_no_ratings);
+        mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
 
         setToolValues();
 
@@ -72,6 +77,11 @@ public class ViewToolFragment extends Fragment {
         mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
         mToolModel.setText(mToolModel.getText() + tool.getModel());
         mImage.setImageBitmap(tool.getPicture());
+        if (tool.getRating() == 0) {
+            mNoRatings.setVisibility(View.VISIBLE);
+        } else {
+            mRating.setRating(tool.getRating());
+        }
     }
 
     private void deleteTool() {

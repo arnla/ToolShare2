@@ -139,7 +139,7 @@ public class NewToolFragment extends Fragment {
         Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
         if (image == null) {
-            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
+            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
             image = photo;
         }
         Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
