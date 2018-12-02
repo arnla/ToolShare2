@@ -18,9 +18,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -50,6 +54,13 @@ public class NewToolFragment extends Fragment {
     private ImageView mImage;
     private static final int CAMERA_REQUEST = 1888;
     private Bitmap image;
+    private LinearLayout mAddressLayout;
+    private EditText mStreetAddress;
+    private EditText mCity;
+    private EditText mProvince;
+    private EditText mZipCode;
+    private EditText mCountry;
+    private CheckBox mSameAddress;
 
     @Nullable
     @Override
@@ -64,23 +75,23 @@ public class NewToolFragment extends Fragment {
         mYearsSpinner = (Spinner) view.findViewById(R.id.s_tool_year);
         mBrandSpinner = (Spinner) view.findViewById(R.id.s_tool_brand);
         mModel = (EditText) view.findViewById(R.id.et_tool_model);
-        loadSpinners();
         mCreateToolButton = (Button) view.findViewById(R.id.b_create_tool);
+        mImage = (ImageView) view.findViewById(R.id.iv_image);
+        mStreetAddress = (EditText) view.findViewById(R.id.street_address);
+        mCity = (EditText) view.findViewById(R.id.city);
+        mProvince = (EditText) view.findViewById(R.id.province);
+        mZipCode = (EditText) view.findViewById(R.id.zip_code);
+        mCountry = (EditText) view.findViewById(R.id.country);
+        mSameAddress = (CheckBox) view.findViewById(R.id.cb_same_address);
+        mAddressLayout = (LinearLayout) view.findViewById(R.id.ll_address);
+
         mCreateToolButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 insertTool();
             }
         });
-/*        mAddImage = (Button) view.findViewById(R.id.b_add_image);
-        mAddImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });*/
-        mImage = (ImageView) view.findViewById(R.id.iv_image);
+
         Bitmap addImageIcon = BitmapFactory.decodeResource(getResources(), R.drawable.add_tool_image);
         mImage.setImageBitmap(addImageIcon);
         mImage.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +102,19 @@ public class NewToolFragment extends Fragment {
             }
         });
 
+        mAddressLayout.setVisibility(View.GONE);
+        mSameAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mSameAddress.isChecked()) {
+                    mAddressLayout.setVisibility(View.GONE);
+                } else {
+                    mAddressLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        loadSpinners();
         return view;
     }
 
