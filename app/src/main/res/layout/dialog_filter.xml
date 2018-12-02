@@ -17,7 +17,55 @@
         android:id="@+id/ll_tool_types"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_margin="10px">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tool Types"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10px">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Max Distance"/>
+
+        <RadioGroup
+            android:id="@+id/rg_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/rb_any"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Any distance"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/rb_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="10 km"/>
+
+            <RadioButton
+                android:id="@+id/rb_25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="25 km"/>
+
+            <RadioButton
+                android:id="@+id/rb_50"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="50 km"/>
+        </RadioGroup>
     </LinearLayout>
 </LinearLayout>

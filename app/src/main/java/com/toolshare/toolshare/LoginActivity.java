@@ -39,6 +39,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
 import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
@@ -49,6 +50,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.toolshare.toolshare.models.Request.addRequest;
+import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
 import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 
 /**
@@ -368,9 +370,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void seedData() {
-        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000");
+        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000", "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
         user1.addUser(db);
-        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000");
+        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000", "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
         user2.addUser(db);
 
         ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
@@ -408,6 +410,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_reciprocating_saws_dwe305_64_1000);
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305", image);
         tool.addTool(db);
+
+        ToolAddress toolAddress = new ToolAddress(1, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(2, "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(3, "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(4, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(5, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
 
         Ad ad = new Ad("john.smith@google.com", 1, "2018-11-29", "2019-12-29", "Table saw available weekends", "Available only on the weekends. Can keep from Saturday to Sunday", 5);
         ad.addAd(db);

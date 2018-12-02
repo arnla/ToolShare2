@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -24,7 +24,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String USERS_COLUMN_LAST_NAME = "last_name";
     public static final String USERS_COLUMN_PHONE = "phone";
     public static final String USERS_COLUMN_PASSWORD = "password";
-    public static final String USERS_COLUMN_LOCATION = "location";
+    public static final String USERS_COLUMN_STREET_ADDRESS = "street_address";
+    public static final String USERS_COLUMN_CITY = "city";
+    public static final String USERS_COLUMN_PROVINCE = "province";
+    public static final String USERS_COLUMN_ZIP_CODE = "zip_code";
+    public static final String USERS_COLUMN_COUNTRY = "country";
 
     // TOOL TABLE
     public static final String TABLE_TOOLS = "tools";
@@ -130,6 +134,16 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TOOL_REVIEW_COLUMN_TOOL_ID = "tool_id";
     public static final String TOOL_REVIEW_COLUMN_RATING = "rating";
     public static final String TOOL_REVIEW_COLUMN_REVIEW = "review";
+
+    // TOOL ADDRESS TABLE
+    public static final String TABLE_TOOL_ADDRESS = "tool_addresses";
+    public static final String TOOL_ADDRESS_COLUMN_ID = "id";
+    public static final String TOOL_ADDRESS_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_ADDRESS_COLUMN_STREET_ADDRESS = "street_address";
+    public static final String TOOL_ADDRESS_COLUMN_CITY = "city";
+    public static final String TOOL_ADDRESS_COLUMN_PROVINCE = "province";
+    public static final String TOOL_ADDRESS_COLUMN_ZIP_CODE = "zip_code";
+    public static final String TOOL_ADDRESS_COLUMN_COUNTRY = "country";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -396,6 +410,19 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TOOL_REVIEW_COLUMN_TOOL_ID + ") REFERENCES "
             + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
 
+    public static final String MIGRATION_12_TO_13 = "CREATE TABLE "
+            + TABLE_TOOL_ADDRESS + " ("
+            + TOOL_ADDRESS_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_ADDRESS_COLUMN_TOOL_ID + " integer not null, "
+            + TOOL_ADDRESS_COLUMN_STREET_ADDRESS + " text not null, "
+            + TOOL_ADDRESS_COLUMN_CITY + " text not null, "
+            + TOOL_ADDRESS_COLUMN_PROVINCE + " text not null, "
+            + TOOL_ADDRESS_COLUMN_ZIP_CODE + " text not null, "
+            + TOOL_ADDRESS_COLUMN_COUNTRY + " text not null, "
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_ADDRESS_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -406,7 +433,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
                 + USERS_COLUMN_LAST_NAME + " text not null,"
                 + USERS_COLUMN_PHONE + " text, "
                 + USERS_COLUMN_PASSWORD + " text not null, "
-                + USERS_COLUMN_LOCATION + " text);";
+                + USERS_COLUMN_STREET_ADDRESS + " text not null, "
+                + USERS_COLUMN_CITY + " text not null, "
+                + USERS_COLUMN_PROVINCE + " text not null, "
+                + USERS_COLUMN_ZIP_CODE + " text not null, "
+                + USERS_COLUMN_COUNTRY + " text not null);";
         String CREATE_TOOLS_TABLE = "CREATE TABLE "
                 + TABLE_TOOLS + " ("
                 + TOOL_COLUMN_ID + " integer primary key autoincrement, "
@@ -513,6 +544,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_11_TO_12_PART_3);
         db.execSQL(MIGRATION_11_TO_12_PART_4);
         db.execSQL(MIGRATION_11_TO_12_PART_5);
+        db.execSQL(MIGRATION_12_TO_13);
     }
 
     // Upgrading database
@@ -582,6 +614,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             db.execSQL(MIGRATION_11_TO_12_PART_3);
             db.execSQL(MIGRATION_11_TO_12_PART_4);
             db.execSQL(MIGRATION_11_TO_12_PART_5);
+        }
+
+        if (oldVersion < 13) {
+            db.execSQL(MIGRATION_12_TO_13);
         }
     }
 }
