@@ -122,11 +122,11 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <Button
+                <ImageButton
                     android:id="@+id/rent_out_tools_button"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
-                />
+                    app:srcCompat="@drawable/toolbox" />
 
                 <TextView
                     android:layout_width="wrap_content"
