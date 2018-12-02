@@ -10,12 +10,24 @@
         android:layout_height="match_parent"
         android:layout_margin="20dp">
 
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="93dp"
+            android:layout_height="78dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="142dp"
+            android:src="@drawable/adduser" />
+
         <TextView
             android:id="@+id/tv_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_alignParentStart="true"
             android:gravity="center_horizontal"
-            android:textSize="50dp"/>
+            android:textSize="25dp" />
 
         <ScrollView
             android:layout_width="match_parent"

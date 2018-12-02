@@ -2,13 +2,8 @@ package com.toolshare.toolshare;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,7 +12,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton mProfileButton;
     private ImageButton mRentToolsButton;
+    private ImageButton maboutus;
     private ImageButton mRentOutToolsButton;
+    private ImageButton mshareapp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
+
+        maboutus = findViewById(R.id.aboutus);
+
+        mshareapp = findViewById(R.id.shareapp);
     }
 
 }
