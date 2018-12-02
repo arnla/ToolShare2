@@ -121,6 +121,15 @@ public class ViewToolFragment extends Fragment {
                                         tool.setRating(avg);
 
                                         updateTool(db, tool);
+
+                                        Fragment fragment = new ViewToolFragment();
+                                        fragment.setArguments(bundle);
+
+                                        FragmentManager fm = getFragmentManager();
+                                        FragmentTransaction transaction = fm.beginTransaction();
+                                        transaction.replace(R.id.fragment_container, fragment);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
                                     }
                                 })
                         .setNegativeButton("Cancel",
