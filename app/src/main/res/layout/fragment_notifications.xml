@@ -11,11 +11,16 @@
         android:text="Notifications"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
-    <Button
-        android:id="@+id/b_card_info"
+    <ScrollView
+        android:id="@+id/v_my_ads"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+        android:layout_height="500px">
 
+        <LinearLayout
+            android:id="@+id/ll_my_notifications"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"></LinearLayout>
+    </ScrollView>
 
 </RelativeLayout>

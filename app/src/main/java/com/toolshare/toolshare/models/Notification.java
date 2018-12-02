@@ -115,7 +115,7 @@ public class Notification implements Serializable {
     public static List<Notification> getAllNotificationsByOwner(DbHandler dbHandler, String owner){
         List<Notification> notifications = new ArrayList<Notification>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + TABLE_NOTIFICATION + "where" + NOTIFICATION_COLUMN_OWNER_ID + "=?", new String[]{owner});
+        Cursor cursor = db.rawQuery("select * from notifications where own_id = ?", new String[]{owner});
         if (cursor.moveToFirst()) {
             do {
                 Notification notification = new Notification(cursor.getInt(0),
