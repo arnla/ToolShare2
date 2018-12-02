@@ -1,6 +1,7 @@
 package com.toolshare.toolshare.models;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.toolshare.toolshare.db.DbHandler;
@@ -120,5 +121,25 @@ public class ToolAddress {
         // Inserting Row
         db.insert(TABLE_TOOL_ADDRESS, null, values);
         db.close();
+    }
+
+    public static ToolAddress getToolAddressByToolId(DbHandler dbHandler, int id) {
+        ToolAddress toolAddress = null;
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + TABLE_TOOL_ADDRESS + " where " + TOOL_ADDRESS_COLUMN_TOOL_ID + " = ?", new String[] {Integer.toString(id)});
+
+        if (cursor.moveToFirst()) {
+            toolAddress = new ToolAddress(cursor.getInt(0),
+                    cursor.getInt(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    cursor.getString(6));
+        }
+
+        cursor.close();
+        db.close();
+        return toolAddress;
     }
 }
