@@ -145,6 +145,14 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TOOL_ADDRESS_COLUMN_ZIP_CODE = "zip_code";
     public static final String TOOL_ADDRESS_COLUMN_COUNTRY = "country";
 
+    // NOTIFICATIONS ADDRESS TABLE
+    public static final String TABLE_NOTIFICATION = "notifications";
+    public static final String NOTIFICATION_COLUMN_ID = "id";
+    public static final String NOTIFICATION_COLUMN_REQUESTER_ID = "request_id";
+    public static final String NOTIFICATION_COLUMN_OWNER_ID = "own_id";
+    public static final String NOTIFICATION_COLUMN_STATUS_ID = "status_id";
+    public static final String NOTIFICATION_COLUMN_VIEWSTATUS_ID = "viewstatus_id";
+
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         //3rd argument to be passed is CursorFactory instance
