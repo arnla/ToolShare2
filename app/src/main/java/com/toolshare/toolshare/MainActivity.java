@@ -11,10 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageButton;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,7 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton mProfileButton;
     private ImageButton mRentToolsButton;
-    private Button mRentOutToolsButton;
+    private ImageButton maboutus;
+    private ImageButton mRentOutToolsButton;
+    private ImageButton mshareapp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +50,11 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        mRentOutToolsButton = (Button) findViewById(R.id.rent_out_tools_button);
-        mRentOutToolsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
-                i.putExtra("userEmail", bundle.getString("userEmail"));
-                i.putExtra("fragmentName", "dashboard");
-                startActivity(i);
-            }
-        });
+        mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
+
+        maboutus = findViewById(R.id.aboutus);
+
+        mshareapp = findViewById(R.id.shareapp);
     }
 
 }
