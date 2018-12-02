@@ -27,11 +27,6 @@
                 android:rating="1"
             />
 
-            <Button
-                android:id="@+id/b_submit_rating"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Submit"/>
 
             <TextView
                 android:id="@+id/tv_tool_name"

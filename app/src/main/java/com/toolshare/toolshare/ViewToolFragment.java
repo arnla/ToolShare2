@@ -45,7 +45,6 @@ public class ViewToolFragment extends Fragment {
     private Button mEditButton;
     private Button mSubmitButton;
     private RatingBar mToolRating;
-    private Button mCardInfo;
     private AlertDialog.Builder ratingPopup;
     private LinearLayout linearLayout;
     private int currentRating;
@@ -61,8 +60,8 @@ public class ViewToolFragment extends Fragment {
         db = (DbHandler) bundle.getSerializable("db");
         tool = (Tool) bundle.getSerializable("tool");
         //Todo: set to tool rating saved in database
-        mSavedRating.setRating(currentRating);
-        mSubmitButton = (Button) view.findViewById(R.id.b_submit_rating);
+        //mSavedRating.setRating(currentRating);
+        /*mSubmitButton = (Button) view.findViewById(R.id.b_submit_rating);
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,12 +94,11 @@ public class ViewToolFragment extends Fragment {
                     public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                         //Todo: adjust rating to place into system
                         /*currentRating = Integer.valueOf(currentRating ) */
-                        System.out.println("Rated val:"+v);
-                    }
-                });
+                      /*  System.out.println("Rated val:"+v);
+                    }*/
 
 
-                builder.setMessage("How would you rate this tool?");
+             /*   builder.setMessage("How would you rate this tool?");
                 builder.setCancelable(true);
 
                 builder.setPositiveButton(
@@ -123,7 +121,7 @@ public class ViewToolFragment extends Fragment {
                 builder.show();
 
             }
-        });
+        }); */
         mToolName = (TextView) view.findViewById(R.id.tv_tool_name);
         mToolYear = (TextView) view.findViewById(R.id.tv_tool_year);
         mToolBrand = (TextView) view.findViewById(R.id.tv_tool_brand);
@@ -138,20 +136,7 @@ public class ViewToolFragment extends Fragment {
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
 
-        mCardInfo = (Button) view.findViewById(R.id.b_card_info);
-        mCardInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new AddCardFragment();
-                fragment.setArguments(bundle);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
 
         setToolValues();
 

@@ -1,5 +1,10 @@
 package com.toolshare.toolshare.models;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
+import com.toolshare.toolshare.db.DbHandler;
+
 import java.security.cert.CertificateExpiredException;
 
 public class Card {
@@ -85,4 +90,33 @@ public class Card {
     public static final String CARD_COLUMN_EXPIRY_MONTH = "expiry_month";
     public static final String CARD_COLUMN_EXPIRY_YEAR = "expiry_year";
     public static final String CARD_COLUMN_CVC = "cvc";
+
+    public static void AddCard(DbHandler dbHandler, Card card) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CARD_COLUMN_OWNER_ID, card.getOwnerId());
+        values.put(CARD_COLUMN_FULL_NAME, card.getFullName());
+        values.put(CARD_COLUMN_CARD_NUMBER, card.getCardNumber());
+        values.put(CARD_COLUMN_EXPIRY_MONTH, card.getExpiryMonth());
+        values.put(CARD_COLUMN_EXPIRY_YEAR, card.getExpiryYear());
+
+        db.insert(TABLE_CARDS, null, values);
+        db.close();
+    }
+
+    public static void updateRequest(DbHandler dbHandler, Card card) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(CARD_COLUMN_OWNER_ID, card.getOwnerId());
+        values.put(CARD_COLUMN_FULL_NAME, card.getFullName());
+        values.put(CARD_COLUMN_CARD_NUMBER, card.getCardNumber());
+        values.put(CARD_COLUMN_EXPIRY_MONTH, card.getExpiryMonth());
+        values.put(CARD_COLUMN_EXPIRY_YEAR, card.getExpiryYear());
+
+        // updating row
+        db.update(TABLE_CARDS, values, CARD_COLUMN_ID + " = ?", new String[] {Integer.toString(card.getId())});
+    }
+
 }

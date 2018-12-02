@@ -49,21 +49,21 @@ public class AddCardFragment extends Fragment {
 
 
         creditCardView = (CreditCardView) view.findViewById(R.id.card);
-        /*mToolPurchase = (Button) view.findViewById(R.id.b_rent_tool);
+        mToolPurchase = (Button) view.findViewById(R.id.b_rent_tool);
         mToolPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertCard();
             }
-        });*/
+        });
         return view;
     }
 
-    /*private void insertCard() {
+    private void insertCard() {
         card.setCardNumber(cardNumber);
         card.setFullName(cardName);
-        card.setExpiryMonth(expiryDate);
-        card.setExpiryYear(expiryDate);
-    }*/
+        card.setExpiryMonth(Integer.parseInt(Integer.toString(expiryDate).substring(0, 1)));
+        card.setExpiryYear(Integer.parseInt(Integer.toString(expiryDate).substring(2, 3)));
+    }
 
 }
