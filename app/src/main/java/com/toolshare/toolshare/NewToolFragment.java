@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -125,6 +126,10 @@ public class NewToolFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap photo = (Bitmap) data.getExtras().get("data");
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            photo = Bitmap.createBitmap(photo, 0, 0, photo.getWidth(), photo.getHeight(), matrix, true);
+            photo = Bitmap.createScaledBitmap(photo, (int) (photo.getWidth() * 2.5), (int) (photo.getHeight() * 2.5), true);
             image = photo;
             mImage.setImageBitmap(photo);
         }

@@ -22,7 +22,8 @@
                     android:id="@+id/iv_image"
                     android:layout_width="wrap_content"
                     android:layout_height="300dp"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:layout_gravity="center_horizontal"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

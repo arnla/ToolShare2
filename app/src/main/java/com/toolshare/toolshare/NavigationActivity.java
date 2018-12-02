@@ -78,20 +78,6 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
 
     }
 
-/*    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        Fragment fragment = null;
-        switch (item.getItemId()) {
-            case R.id.new_tool_option:
-                fragment = new NewToolFragment();
-                return loadFragment(fragment);
-            case R.id.new_ad_option:
-                return true;
-            default:
-                return false;
-        }
-    }*/
-
     private boolean loadFragment(Fragment fragment) {
         Bundle bundle = new Bundle();
         bundle.putString("userEmail", this.bundle.getString("userEmail"));
@@ -107,5 +93,10 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
     }
 }
