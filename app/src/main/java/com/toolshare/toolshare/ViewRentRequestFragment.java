@@ -25,6 +25,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.RequestStatus;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
@@ -32,8 +33,11 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import static com.toolshare.toolshare.models.Request.addRequest;
+import static com.toolshare.toolshare.models.ToolSchedule.getDaysByRequestId;
+import static com.toolshare.toolshare.models.ToolSchedule.updateToolScheduleStatus;
 
 public class ViewRentRequestFragment extends Fragment {
     private Bundle bundle;
@@ -47,12 +51,11 @@ public class ViewRentRequestFragment extends Fragment {
     private TextView mToolLink;
     private LinearLayout mRentRequestLayout;
     private RadioGroup mDeliveryMethod;
-    private TextView mStartDate;
-    private TextView mEndDate;
     private Button mAccept;
     private Button mReject;
     private Button mCancel;
     private TextView mStatus;
+    private TextView mRequestedDays;
 
     @Nullable
     @Override
@@ -108,8 +111,7 @@ public class ViewRentRequestFragment extends Fragment {
             ((RadioButton) mDeliveryMethod.getChildAt(i)).setEnabled(false);
         }
 
-        mStartDate = (TextView) view.findViewById(R.id.tv_rent_request_start_date);
-        mEndDate = (TextView) view.findViewById(R.id.tv_rent_request_end_date);
+        mRequestedDays = (TextView) view.findViewById(R.id.tv_requested_days);
 
         mAccept = (Button) view.findViewById(R.id.b_rent_request_accept);
         mAccept.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +153,7 @@ public class ViewRentRequestFragment extends Fragment {
     private void acceptRequest() {
         request.setStatusId(2);
         Request.updateRequest(db, request);
+        updateToolScheduleStatus(db, request.getId(), "Busy");
     }
 
     private void rejectRequest() {
@@ -171,7 +174,11 @@ public class ViewRentRequestFragment extends Fragment {
         mToolLink.setTextColor(Color.BLUE);
         mToolLink.setClickable(true);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        mStartDate.setText(formatter.format(request.getRequestedStartDate()));
-        mEndDate.setText(formatter.format(request.getRequestedEndDate()));
+        List<Date> dates = getDaysByRequestId(db, request.getId());
+        String datesString = "";
+        for (int i = 0; i < dates.size(); i++) {
+            datesString += formatter.format(dates.get(i)) + "\n";
+        }
+        mRequestedDays.setText(datesString);
     }
 }

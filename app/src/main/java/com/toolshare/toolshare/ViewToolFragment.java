@@ -3,6 +3,7 @@ package com.toolshare.toolshare;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,16 +11,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +25,15 @@ import android.widget.Toast;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolReview;
 
 import org.w3c.dom.Text;
+
+import java.util.List;
+
+import static com.toolshare.toolshare.models.Tool.updateTool;
+import static com.toolshare.toolshare.models.ToolReview.addToolReview;
+import static com.toolshare.toolshare.models.ToolReview.getAllRatingsByToolId;
 
 
 public class ViewToolFragment extends Fragment {
@@ -40,16 +45,12 @@ public class ViewToolFragment extends Fragment {
     private TextView mToolYear;
     private TextView mToolBrand;
     private TextView mToolModel;
-    private TextView mRateTool;
     private Button mDeleteButton;
     private Button mEditButton;
-    private Button mSubmitButton;
-    private RatingBar mToolRating;
-    private AlertDialog.Builder ratingPopup;
-    private LinearLayout linearLayout;
-    private int currentRating;
-    private RatingBar mSavedRating;
     private ImageView mImage;
+    private TextView mLeaveReview;
+    private RatingBar mRating;
+    private TextView mOwner;
 
     @Nullable
     @Override
@@ -59,69 +60,7 @@ public class ViewToolFragment extends Fragment {
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
         tool = (Tool) bundle.getSerializable("tool");
-        //Todo: set to tool rating saved in database
-        //mSavedRating.setRating(currentRating);
-        /*mSubmitButton = (Button) view.findViewById(R.id.b_submit_rating);
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LinearLayout linearLayout = new LinearLayout(getActivity());
-                mToolRating = new RatingBar(getActivity());
 
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-
-
-                //Todo: adjust centering if possible
-                lp.gravity = Gravity.CENTER;
-
-                mToolRating.setLayoutParams(lp);
-                mToolRating.setNumStars(5);
-                mToolRating.setStepSize(1);
-                mToolRating.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT));
-
-
-                linearLayout.addView(mToolRating);
-
-                builder.setView(linearLayout);
-
-               mToolRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                    @Override
-                    public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                        //Todo: adjust rating to place into system
-                        /*currentRating = Integer.valueOf(currentRating ) */
-                      /*  System.out.println("Rated val:"+v);
-                    }*/
-
-
-             /*   builder.setMessage("How would you rate this tool?");
-                builder.setCancelable(true);
-
-                builder.setPositiveButton(
-                        "Submit",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.setNegativeButton(
-                        "Cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
-
-                builder.create();
-                builder.show();
-
-            }
-        }); */
         mToolName = (TextView) view.findViewById(R.id.tv_tool_name);
         mToolYear = (TextView) view.findViewById(R.id.tv_tool_year);
         mToolBrand = (TextView) view.findViewById(R.id.tv_tool_brand);
@@ -135,10 +74,68 @@ public class ViewToolFragment extends Fragment {
         });
         mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
-
-
+        mLeaveReview = (TextView) view.findViewById(R.id.tv_ratings);
+        mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
+        mOwner = (TextView) view.findViewById(R.id.tv_owner);
 
         setToolValues();
+
+        mLeaveReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View reviewView = li.inflate(R.layout.dialog_review, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(reviewView);
+
+                final EditText userInput = (EditText) reviewView.findViewById(R.id.et_review);
+                final RatingBar userRating = (RatingBar) reviewView.findViewById(R.id.rb_tool_rating) ;
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(true)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    ToolReview review = new ToolReview();
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        review.setToolId(tool.getId());
+                                        review.setReview(userInput.getText().toString());
+                                        review.setRating((int) userRating.getRating());
+
+                                        addToolReview(db, review);
+
+                                        // get new average of tool's ratings
+                                        List<Integer> allRatings = getAllRatingsByToolId(db, tool.getId());
+                                        float avg = 0;
+                                        for (int i = 0; i < allRatings.size(); i++) {
+                                            avg += allRatings.get(i);
+                                        }
+                                        avg = avg / allRatings.size();
+                                        tool.setRating(avg);
+
+                                        updateTool(db, tool);
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
 
         return view;
     }
@@ -149,6 +146,15 @@ public class ViewToolFragment extends Fragment {
         mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
         mToolModel.setText(mToolModel.getText() + tool.getModel());
         mImage.setImageBitmap(tool.getPicture());
+        if (tool.getRating() == 0) {
+            mLeaveReview.setText("Be the first to review");
+        } else {
+            mRating.setRating(tool.getRating());
+            mLeaveReview.setText("Leave a review");
+        }
+        mLeaveReview.setTextColor(Color.BLUE);
+        mOwner.setText(tool.getOwner());
+        mOwner.setTextColor(Color.BLUE);
     }
 
     private void deleteTool() {
@@ -156,6 +162,4 @@ public class ViewToolFragment extends Fragment {
         Toast.makeText(getActivity(), "Tool deleted", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
-
-
 }

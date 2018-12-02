@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 13;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -24,7 +24,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String USERS_COLUMN_LAST_NAME = "last_name";
     public static final String USERS_COLUMN_PHONE = "phone";
     public static final String USERS_COLUMN_PASSWORD = "password";
-    public static final String USERS_COLUMN_LOCATION = "location";
+    public static final String USERS_COLUMN_STREET_ADDRESS = "street_address";
+    public static final String USERS_COLUMN_CITY = "city";
+    public static final String USERS_COLUMN_PROVINCE = "province";
+    public static final String USERS_COLUMN_ZIP_CODE = "zip_code";
+    public static final String USERS_COLUMN_COUNTRY = "country";
 
     // TOOL TABLE
     public static final String TABLE_TOOLS = "tools";
@@ -36,6 +40,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TOOL_COLUMN_MODEL = "model";
     public static final String TOOL_COLUMN_BRAND_ID = "brand_id";
     public static final String TOOL_COLUMN_PICTURE = "picture";
+    public static final String TOOL_COLUMN_RATING = "rating";
 
     // TOOL TYPE TABLE
     public static final String TABLE_TOOL_TYPES = "tool_types";
@@ -114,6 +119,31 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String TABLE_TRANSACTION_STATUSES = "transaction_statuses";
     public static final String TRANSACTION_STATUS_COLUMN_ID = "id";
     public static final String TRANSACTION_STATUS_COLUMN_NAME = "status_name";
+
+    // TOOL SCHEDULE TABLE
+    public static final String TABLE_TOOL_SCHEDULE = "tool_schedule";
+    public static final String TOOL_SCHEDULE_COLUMN_ID = "id";
+    public static final String TOOL_SCHEDULE_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_SCHEDULE_COLUMN_REQUEST_ID = "request_id";
+    public static final String TOOL_SCHEDULE_COLUMN_DATE = "date";
+    public static final String TOOL_SCHEDULE_COLUMN_STATUS = "status";
+
+    // TOOL REVIEW TABLE
+    public static final String TABLE_TOOL_REVIEW = "tool_reviews";
+    public static final String TOOL_REVIEW_COLUMN_ID = "id";
+    public static final String TOOL_REVIEW_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_REVIEW_COLUMN_RATING = "rating";
+    public static final String TOOL_REVIEW_COLUMN_REVIEW = "review";
+
+    // TOOL ADDRESS TABLE
+    public static final String TABLE_TOOL_ADDRESS = "tool_addresses";
+    public static final String TOOL_ADDRESS_COLUMN_ID = "id";
+    public static final String TOOL_ADDRESS_COLUMN_TOOL_ID = "tool_id";
+    public static final String TOOL_ADDRESS_COLUMN_STREET_ADDRESS = "street_address";
+    public static final String TOOL_ADDRESS_COLUMN_CITY = "city";
+    public static final String TOOL_ADDRESS_COLUMN_PROVINCE = "province";
+    public static final String TOOL_ADDRESS_COLUMN_ZIP_CODE = "zip_code";
+    public static final String TOOL_ADDRESS_COLUMN_COUNTRY = "country";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -299,6 +329,100 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + " from tools_old;";
     public static final String MIGRATION_9_TO_10_PART_4 = "drop table tools_old;";
 
+    public static final String MIGRATION_10_TO_11_PART_1 = "alter table "
+            + TABLE_REQUESTS + " rename to requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_2 = "create table "
+            + TABLE_REQUESTS + " ("
+            + REQUEST_COLUMN_ID + " integer primary key autoincrement, "
+            + REQUEST_COLUMN_REQUESTER_ID + " text not null, "
+            + REQUEST_COLUMN_OWNER_ID + " text not null, "
+            + REQUEST_COLUMN_AD_ID + " integer not null, "
+            + REQUEST_COLUMN_DELIVERY_METHOD + " text not null, "
+            + REQUEST_COLUMN_STATUS_ID + " integer not null, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "," + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_ads FOREIGN KEY ("
+            + REQUEST_COLUMN_AD_ID + ") REFERENCES "
+            + TABLE_ADS + "(" + AD_COLUMN_ID + "), "
+            + "CONSTRAINT fk_status FOREIGN KEY ("
+            + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";
+    public static final String MIGRATION_10_TO_11_PART_3 = "insert into "
+            + TABLE_REQUESTS + "("
+            + REQUEST_COLUMN_ID + "," + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ","
+            + REQUEST_COLUMN_AD_ID + "," + REQUEST_COLUMN_DELIVERY_METHOD + "," + REQUEST_COLUMN_STATUS_ID + ") "
+            + "select " + REQUEST_COLUMN_ID + "," + REQUEST_COLUMN_REQUESTER_ID + "," + REQUEST_COLUMN_OWNER_ID + ","
+            + REQUEST_COLUMN_AD_ID + "," + REQUEST_COLUMN_DELIVERY_METHOD + "," + REQUEST_COLUMN_STATUS_ID
+            + " from requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_4 = "drop table requests_old;";
+    public static final String MIGRATION_10_TO_11_PART_5 = "create table "
+            + TABLE_TOOL_SCHEDULE + " ("
+            + TOOL_SCHEDULE_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + " integer not null, "
+            + TOOL_SCHEDULE_COLUMN_REQUEST_ID + " int not null, "
+            + TOOL_SCHEDULE_COLUMN_DATE + " text not null, "
+            + TOOL_SCHEDULE_COLUMN_STATUS + " text not null, "
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_SCHEDULE_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "), "
+            + "CONSTRAINT fk_requests FOREIGN KEY ("
+            + TOOL_SCHEDULE_COLUMN_REQUEST_ID + ") REFERENCES "
+            + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "));";
+
+    public static final String MIGRATION_11_TO_12_PART_1 = "alter table "
+            + TABLE_TOOLS + " rename to tools_old;";
+    public static final String MIGRATION_11_TO_12_PART_2 = "CREATE TABLE "
+            + TABLE_TOOLS + " ("
+            + TOOL_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_COLUMN_OWNER + " text not null, "
+            + TOOL_COLUMN_TYPE_ID + " integer not null, "
+            + TOOL_COLUMN_BRAND_ID + " integer not null,"
+            + TOOL_COLUMN_NAME + " text not null, "
+            + TOOL_COLUMN_YEAR + " integer, "
+            + TOOL_COLUMN_MODEL + " text, "
+            + TOOL_COLUMN_PICTURE + " blob, "
+            + TOOL_COLUMN_RATING + " real, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + TOOL_COLUMN_OWNER + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "),"
+            + "CONSTRAINT fk_tool_types FOREIGN KEY ("
+            + TOOL_COLUMN_TYPE_ID + ") REFERENCES "
+            + TABLE_TOOL_TYPES + "(" + TOOL_TYPE_COLUMN_ID + "),"
+            + "CONSTRAINT fk_brands FOREIGN KEY ("
+            + TOOL_COLUMN_BRAND_ID + ") REFERENCES "
+            + TABLE_BRANDS + "(" + BRAND_COLUMN_ID + "));";
+    public static final String MIGRATION_11_TO_12_PART_3 = "insert into "
+            + TABLE_TOOLS + "("
+            + TOOL_COLUMN_ID + "," + TOOL_COLUMN_OWNER + "," + TOOL_COLUMN_TYPE_ID + "," + TOOL_COLUMN_BRAND_ID
+            + "," + TOOL_COLUMN_NAME + "," + TOOL_COLUMN_YEAR + "," + TOOL_COLUMN_MODEL + "," + TOOL_COLUMN_PICTURE + ") "
+            + "select " + TOOL_COLUMN_ID + "," + TOOL_COLUMN_OWNER + "," + TOOL_COLUMN_TYPE_ID + "," + TOOL_COLUMN_BRAND_ID
+            + "," + TOOL_COLUMN_NAME + "," + TOOL_COLUMN_YEAR + "," + TOOL_COLUMN_MODEL + "," + TOOL_COLUMN_PICTURE
+            + " from tools_old;";
+    public static final String MIGRATION_11_TO_12_PART_4 = "drop table tools_old;";
+    public static final String MIGRATION_11_TO_12_PART_5 = "CREATE TABLE "
+            + TABLE_TOOL_REVIEW + " ("
+            + TOOL_REVIEW_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_REVIEW_COLUMN_TOOL_ID + " int not null, "
+            + TOOL_REVIEW_COLUMN_RATING + " integer not null, "
+            + TOOL_REVIEW_COLUMN_REVIEW + " text,"
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_REVIEW_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
+
+    public static final String MIGRATION_12_TO_13 = "CREATE TABLE "
+            + TABLE_TOOL_ADDRESS + " ("
+            + TOOL_ADDRESS_COLUMN_ID + " integer primary key autoincrement, "
+            + TOOL_ADDRESS_COLUMN_TOOL_ID + " integer not null, "
+            + TOOL_ADDRESS_COLUMN_STREET_ADDRESS + " text not null, "
+            + TOOL_ADDRESS_COLUMN_CITY + " text not null, "
+            + TOOL_ADDRESS_COLUMN_PROVINCE + " text not null, "
+            + TOOL_ADDRESS_COLUMN_ZIP_CODE + " text not null, "
+            + TOOL_ADDRESS_COLUMN_COUNTRY + " text not null, "
+            + "CONSTRAINT fk_tools FOREIGN KEY ("
+            + TOOL_ADDRESS_COLUMN_TOOL_ID + ") REFERENCES "
+            + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -309,7 +433,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
                 + USERS_COLUMN_LAST_NAME + " text not null,"
                 + USERS_COLUMN_PHONE + " text, "
                 + USERS_COLUMN_PASSWORD + " text not null, "
-                + USERS_COLUMN_LOCATION + " text);";
+                + USERS_COLUMN_STREET_ADDRESS + " text not null, "
+                + USERS_COLUMN_CITY + " text not null, "
+                + USERS_COLUMN_PROVINCE + " text not null, "
+                + USERS_COLUMN_ZIP_CODE + " text not null, "
+                + USERS_COLUMN_COUNTRY + " text not null);";
         String CREATE_TOOLS_TABLE = "CREATE TABLE "
                 + TABLE_TOOLS + " ("
                 + TOOL_COLUMN_ID + " integer primary key autoincrement, "
@@ -406,6 +534,17 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_9_TO_10_PART_2);
         db.execSQL(MIGRATION_9_TO_10_PART_3);
         db.execSQL(MIGRATION_9_TO_10_PART_4);
+        db.execSQL(MIGRATION_10_TO_11_PART_1);
+        db.execSQL(MIGRATION_10_TO_11_PART_2);
+        db.execSQL(MIGRATION_10_TO_11_PART_3);
+        db.execSQL(MIGRATION_10_TO_11_PART_4);
+        db.execSQL(MIGRATION_10_TO_11_PART_5);
+        db.execSQL(MIGRATION_11_TO_12_PART_1);
+        db.execSQL(MIGRATION_11_TO_12_PART_2);
+        db.execSQL(MIGRATION_11_TO_12_PART_3);
+        db.execSQL(MIGRATION_11_TO_12_PART_4);
+        db.execSQL(MIGRATION_11_TO_12_PART_5);
+        db.execSQL(MIGRATION_12_TO_13);
     }
 
     // Upgrading database
@@ -459,6 +598,26 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             db.execSQL(MIGRATION_9_TO_10_PART_2);
             db.execSQL(MIGRATION_9_TO_10_PART_3);
             db.execSQL(MIGRATION_9_TO_10_PART_4);
+        }
+
+        if (oldVersion < 11) {
+            db.execSQL(MIGRATION_10_TO_11_PART_1);
+            db.execSQL(MIGRATION_10_TO_11_PART_2);
+            db.execSQL(MIGRATION_10_TO_11_PART_3);
+            db.execSQL(MIGRATION_10_TO_11_PART_4);
+            db.execSQL(MIGRATION_10_TO_11_PART_5);
+        }
+
+        if (oldVersion < 12) {
+            db.execSQL(MIGRATION_11_TO_12_PART_1);
+            db.execSQL(MIGRATION_11_TO_12_PART_2);
+            db.execSQL(MIGRATION_11_TO_12_PART_3);
+            db.execSQL(MIGRATION_11_TO_12_PART_4);
+            db.execSQL(MIGRATION_11_TO_12_PART_5);
+        }
+
+        if (oldVersion < 13) {
+            db.execSQL(MIGRATION_12_TO_13);
         }
     }
 }

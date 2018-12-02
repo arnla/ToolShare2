@@ -34,8 +34,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Ad;
+import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
+import com.toolshare.toolshare.models.ToolSchedule;
 import com.toolshare.toolshare.models.ToolType;
 import com.toolshare.toolshare.models.User;
 
@@ -44,6 +49,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.toolshare.toolshare.models.Request.addRequest;
+import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
+import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
 
 /**
  * A login screen that offers login via email/password.
@@ -362,9 +370,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void seedData() {
-        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000");
+        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000", "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
         user1.addUser(db);
-        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000");
+        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000", "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
         user2.addUser(db);
 
         ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
@@ -402,6 +410,55 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_reciprocating_saws_dwe305_64_1000);
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305", image);
         tool.addTool(db);
+
+        ToolAddress toolAddress = new ToolAddress(1, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(2, "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(3, "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(4, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(5, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
+
+        Ad ad = new Ad("john.smith@google.com", 1, "2018-11-29", "2019-12-29", "Table saw available weekends", "Available only on the weekends. Can keep from Saturday to Sunday", 5);
+        ad.addAd(db);
+        ad = new Ad("john.smith@google.com", 5, "2018-11-29", "2019-05-31", "Reciprocating saw $5/day", "You can keep it as long as needed", 5);
+        ad.addAd(db);
+        ad = new Ad("jane.doe@google.com", 2, "2018-11-29", "2019-05-31", "Spade drill", "Only available weekdays", 7);
+        ad.addAd(db);
+
+        Availability availability = new Availability(1, 1, 0, 0, 0, 0, 0, 1, "2018-12-01", "2019-12-29");
+        availability.addAvailability(db);
+        availability = new Availability(2, 1, 1, 1, 1, 1, 1, 1, "2018-11-29", "2019-05-31");
+        availability.addAvailability(db);
+        availability = new Availability(3, 0, 1, 1, 1, 1, 1, 0, "2018-11-29", "2019-05-31");
+        availability.addAvailability(db);
+
+        Request request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "Pickup", 1);
+        addRequest(db, request);
+        request = new Request("jane.doe@google.com", "john.smith@google.com", 2, "Delivery", 1);
+        addRequest(db, request);
+        request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "Pickup", 2);
+        addRequest(db, request);
+
+        ToolSchedule toolSchedule = new ToolSchedule(2, 1, "2018-12-17", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(2, 1, "2018-12-18", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(2, 1, "2018-12-19", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-25", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-26", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(5, 2, "2019-01-27", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(1, 3, "2019-03-02", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(1, 3, "2019-03-03", "Busy");
+        insertToolSchedule(db, toolSchedule);
 
         Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }

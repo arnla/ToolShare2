@@ -15,21 +15,28 @@ public class User {
     private String LastName;
     private String Phone;
     private String Password;
+    private String StreetAddress;
+    private String City;
+    private String Province;
+    private String ZipCode;
+    private String Country;
 
     public User() {
-        this.Email = null;
-        this.FirstName = null;
-        this.LastName = null;
-        this.Phone = null;
-        this.Password = null;
+
     }
 
-    public User(String email, String firstName, String lastName, String phone, String password) {
+    public User(String email, String firstName, String lastName, String phone, String password, String streetAddress,
+                String city, String province, String zipCode, String country) {
         this.Email = email;
         this.FirstName = firstName;
         this.LastName = lastName;
         this.Phone = phone;
         this.Password = password;
+        this.StreetAddress = streetAddress;
+        this.City = city;
+        this.Province = province;
+        this.ZipCode = zipCode;
+        this.Country = country;
     }
 
     public String getFirstName() {
@@ -72,6 +79,46 @@ public class User {
         this.Password = password;
     }
 
+    public String getStreetAddress() {
+        return StreetAddress;
+    }
+
+    public void setStreetAddress(String streetAddress) {
+        StreetAddress = streetAddress;
+    }
+
+    public String getCity() {
+        return City;
+    }
+
+    public void setCity(String city) {
+        City = city;
+    }
+
+    public String getProvince() {
+        return Province;
+    }
+
+    public void setProvince(String province) {
+        Province = province;
+    }
+
+    public String getZipCode() {
+        return ZipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        ZipCode = zipCode;
+    }
+
+    public String getCountry() {
+        return Country;
+    }
+
+    public void setCountry(String country) {
+        Country = country;
+    }
+
     /*****************************************************************************
      * DB Functions
      *
@@ -84,18 +131,27 @@ public class User {
     public static final String USERS_COLUMN_LAST_NAME = "last_name";
     public static final String USERS_COLUMN_PHONE = "phone";
     public static final String USERS_COLUMN_PASSWORD = "password";
-    public static final String USERS_COLUMN_LOCATION = "location";
+    public static final String USERS_COLUMN_STREET_ADDRESS = "street_address";
+    public static final String USERS_COLUMN_CITY = "city";
+    public static final String USERS_COLUMN_PROVINCE = "province";
+    public static final String USERS_COLUMN_ZIP_CODE = "zip_code";
+    public static final String USERS_COLUMN_COUNTRY = "country";
 
     // code to add the new user
     public void addUser(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("email", this.getEmail()); // User email
-        values.put("first_name", this.getFirstName()); // User first name
-        values.put("last_name", this.getLastName()); // User last name
-        values.put("phone", this.getPhone()); // User phone
-        values.put("password", this.getPassword()); // User password
+        values.put("email", this.getEmail());
+        values.put("first_name", this.getFirstName());
+        values.put("last_name", this.getLastName());
+        values.put("phone", this.getPhone());
+        values.put("password", this.getPassword());
+        values.put(USERS_COLUMN_STREET_ADDRESS, this.getStreetAddress());
+        values.put(USERS_COLUMN_CITY, this.getCity());
+        values.put(USERS_COLUMN_PROVINCE, this.getProvince());
+        values.put(USERS_COLUMN_ZIP_CODE, this.getZipCode());
+        values.put(USERS_COLUMN_COUNTRY, this.getCountry());
 
         // Inserting Row
         db.insert("users", null, values);
@@ -115,7 +171,12 @@ public class User {
                 cursor.getString(1),
                 cursor.getString(2),
                 cursor.getString(3),
-                cursor.getString(4));
+                cursor.getString(4),
+                cursor.getString(5),
+                cursor.getString(6),
+                cursor.getString(7),
+                cursor.getString(8),
+                cursor.getString(9));
         // return user
         return user;
     }

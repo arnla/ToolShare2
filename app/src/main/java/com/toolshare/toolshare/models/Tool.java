@@ -23,6 +23,7 @@ public class Tool implements Serializable {
     private String Model;
     private int Brand;
     private Bitmap Picture;
+    private float Rating;
 
     public Tool() {
         this.Id = -1;
@@ -44,7 +45,7 @@ public class Tool implements Serializable {
         this.Picture = image;
     }
 
-    public Tool(int id, String owner, int typeId, int brandId, String name, int year, String model, byte[] imageInBytes) {
+    public Tool(int id, String owner, int typeId, int brandId, String name, int year, String model, byte[] imageInBytes, float rating) {
         this.Id = id;
         this.Owner = owner;
         this.TypeId = typeId;
@@ -53,6 +54,7 @@ public class Tool implements Serializable {
         this.Model = model;
         this.Brand = brandId;
         this.Picture = BitmapFactory.decodeByteArray(imageInBytes, 0, imageInBytes.length);
+        this.Rating = rating;
     }
 
     public int getId() {
@@ -115,6 +117,13 @@ public class Tool implements Serializable {
 
     public void setPicture(Bitmap picture) { Picture = picture; }
 
+    public float getRating() {
+        return Rating;
+    }
+
+    public void setRating(float rating) {
+        Rating = rating;
+    }
 
     /*****************************************************************************
      * DB Functions
@@ -131,6 +140,7 @@ public class Tool implements Serializable {
     public static final String TOOL_COLUMN_MODEL = "model";
     public static final String TOOL_COLUMN_BRAND_ID = "brand_id";
     public static final String TOOL_COLUMN_PICTURE = "picture";
+    public static final String TOOL_COLUMN_RATING = "rating";
 
     public void addTool(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
@@ -147,6 +157,7 @@ public class Tool implements Serializable {
         values.put(TOOL_COLUMN_MODEL, this.getModel());
         values.put(TOOL_COLUMN_BRAND_ID, this.getBrand());
         values.put(TOOL_COLUMN_PICTURE, imageInBytes);
+        values.put(TOOL_COLUMN_RATING, this.getRating());
 
         // Inserting Row
         db.insert("tools", null, values);
@@ -168,7 +179,8 @@ public class Tool implements Serializable {
                         cursor.getString(4),
                         cursor.getInt(5),
                         cursor.getString(6),
-                        cursor.getBlob(7));
+                        cursor.getBlob(7),
+                        cursor.getFloat(8));
                 tools.add(tool);
             } while (cursor.moveToNext());
         }
@@ -193,7 +205,8 @@ public class Tool implements Serializable {
                         cursor.getString(4),
                         cursor.getInt(5),
                         cursor.getString(6),
-                        cursor.getBlob(7));
+                        cursor.getBlob(7),
+                        cursor.getFloat(8));
                 tools.add(tool);
             } while (cursor.moveToNext());
         }
@@ -216,7 +229,8 @@ public class Tool implements Serializable {
                     cursor.getString(4),
                     cursor.getInt(5),
                     cursor.getString(6),
-                    cursor.getBlob(7));
+                    cursor.getBlob(7),
+                    cursor.getFloat(8));
         }
 
         cursor.close();
@@ -230,6 +244,27 @@ public class Tool implements Serializable {
                 "id = ?",
                 new String[] {Integer.toString(id)});
         db.close();
+    }
+
+    public static void updateTool(DbHandler dbHandler, Tool tool) {
+        SQLiteDatabase db = dbHandler.getWritableDatabase();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        tool.getPicture().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] imageInBytes = stream.toByteArray();
+
+        ContentValues values = new ContentValues();
+        values.put(TOOL_COLUMN_OWNER, tool.getOwner());
+        values.put(TOOL_COLUMN_TYPE_ID, tool.getTypeId());
+        values.put(TOOL_COLUMN_NAME, tool.getName());
+        values.put(TOOL_COLUMN_YEAR, tool.getYear());
+        values.put(TOOL_COLUMN_MODEL, tool.getModel());
+        values.put(TOOL_COLUMN_BRAND_ID, tool.getBrand());
+        values.put(TOOL_COLUMN_PICTURE, imageInBytes);
+        values.put(TOOL_COLUMN_RATING, tool.getRating());
+
+        // updating row
+        db.update(TABLE_TOOLS, values, TOOL_COLUMN_ID + " = ?", new String[] {Integer.toString(tool.getId())});
     }
 
     @Override

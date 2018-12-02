@@ -46,7 +46,7 @@ public class NewToolFragment extends Fragment {
     private Spinner mBrandSpinner;
     private EditText mModel;
     private Button mCreateToolButton;
-    private ImageButton mAddImage;
+    private Button mAddImage;
     private ImageView mImage;
     private static final int CAMERA_REQUEST = 1888;
     private Bitmap image;
@@ -72,27 +72,33 @@ public class NewToolFragment extends Fragment {
                 insertTool();
             }
         });
-        mAddImage = (ImageButton) view.findViewById(R.id.ib_add_image);
+/*        mAddImage = (Button) view.findViewById(R.id.b_add_image);
         mAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
-        });
+        });*/
         mImage = (ImageView) view.findViewById(R.id.iv_image);
-        mImage.setVisibility(View.GONE);
+        Bitmap addImageIcon = BitmapFactory.decodeResource(getResources(), R.drawable.add_tool_image);
+        mImage.setImageBitmap(addImageIcon);
+        mImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
 
         return view;
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            mAddImage.setVisibility(View.GONE);
             Bitmap photo = (Bitmap) data.getExtras().get("data");
             image = photo;
             mImage.setImageBitmap(photo);
-            mImage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -133,7 +139,7 @@ public class NewToolFragment extends Fragment {
         Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
         if (image == null) {
-            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_table_saws_rts11_64_1000);
+            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
             image = photo;
         }
         Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);

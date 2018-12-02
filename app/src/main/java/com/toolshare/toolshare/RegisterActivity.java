@@ -66,6 +66,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private EditText mLastNameView;
     private EditText mPhoneView;
     private EditText mPasswordView;
+    private EditText mStreetAddress;
+    private EditText mCity;
+    private EditText mProvince;
+    private EditText mZipCode;
+    private EditText mCountry;
 
     // Database
     private DbHandler db;
@@ -83,6 +88,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mFirstNameView = (EditText) findViewById(R.id.first_name_register);
         mLastNameView = (EditText) findViewById(R.id.last_name_register);
         mPhoneView = (EditText) findViewById(R.id.phone_register);
+        mStreetAddress = (EditText) findViewById(R.id.street_address);
+        mCity = (EditText) findViewById(R.id.city);
+        mProvince = (EditText) findViewById(R.id.province);
+        mZipCode = (EditText) findViewById(R.id.zip_code);
+        mCountry = (EditText) findViewById(R.id.country);
 
         Button mRegisterButton = (Button) findViewById(R.id.register_register);
         mRegisterButton.setOnClickListener(new OnClickListener() {
@@ -104,6 +114,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mLastNameView.setError(null);
         mPhoneView.setError(null);
         mPasswordView.setError(null);
+        mStreetAddress.setError(null);
+        mCity.setError(null);
+        mProvince.setError(null);
+        mZipCode.setError(null);
+        mCountry.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
@@ -111,7 +126,12 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String lastName = mLastNameView.getText().toString();
         String phone = mPhoneView.getText().toString();
         String password = mPasswordView.getText().toString();
-        User user = new User(email, firstName, lastName, phone, password);
+        String streetAddress = mStreetAddress.getText().toString();
+        String city = mStreetAddress.getText().toString();
+        String province = mProvince.getText().toString();
+        String zipCode = mZipCode.getText().toString();
+        String country = mCountry.getText().toString();
+        User user = new User(email, firstName, lastName, phone, password, streetAddress, city, province, zipCode, country);
 
         user.addUser(db);
 

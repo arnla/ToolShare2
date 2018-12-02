@@ -1,17 +1,20 @@
 package com.toolshare.toolshare;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.annotation.Nullable;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -22,6 +25,8 @@ import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 
 import java.util.List;
+
+import static com.toolshare.toolshare.models.RequestStatus.getStatusByPk;
 
 
 public class ProfileFragment extends Fragment {
@@ -97,12 +102,32 @@ public class ProfileFragment extends Fragment {
     }
 
     private void addRequestButton(LinearLayout layout, final Request request) {
-        Button button = new Button(getActivity().getApplicationContext());
-        button.setHeight(15000);
-        layout.addView(button);
-        button.setText(request.getAd().getTitle());
-        button.setOnClickListener(new View.OnClickListener(){
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(425, 500);
+        linearLayoutParams.setMargins(10,0,10,0);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(425, 150);
+        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(425, 350);
+        imageViewParams.setMargins(10,10,10,10);
 
+        LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
+        linearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setBackgroundColor(Color.GRAY);
+
+        ImageView imageView = new ImageView(getActivity().getApplicationContext());
+        imageView.setAdjustViewBounds(true);
+        imageView.setImageBitmap(request.getAd().getTool().getPicture());
+        imageView.setLayoutParams(imageViewParams);
+
+        TextView textView = new TextView(getActivity().getApplicationContext());
+        textView.setText(getStatusByPk((DbHandler) bundle.getSerializable("db"), request.getStatusId()));
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setLayoutParams(textViewParams);
+
+        linearLayout.addView(imageView);
+        linearLayout.addView(textView);
+
+        linearLayout.setClickable(true);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bundle.putSerializable("request", request);
@@ -116,15 +141,37 @@ public class ProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        layout.addView(linearLayout);
     }
 
     private void addAdButton(LinearLayout layout, final Ad ad) {
-        Button button = new Button(getActivity().getApplicationContext());
-        button.setHeight(15000);
-        layout.addView(button);
-        button.setText(ad.getTitle());
-        button.setOnClickListener(new View.OnClickListener(){
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(425, 500);
+        linearLayoutParams.setMargins(10,0,10,0);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(425, 150);
+        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(425, 350);
+        imageViewParams.setMargins(10,10,10,10);
 
+        LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
+        linearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setBackgroundColor(Color.GRAY);
+
+        ImageView imageView = new ImageView(getActivity().getApplicationContext());
+        imageView.setAdjustViewBounds(true);
+        imageView.setImageBitmap(ad.getTool().getPicture());
+        imageView.setLayoutParams(imageViewParams);
+
+        TextView textView = new TextView(getActivity().getApplicationContext());
+        textView.setText(ad.getTitle());
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setLayoutParams(textViewParams);
+
+        linearLayout.addView(imageView);
+        linearLayout.addView(textView);
+
+        linearLayout.setClickable(true);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bundle.putSerializable("ad", ad);
@@ -138,15 +185,37 @@ public class ProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        layout.addView(linearLayout);
     }
 
     private void addToolButton(LinearLayout layout, final Tool tool) {
-        Button button = new Button(getActivity().getApplicationContext());
-        button.setHeight(15000);
-        layout.addView(button);
-        button.setText(tool.getName());
-        button.setOnClickListener(new View.OnClickListener(){
+        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(425, 500);
+        linearLayoutParams.setMargins(10,0,10,0);
+        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(425, 150);
+        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(425, 350);
+        imageViewParams.setMargins(10,10,10,10);
 
+        LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
+        linearLayout.setLayoutParams(linearLayoutParams);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setBackgroundColor(Color.GRAY);
+
+        ImageView imageView = new ImageView(getActivity().getApplicationContext());
+        imageView.setAdjustViewBounds(true);
+        imageView.setImageBitmap(tool.getPicture());
+        imageView.setLayoutParams(imageViewParams);
+
+        TextView textView = new TextView(getActivity().getApplicationContext());
+        textView.setText(tool.getName());
+        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+        textView.setLayoutParams(textViewParams);
+
+        linearLayout.addView(imageView);
+        linearLayout.addView(textView);
+
+        linearLayout.setClickable(true);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bundle.putSerializable("tool", tool);
@@ -160,5 +229,7 @@ public class ProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
+
+        layout.addView(linearLayout);
     }
 }

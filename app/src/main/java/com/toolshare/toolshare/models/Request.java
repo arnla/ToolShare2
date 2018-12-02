@@ -23,8 +23,6 @@ public class Request implements Serializable {
     private User Owner;
     private int AdId;
     private Ad Ad;
-    private Date RequestedStartDate;
-    private Date RequestedEndDate;
     private String DeliveryMethod;
     private int StatusId;
 
@@ -32,21 +30,19 @@ public class Request implements Serializable {
 
     }
 
-    public Request(int id, String requesterId, String ownerId, int adId, String requestedStartDate, String requestedEndDate, String deliveryMethod, int statusId) {
+    public Request(String requesterId, String ownerId, int adId, String deliveryMethod, int statusId) {
+        RequesterId = requesterId;
+        OwnerId = ownerId;
+        AdId = adId;
+        DeliveryMethod = deliveryMethod;
+        StatusId = statusId;
+    }
+
+    public Request(int id, String requesterId, String ownerId, int adId, String deliveryMethod, int statusId) {
         Id = id;
         RequesterId = requesterId;
         OwnerId = ownerId;
         AdId = adId;
-        try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = new Date();
-            date = df.parse(requestedStartDate);
-            RequestedStartDate = date;
-            date = df.parse(requestedEndDate);
-            RequestedEndDate = date;
-        } catch (Exception e) {
-
-        }
         DeliveryMethod = deliveryMethod;
         StatusId = statusId;
     }
@@ -103,22 +99,6 @@ public class Request implements Serializable {
         return Ad;
     }
 
-    public void setRequestedStartDate(Date date) {
-        RequestedStartDate = date;
-    }
-
-    public Date getRequestedStartDate() {
-        return RequestedStartDate;
-    }
-
-    public void setRequestedEndDate(Date date) {
-        RequestedEndDate = date;
-    }
-
-    public Date getRequestedEndDate() {
-        return RequestedEndDate;
-    }
-
     public void setDeliveryMethod(String method) {
         DeliveryMethod = method;
     }
@@ -154,23 +134,27 @@ public class Request implements Serializable {
     public static final String REQUEST_COLUMN_STATUS_ID = "status_id";
 
     // code to add the new user
-    public static void addRequest(DbHandler dbHandler, Request request) {
+    public static int addRequest(DbHandler dbHandler, Request request) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(REQUEST_COLUMN_REQUESTER_ID, request.getRequesterId());
         values.put(REQUEST_COLUMN_OWNER_ID, request.getOwnerId());
         values.put(REQUEST_COLUMN_AD_ID, request.getAdId());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        values.put(REQUEST_COLUMN_REQUESTED_START_DATE, formatter.format(request.getRequestedStartDate()));
-        values.put(REQUEST_COLUMN_REQUESTED_END_DATE, formatter.format(request.getRequestedEndDate()));
         values.put(REQUEST_COLUMN_DELIVERY_METHOD, request.getDeliveryMethod());
         values.put(REQUEST_COLUMN_STATUS_ID, request.getStatusId());
 
         // Inserting Row
         db.insert(TABLE_REQUESTS, null, values);
-        //2nd argument is String containing nullColumnHack
+        int id = -1;
+
+        Cursor cursor = db.rawQuery("select max(id) from " + TABLE_REQUESTS, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        id =  cursor.getInt(0);
         db.close(); // Closing database connection
+        return id;
     }
 
     public static List<Request> getAllRequestsByOwner(DbHandler dbHandler, String owner) {
@@ -186,9 +170,7 @@ public class Request implements Serializable {
                         cursor.getString(2),
                         cursor.getInt(3),
                         cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(6),
-                        cursor.getInt(7));
+                        cursor.getInt(5));
                 request.setAd(getAdByPk(dbHandler, request.getAdId()));
                 request.setOwner(User.getUser(dbHandler, request.getOwnerId()));
                 request.setRequester(User.getUser(dbHandler, request.getRequesterId()));
@@ -214,9 +196,7 @@ public class Request implements Serializable {
                         cursor.getString(2),
                         cursor.getInt(3),
                         cursor.getString(4),
-                        cursor.getString(5),
-                        cursor.getString(6),
-                        cursor.getInt(7));
+                        cursor.getInt(5));
                 request.setAd(getAdByPk(dbHandler, request.getAdId()));
                 request.setOwner(User.getUser(dbHandler, request.getOwnerId()));
                 request.setRequester(User.getUser(dbHandler, request.getRequesterId()));
@@ -236,9 +216,6 @@ public class Request implements Serializable {
         values.put(REQUEST_COLUMN_REQUESTER_ID, request.getRequesterId());
         values.put(REQUEST_COLUMN_OWNER_ID, request.getOwnerId());
         values.put(REQUEST_COLUMN_AD_ID, request.getAdId());
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        values.put(REQUEST_COLUMN_REQUESTED_START_DATE, formatter.format(request.getRequestedStartDate()));
-        values.put(REQUEST_COLUMN_REQUESTED_END_DATE, formatter.format(request.getRequestedEndDate()));
         values.put(REQUEST_COLUMN_DELIVERY_METHOD, request.getDeliveryMethod());
         values.put(REQUEST_COLUMN_STATUS_ID, request.StatusId);
 
