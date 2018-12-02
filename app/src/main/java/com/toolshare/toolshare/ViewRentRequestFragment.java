@@ -160,7 +160,7 @@ public class ViewRentRequestFragment extends Fragment {
         updateToolScheduleStatus(db, request.getId(), "Busy");
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Notification notification = new Notification(request.getOwnerId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
+        Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
         addNotification(db, notification);
     }
 
@@ -169,7 +169,7 @@ public class ViewRentRequestFragment extends Fragment {
         Request.updateRequest(db, request);
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Notification notification = new Notification(request.getOwnerId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
+        Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
         addNotification(db, notification);
     }
 

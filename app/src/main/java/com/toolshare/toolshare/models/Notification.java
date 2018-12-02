@@ -169,29 +169,6 @@ public class Notification implements Serializable {
         return notifications;
     }
 
-
-/*    public static List<Notification> getAllNotificationsByRequester(DbHandler dbHandler, String requester){
-        List<Notification> notifications = new ArrayList<Notification>();
-        SQLiteDatabase db = dbHandler.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + TABLE_NOTIFICATION + " where " + NOTIFICATION_COLUMN_REQUESTER_ID + "= ?", new String[]{requester});
-        if (cursor.moveToFirst()) {
-            do {
-                Notification notification = new Notification(cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getInt(3),
-                        cursor.getInt(4));
-                notification.setOwner(User.getUser(dbHandler, notification.getOwnerId()));
-                notification.setRequester(User.getUser(dbHandler, notification.getRequesterId()));
-                notifications.add(notification);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-        return notifications;
-    }*/
-
     public static void updateNotification(DbHandler dbHandler, Notification notification) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
@@ -199,6 +176,7 @@ public class Notification implements Serializable {
         values.put(NOTIFICATION_COLUMN_OWNER_ID, notification.getOwnerId());
         values.put(NOTIFICATION_COLUMN_REQUEST_ID, notification.RequestId);
         values.put(NOTIFICATION_COLUMN_STATUS_ID, notification.StatusId);
+        values.put(NOTIFICATION_COLUMN_VIEWSTATUS_ID, notification.getViewingStatus());
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         values.put(NOTIFICATION_COLUMN_DATE_CREATED, formatter.format(notification.getDateCreated()));
 
