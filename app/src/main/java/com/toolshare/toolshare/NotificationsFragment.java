@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,6 +76,7 @@ public class NotificationsFragment extends Fragment {
         TextView title = (TextView) notificationView.findViewById(R.id.tv_title);
         TextView description = (TextView) notificationView.findViewById(R.id.tv_description);
         RadioButton read = (RadioButton)  notificationView.findViewById(R.id.rb_read_unread);
+        CardView notificationLayout = (CardView) notificationView.findViewById(R.id.cv_notification);
 
         switch (notification.getStatusId()) {
             case 1:
@@ -94,7 +96,7 @@ public class NotificationsFragment extends Fragment {
         description.setText(notification.getRequest().getAd().getTitle());
         read.setChecked(notification.getViewingStatus() == 1);
 
-        notificationView.setOnClickListener(new View.OnClickListener() {
+        notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new ViewRentRequestFragment();
