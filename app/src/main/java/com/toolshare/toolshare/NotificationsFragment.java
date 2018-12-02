@@ -96,7 +96,7 @@ public class NotificationsFragment extends Fragment {
         }
 
         description.setText(notification.getRequest().getAd().getTitle());
-        read.setChecked(notification.getViewingStatus() == 1);
+        read.setChecked(notification.getViewingStatus() == 0);
 
         notificationLayout.setOnClickListener(new View.OnClickListener() {
             @Override
