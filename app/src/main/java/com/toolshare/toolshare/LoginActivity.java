@@ -368,9 +368,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
 
     private void seedData() {
-        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000");
+        User user1 = new User("john.smith@google.com", "John", "Smith", "4031234567", "00000", "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
         user1.addUser(db);
-        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000");
+        User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000", "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
         user2.addUser(db);
 
         ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
