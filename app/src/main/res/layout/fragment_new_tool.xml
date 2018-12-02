@@ -18,85 +18,166 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_tool_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Name of Tool"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/et_tool_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-
-                <TextView
-                    android:id="@+id/tv_tool_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tool Type"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-
-                <Spinner
-                    android:id="@+id/s_tool_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:background="@android:drawable/btn_dropdown"/>
-
-                <TextView
-                    android:id="@+id/tv_tool_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Year"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-
-                <Spinner
-                    android:id="@+id/s_tool_year"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:background="@android:drawable/btn_dropdown"/>
-
-                <TextView
-                    android:id="@+id/tv_tool_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Brand"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-
-                <Spinner
-                    android:id="@+id/s_tool_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
-                    android:background="@android:drawable/btn_dropdown"/>
-
-                <TextView
-                    android:id="@+id/tv_tool_model"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Model"
-                    android:textSize="20dp"
-                    android:textStyle="bold"/>
-
-                <EditText
-                    android:id="@+id/et_tool_model"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"/>
-
-
                 <ImageView
                     android:id="@+id/iv_image"
                     android:layout_width="wrap_content"
                     android:layout_height="300dp"
                     android:clickable="true"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Tool Info"
+                        android:textSize="30dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tv_tool_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Name of Tool"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/et_tool_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"/>
+
+                    <TextView
+                        android:id="@+id/tv_tool_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tool Type"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <Spinner
+                        android:id="@+id/s_tool_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:background="@android:drawable/btn_dropdown"/>
+
+                    <TextView
+                        android:id="@+id/tv_tool_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Year"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <Spinner
+                        android:id="@+id/s_tool_year"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:background="@android:drawable/btn_dropdown"/>
+
+                    <TextView
+                        android:id="@+id/tv_tool_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Brand"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <Spinner
+                        android:id="@+id/s_tool_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:background="@android:drawable/btn_dropdown"/>
+
+                    <TextView
+                        android:id="@+id/tv_tool_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Model"
+                        android:textSize="20dp"
+                        android:textStyle="bold"/>
+
+                    <EditText
+                        android:id="@+id/et_tool_model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Tool Location"
+                        android:textSize="30dp"
+                        android:gravity="center_horizontal"
+                        android:textStyle="bold"/>
+
+                    <CheckBox
+                        android:id="@+id/cb_same_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Same as my address"
+                        android:checked="true"/>
+
+                    <LinearLayout
+                        android:id="@+id/ll_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/street_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Street Address"
+                            android:maxLines="1"
+                            android:inputType="textCapWords"/>
+
+                        <EditText
+                            android:id="@+id/city"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="City"
+                            android:maxLines="1"
+                            android:inputType="textCapWords"/>
+
+                        <EditText
+                            android:id="@+id/province"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Province (eg. AB)"
+                            android:maxLines="1"
+                            android:inputType="textCapCharacters"/>
+
+                        <EditText
+                            android:id="@+id/zip_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Zip Code (eg. T2J4G8)"
+                            android:maxLines="1"
+                            android:inputType="textCapCharacters"/>
+
+                        <EditText
+                            android:id="@+id/country"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Country"
+                            android:maxLines="1"
+                            android:inputType="textCapWords"/>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/b_create_tool"

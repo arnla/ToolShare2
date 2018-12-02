@@ -142,7 +142,7 @@ public class Tool implements Serializable {
     public static final String TOOL_COLUMN_PICTURE = "picture";
     public static final String TOOL_COLUMN_RATING = "rating";
 
-    public void addTool(DbHandler dbHandler) {
+    public int addTool(DbHandler dbHandler) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -161,7 +161,16 @@ public class Tool implements Serializable {
 
         // Inserting Row
         db.insert("tools", null, values);
+        int id = -1;
+
+        Cursor cursor = db.rawQuery("select max(id) from " + TABLE_TOOLS, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        id = cursor.getInt(0);
+
         db.close();
+        return id;
     }
 
     public List<Tool> getAllTools(DbHandler dbHandler) {

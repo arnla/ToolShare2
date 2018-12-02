@@ -18,22 +18,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
 import com.toolshare.toolshare.models.ToolType;
+import com.toolshare.toolshare.models.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
+import static com.toolshare.toolshare.models.User.getUser;
 
 
 public class NewToolFragment extends Fragment {
@@ -50,6 +58,13 @@ public class NewToolFragment extends Fragment {
     private ImageView mImage;
     private static final int CAMERA_REQUEST = 1888;
     private Bitmap image;
+    private LinearLayout mAddressLayout;
+    private EditText mStreetAddress;
+    private EditText mCity;
+    private EditText mProvince;
+    private EditText mZipCode;
+    private EditText mCountry;
+    private CheckBox mSameAddress;
 
     @Nullable
     @Override
@@ -64,23 +79,23 @@ public class NewToolFragment extends Fragment {
         mYearsSpinner = (Spinner) view.findViewById(R.id.s_tool_year);
         mBrandSpinner = (Spinner) view.findViewById(R.id.s_tool_brand);
         mModel = (EditText) view.findViewById(R.id.et_tool_model);
-        loadSpinners();
         mCreateToolButton = (Button) view.findViewById(R.id.b_create_tool);
+        mImage = (ImageView) view.findViewById(R.id.iv_image);
+        mStreetAddress = (EditText) view.findViewById(R.id.street_address);
+        mCity = (EditText) view.findViewById(R.id.city);
+        mProvince = (EditText) view.findViewById(R.id.province);
+        mZipCode = (EditText) view.findViewById(R.id.zip_code);
+        mCountry = (EditText) view.findViewById(R.id.country);
+        mSameAddress = (CheckBox) view.findViewById(R.id.cb_same_address);
+        mAddressLayout = (LinearLayout) view.findViewById(R.id.ll_address);
+
         mCreateToolButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 insertTool();
             }
         });
-/*        mAddImage = (Button) view.findViewById(R.id.b_add_image);
-        mAddImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-            }
-        });*/
-        mImage = (ImageView) view.findViewById(R.id.iv_image);
+
         Bitmap addImageIcon = BitmapFactory.decodeResource(getResources(), R.drawable.add_tool_image);
         mImage.setImageBitmap(addImageIcon);
         mImage.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +106,19 @@ public class NewToolFragment extends Fragment {
             }
         });
 
+        mAddressLayout.setVisibility(View.GONE);
+        mSameAddress.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mSameAddress.isChecked()) {
+                    mAddressLayout.setVisibility(View.GONE);
+                } else {
+                    mAddressLayout.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        loadSpinners();
         return view;
     }
 
@@ -143,7 +171,18 @@ public class NewToolFragment extends Fragment {
             image = photo;
         }
         Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
-        tool.addTool(db);
+        int id = tool.addTool(db);
+
+        User user = getUser(db, owner);
+        ToolAddress toolAddress;
+        if (mSameAddress.isChecked()) {
+            toolAddress = new ToolAddress(id, user.getStreetAddress(), user.getCity(), user.getProvince(), user.getZipCode(), user.getCountry());
+        } else {
+            toolAddress = new ToolAddress(id, mStreetAddress.getText().toString(), mCity.getText().toString(), mProvince.getText().toString(),
+                    mZipCode.getText().toString(), mCountry.getText().toString());
+        }
+        addToolAddress(db, toolAddress);
+
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
