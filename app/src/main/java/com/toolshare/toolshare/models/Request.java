@@ -221,5 +221,26 @@ public class Request implements Serializable {
 
         // updating row
         db.update(TABLE_REQUESTS, values, REQUEST_COLUMN_ID + " = ?", new String[] {Integer.toString(request.getId())});
+        db.close();
+    }
+
+    public static Request getRequestByPk(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("select * from " + TABLE_REQUESTS + " where " + REQUEST_COLUMN_ID + " = ?", new String[] {Integer.toString(id)});
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        Request request = new Request(cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getInt(3),
+                cursor.getString(4),
+                cursor.getInt(5));
+        request.setAd(getAdByPk(dbHandler, request.getAdId()));
+        request.setOwner(User.getUser(dbHandler, request.getOwnerId()));
+        request.setRequester(User.getUser(dbHandler, request.getRequesterId()));
+
+        return request;
     }
 }

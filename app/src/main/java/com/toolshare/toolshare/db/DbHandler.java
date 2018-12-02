@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -148,10 +148,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     // NOTIFICATIONS ADDRESS TABLE
     public static final String TABLE_NOTIFICATION = "notifications";
     public static final String NOTIFICATION_COLUMN_ID = "id";
-    public static final String NOTIFICATION_COLUMN_REQUESTER_ID = "request_id";
-    public static final String NOTIFICATION_COLUMN_OWNER_ID = "own_id";
+    public static final String NOTIFICATION_COLUMN_OWNER_ID = "owner_id";
+    public static final String NOTIFICATION_COLUMN_REQUEST_ID = "request_id";
     public static final String NOTIFICATION_COLUMN_STATUS_ID = "status_id";
-    public static final String NOTIFICATION_COLUMN_VIEWSTATUS_ID = "viewstatus_id";
+    public static final String NOTIFICATION_COLUMN_VIEWSTATUS_ID = "read";
+    public static final String NOTIFICATION_COLUMN_DATE_CREATED = "date_created";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -431,6 +432,25 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TOOL_ADDRESS_COLUMN_TOOL_ID + ") REFERENCES "
             + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
 
+    public static final String MIGRATION_13_TO_14 = "CREATE TABLE "
+            + TABLE_NOTIFICATION + "("
+            + NOTIFICATION_COLUMN_ID + " integer primary key autoincrement, "
+            + NOTIFICATION_COLUMN_OWNER_ID + " text not null, "
+            + NOTIFICATION_COLUMN_REQUEST_ID + " integer not null, "
+            + NOTIFICATION_COLUMN_STATUS_ID + " integer not null, "
+            + NOTIFICATION_COLUMN_VIEWSTATUS_ID + " integer not null, "
+            + NOTIFICATION_COLUMN_DATE_CREATED + " text not null, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + NOTIFICATION_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_requests FOREIGN KEY ("
+            + NOTIFICATION_COLUMN_REQUEST_ID + ") REFERENCES "
+            + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "), "
+            + "CONSTRAINT fk_status FOREIGN KEY ("
+            + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";
+
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -511,6 +531,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
                 + AVAILABILITY_COLUMN_AD_ID + ") REFERENCES "
                 + TABLE_ADS + "(" + AD_COLUMN_ID + "));";
 
+
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_TOOLS_TABLE);
         db.execSQL(CREATE_TOOL_TYPES_TABLE);
@@ -553,6 +574,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_11_TO_12_PART_4);
         db.execSQL(MIGRATION_11_TO_12_PART_5);
         db.execSQL(MIGRATION_12_TO_13);
+        db.execSQL(MIGRATION_13_TO_14);
     }
 
     // Upgrading database
@@ -626,6 +648,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
         if (oldVersion < 13) {
             db.execSQL(MIGRATION_12_TO_13);
+        }
+
+        if (oldVersion < 14){
+            db.execSQL(MIGRATION_13_TO_14);
         }
     }
 }

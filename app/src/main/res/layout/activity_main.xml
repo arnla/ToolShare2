@@ -9,7 +9,8 @@
     android:padding="10dp"
     android:background="#fcfcfc"
     android:gravity="center"
-    android:id="@+id/ll">
+    android:id="@+id/ll"
+    android:onClick="scrollToTop">
     <LinearLayout
         android:clipToPadding="false"
         android:gravity="center"
