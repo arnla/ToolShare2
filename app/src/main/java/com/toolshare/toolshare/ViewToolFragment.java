@@ -26,6 +26,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolReview;
+import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
@@ -120,6 +121,15 @@ public class ViewToolFragment extends Fragment {
                                         tool.setRating(avg);
 
                                         updateTool(db, tool);
+
+                                        Fragment fragment = new ViewToolFragment();
+                                        fragment.setArguments(bundle);
+
+                                        FragmentManager fm = getFragmentManager();
+                                        FragmentTransaction transaction = fm.beginTransaction();
+                                        transaction.replace(R.id.fragment_container, fragment);
+                                        transaction.addToBackStack(null);
+                                        transaction.commit();
                                     }
                                 })
                         .setNegativeButton("Cancel",
@@ -153,7 +163,8 @@ public class ViewToolFragment extends Fragment {
             mLeaveReview.setText("Leave a review");
         }
         mLeaveReview.setTextColor(Color.BLUE);
-        mOwner.setText(tool.getOwner());
+        User user = User.getUser(db, tool.getOwner());
+        mOwner.setText(user.getFirstName() + " " + user.getLastName());
         mOwner.setTextColor(Color.BLUE);
     }
 

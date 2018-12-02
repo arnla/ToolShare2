@@ -197,6 +197,7 @@ public class NewRentRequestFragment extends Fragment {
         mAdLink.setClickable(true);
         mToolName.setText(tool.getName());
         mToolImage.setImageBitmap(tool.getPicture());
+        mToolLink.setBackgroundColor(Color.GRAY);
     }
 
     private void setCalendar() {
