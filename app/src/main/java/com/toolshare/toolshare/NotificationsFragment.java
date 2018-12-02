@@ -35,6 +35,7 @@ import static com.toolshare.toolshare.models.User.getUser;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -63,6 +64,7 @@ public class NotificationsFragment extends Fragment {
     private void loadNotifications() {
         mNotificationLayout.removeAllViews();
         List<Notification> notifications = getAllNotificationsByOwner(db, bundle.getString("userEmail"));
+        Collections.reverse(notifications);
 
         for (int i = 0; i < notifications.size(); i++) {
             addNotification(mNotificationLayout, notifications.get(i));
