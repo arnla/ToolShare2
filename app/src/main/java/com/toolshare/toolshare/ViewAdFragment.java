@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,10 +47,9 @@ public class ViewAdFragment extends Fragment {
     private TextView mAdDescription;
     private TextView mAdStartDate;
     private TextView mAdEndDate;
+    private LinearLayout mToolLink;
     private TextView mToolName;
-    private TextView mToolYear;
-    private TextView mToolBrand;
-    private TextView mToolModel;
+    private ImageView mToolImage;
     private Button mDeleteButton;
     private Button mEditButton;
     private Button mRentToolButton;
@@ -77,10 +78,9 @@ public class ViewAdFragment extends Fragment {
         mAdDescription = (TextView) view.findViewById(R.id.tv_ad_description);
         mAdStartDate = (TextView) view.findViewById(R.id.tv_ad_start_date);
         mAdEndDate = (TextView) view.findViewById(R.id.tv_ad_end_date);
-        mToolName = (TextView) view.findViewById(R.id.tv_ad_tool_name);
-        mToolYear = (TextView) view.findViewById(R.id.tv_ad_tool_year);
-        mToolBrand = (TextView) view.findViewById(R.id.tv_ad_tool_brand);
-        mToolModel = (TextView) view.findViewById(R.id.tv_ad_tool_model);
+        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
+        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
+        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
         mDeleteButton = (Button) view.findViewById(R.id.b_delete_ad);
         mEditButton = (Button) view.findViewById(R.id.b_edit_ad);
         mRentToolButton = (Button) view.findViewById(R.id.b_rent_tool);
@@ -120,6 +120,21 @@ public class ViewAdFragment extends Fragment {
         mSunday = (Button) view.findViewById(R.id.b_ad_sunday);
         mPrice = (TextView) view.findViewById(R.id.tv_ad_price);
 
+        mToolLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putSerializable("tool", tool);
+                Fragment fragment = new ViewToolFragment();
+                fragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         setAdValues();
 
         return view;
@@ -128,10 +143,10 @@ public class ViewAdFragment extends Fragment {
     private void setAdValues() {
         mAdTitle.setText(ad.getTitle());
         mAdOwner.setText(mAdOwner.getText() + getUserNameByPk(db, ad.getOwner()));
-        mToolName.setText(mToolName.getText() + tool.getName());
-        mToolYear.setText(mToolYear.getText() + Integer.toString(tool.getYear()));
-        mToolBrand.setText(mToolBrand.getText() + Brand.getBrandByPk(db, tool.getBrand()).getName());
-        mToolModel.setText(mToolModel.getText() + tool.getModel());
+        mAdOwner.setTextColor(Color.BLUE);
+        mToolName.setText(tool.getName());
+        mToolImage.setImageBitmap(tool.getPicture());
+        mToolLink.setBackgroundColor(Color.GRAY);
         mAdDescription.setText(ad.getDescription());
         mPrice.setText(mPrice.getText() + "$" + Integer.toString(ad.getPrice()));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
