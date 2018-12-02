@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 
 public class DbHandler extends SQLiteOpenHelper implements Serializable {
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 14;
     private static final String DATABASE_NAME = "ToolshareDB";
 
     // USER TABLE
@@ -431,6 +431,21 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
             + TOOL_ADDRESS_COLUMN_TOOL_ID + ") REFERENCES "
             + TABLE_TOOLS + "(" + TOOL_COLUMN_ID + "));";
 
+    public static final String MIGRATION_13_TO_14 = "CREATE TABLE "
+            + TABLE_NOTIFICATION + "("
+            + NOTIFICATION_COLUMN_ID + " integer primary key autoincrement, "
+            + NOTIFICATION_COLUMN_REQUESTER_ID + " text not null, "
+            + NOTIFICATION_COLUMN_OWNER_ID + " text not null, "
+            + NOTIFICATION_COLUMN_STATUS_ID + " integer not null, "
+            + NOTIFICATION_COLUMN_VIEWSTATUS_ID + " integer, "
+            + "CONSTRAINT fk_users FOREIGN KEY ("
+            + NOTIFICATION_COLUMN_REQUESTER_ID + "," + NOTIFICATION_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "," + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_status FOREIGN KEY ("
+            + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
+            + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";
+
+
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -511,6 +526,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
                 + AVAILABILITY_COLUMN_AD_ID + ") REFERENCES "
                 + TABLE_ADS + "(" + AD_COLUMN_ID + "));";
 
+
         db.execSQL(CREATE_USERS_TABLE);
         db.execSQL(CREATE_TOOLS_TABLE);
         db.execSQL(CREATE_TOOL_TYPES_TABLE);
@@ -553,6 +569,7 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
         db.execSQL(MIGRATION_11_TO_12_PART_4);
         db.execSQL(MIGRATION_11_TO_12_PART_5);
         db.execSQL(MIGRATION_12_TO_13);
+        db.execSQL(MIGRATION_13_TO_14);
     }
 
     // Upgrading database
@@ -626,6 +643,10 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
 
         if (oldVersion < 13) {
             db.execSQL(MIGRATION_12_TO_13);
+        }
+
+        if (oldVersion < 14){
+            db.execSQL(MIGRATION_13_TO_14);
         }
     }
 }

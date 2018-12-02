@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ImageButton mProfileButton;
     private ImageButton mRentToolsButton;
-    private ImageButton mRentOutToolsButton;
+    private Button mRentOutToolsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
+        mRentOutToolsButton = (Button) findViewById(R.id.rent_out_tools_button);
         mRentOutToolsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new NotificationsFragment();
-                fragment.setArguments(bundle);
-                FragmentManager fm = getSupportFragmentManager();
-
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
+                i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "dashboard");
+                startActivity(i);
             }
         });
     }

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,11 +23,15 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Notification;
 import com.toolshare.toolshare.models.Request;
+import com.toolshare.toolshare.models.RequestStatus;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 import static android.app.Activity.RESULT_OK;
 import static com.toolshare.toolshare.models.Notification.addNotification;
 import static com.toolshare.toolshare.models.User.getUser;
+
+
+
 
 import java.util.List;
 
@@ -36,13 +41,17 @@ public class NotificationsFragment extends Fragment {
     private Bundle bundle;
     private DbHandler db;
     private Request request;
-    private int status;
     private Button mAccepted;
     private Button mDeclined;
     private Button mCancelled;
     private LinearLayout mMyNotifications;
     private Notification notification;
-
+    private TextView mNotificationStatus;
+    private int status;
+    private Ad ad;
+    private Tool tool;
+    private User requester;
+    private User owner;
 
 
     @Nullable
@@ -52,27 +61,32 @@ public class NotificationsFragment extends Fragment {
 
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
-        notification = (Notification) bundle.getSerializable("notification");
-        status = notification.getStatusId();
+        request = (Request) bundle.getSerializable("request");
+        ad = (Ad) bundle.getSerializable("ad");
+        tool = (Tool) bundle.getSerializable("tool");
+
+        requester = User.getUser(db, bundle.getString("userEmail"));
+        owner = User.getUser(db, ad.getOwner());
+
+        notification = new Notification();
+        // the below variables that are commented out as they display to be null.
+        /*notification.setRequesterId(bundle.getString("userEmail"));
+        notification.setOwnerId(ad.getOwner());
+        notification.setStatusId(request.getStatusId()); */
+        notification.setViewingStatus(0);
+
         mMyNotifications = (LinearLayout) notificationsView.findViewById(R.id.ll_my_notifications);
 
         mMyNotifications.removeAllViews();
-        List<Notification> notifications = Notification.getAllNotificationsByOwner((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
+        List<Notification> notifications = Notification.getAllNotificationsByRequester((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
 
         for (int i = 0; i < notifications.size(); i++) {
             addNotifications(mMyNotifications, notifications.get(i));
         }
 
-        /*if (status == 2){
-            rentalPayment();
-        } else if (status == 3){
-            declinedRequest();
-        } else if (status == 4){
-            cancelledRequest();
-        }*/
-
         return notificationsView;
     }
+
 
     private void addNotifications(LinearLayout layout, final Notification notification) {
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(800, 500);
@@ -94,7 +108,7 @@ public class NotificationsFragment extends Fragment {
         TextView textView = new TextView(getActivity().getApplicationContext());
         status = notification.getStatusId();
         //if(status == )
-        textView.setText("hi");
+        textView.setText(status);
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
         textView.setLayoutParams(textViewParams);
 
@@ -119,6 +133,8 @@ public class NotificationsFragment extends Fragment {
 
         layout.addView(linearLayout);
     }
+
+
 
 
     public void rentalPayment(){
