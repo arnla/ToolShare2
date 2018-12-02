@@ -11,4 +11,11 @@
         android:text="Notifications"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
 
+    <Button
+        android:id="@+id/b_card_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"/>
+
+
 </RelativeLayout>
