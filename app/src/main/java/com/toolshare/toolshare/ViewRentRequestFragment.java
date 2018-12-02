@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
+import com.toolshare.toolshare.models.Notification;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.RequestStatus;
 import com.toolshare.toolshare.models.Tool;
@@ -30,11 +31,13 @@ import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.toolshare.toolshare.models.Notification.addNotification;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.ToolSchedule.getDaysByRequestId;
 import static com.toolshare.toolshare.models.ToolSchedule.updateToolScheduleStatus;
@@ -56,6 +59,7 @@ public class ViewRentRequestFragment extends Fragment {
     private Button mCancel;
     private TextView mStatus;
     private TextView mRequestedDays;
+    private Calendar today = Calendar.getInstance();
 
     @Nullable
     @Override
@@ -154,16 +158,28 @@ public class ViewRentRequestFragment extends Fragment {
         request.setStatusId(2);
         Request.updateRequest(db, request);
         updateToolScheduleStatus(db, request.getId(), "Busy");
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
+        addNotification(db, notification);
     }
 
     private void rejectRequest() {
         request.setStatusId(3);
         Request.updateRequest(db, request);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
+        addNotification(db, notification);
     }
 
     private void cancelRequest() {
         request.setStatusId(4);
         Request.updateRequest(db, request);
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Notification notification = new Notification(request.getOwnerId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
+        addNotification(db, notification);
     }
 
     private void setValues() {

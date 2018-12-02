@@ -28,6 +28,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Notification;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolSchedule;
@@ -35,6 +36,7 @@ import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import java.util.List;
 
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
+import static com.toolshare.toolshare.models.Notification.addNotification;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
 import static com.toolshare.toolshare.models.ToolSchedule.getBusyDaysByToolId;
@@ -188,6 +191,13 @@ public class NewRentRequestFragment extends Fragment {
             toolSchedules.get(i).setRequestId(requestId);
             insertToolSchedule(db, toolSchedules.get(i));
         }
+
+        // send notification to owner
+        Calendar today = Calendar.getInstance();
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
+        addNotification(db, notification);
+
         Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
     }
 
