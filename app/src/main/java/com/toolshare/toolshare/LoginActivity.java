@@ -37,6 +37,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Card;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolAddress;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.toolshare.toolshare.models.Card.addCard;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
 import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
@@ -374,6 +376,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         user1.addUser(db);
         User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000", "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
         user2.addUser(db);
+
+        Card card = new Card("john.smith@google.com", "John Smith", "1234567812345678", 3, 2021, 321);
+        addCard(db, card);
+        card = new Card("jane.doe@google.com", "Jane Doe", "8765432187654321", 12, 2022, 123);
+        addCard(db, card);
 
         ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
         toolType.addToolType(db);

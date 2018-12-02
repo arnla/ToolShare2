@@ -31,12 +31,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Card;
 import com.toolshare.toolshare.models.User;
+import com.vinaygaba.creditcardview.CreditCardView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
+import static com.toolshare.toolshare.models.Card.addCard;
 
 /**
  * A login screen that offers login via email/password.
@@ -71,6 +74,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
     private EditText mProvince;
     private EditText mZipCode;
     private EditText mCountry;
+    private EditText mCardName;
+    private EditText mCardNumber;
+    private EditText mCardExpiryMonth;
+    private EditText mCardExpiryYear;
+    private EditText mCardCvc;
 
     // Database
     private DbHandler db;
@@ -93,6 +101,11 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         mProvince = (EditText) findViewById(R.id.province);
         mZipCode = (EditText) findViewById(R.id.zip_code);
         mCountry = (EditText) findViewById(R.id.country);
+        mCardName = (EditText) findViewById(R.id.et_name);
+        mCardNumber = (EditText) findViewById(R.id.et_number);
+        mCardExpiryMonth = (EditText) findViewById(R.id.et_expiry_month);
+        mCardExpiryYear = (EditText) findViewById(R.id.et_expiry_year);
+        mCardCvc = (EditText) findViewById(R.id.et_cvc);
 
         Button mRegisterButton = (Button) findViewById(R.id.register_register);
         mRegisterButton.setOnClickListener(new OnClickListener() {
@@ -132,8 +145,15 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String zipCode = mZipCode.getText().toString();
         String country = mCountry.getText().toString();
         User user = new User(email, firstName, lastName, phone, password, streetAddress, city, province, zipCode, country);
-
         user.addUser(db);
+
+        String cardName = mCardName.getText().toString();
+        String cardNumber = mCardNumber.getText().toString();
+        String expiryMonth = mCardExpiryMonth.getText().toString();
+        String expiryYear = mCardExpiryYear.getText().toString();
+        String cvc = mCardCvc.getText().toString();
+        Card card = new Card(email, cardName, cardNumber, Integer.parseInt(expiryMonth), Integer.parseInt(expiryYear), Integer.parseInt(cvc));
+        addCard(db, card);
 
         Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
         startActivity(i);

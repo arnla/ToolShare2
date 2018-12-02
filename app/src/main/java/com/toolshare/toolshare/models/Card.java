@@ -17,6 +17,27 @@ public class Card {
     private int ExpiryYear;
     private int Cvc;
 
+    public Card() {}
+
+    public Card(String ownerId, String fullName, String cardNumber, int expiryMonth, int expiryYear, int cvc) {
+        OwnerId = ownerId;
+        FullName = fullName;
+        CardNumber = cardNumber;
+        ExpiryMonth = expiryMonth;
+        ExpiryYear = expiryYear;
+        Cvc = cvc;
+    }
+
+    public Card(int id, String ownerId, String fullName, String cardNumber, int expiryMonth, int expiryYear, int cvc) {
+        Id = id;
+        OwnerId = ownerId;
+        FullName = fullName;
+        CardNumber = cardNumber;
+        ExpiryMonth = expiryMonth;
+        ExpiryYear = expiryYear;
+        Cvc = cvc;
+    }
+
     public int getId() {
         return Id;
     }
@@ -91,7 +112,7 @@ public class Card {
     public static final String CARD_COLUMN_EXPIRY_YEAR = "expiry_year";
     public static final String CARD_COLUMN_CVC = "cvc";
 
-    public static void AddCard(DbHandler dbHandler, Card card) {
+    public static void addCard(DbHandler dbHandler, Card card) {
         SQLiteDatabase db = dbHandler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -100,6 +121,7 @@ public class Card {
         values.put(CARD_COLUMN_CARD_NUMBER, card.getCardNumber());
         values.put(CARD_COLUMN_EXPIRY_MONTH, card.getExpiryMonth());
         values.put(CARD_COLUMN_EXPIRY_YEAR, card.getExpiryYear());
+        values.put(CARD_COLUMN_CVC, card.getCvc());
 
         db.insert(TABLE_CARDS, null, values);
         db.close();
