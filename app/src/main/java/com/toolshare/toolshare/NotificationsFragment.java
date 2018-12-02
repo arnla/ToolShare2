@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
@@ -28,99 +29,76 @@ import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 import static android.app.Activity.RESULT_OK;
 import static com.toolshare.toolshare.models.Notification.addNotification;
+import static com.toolshare.toolshare.models.Notification.getAllNotificationsByOwner;
 import static com.toolshare.toolshare.models.User.getUser;
 
 
-
-
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class NotificationsFragment extends Fragment {
-    private Button mCardInfo;
     private Bundle bundle;
     private DbHandler db;
-    private Request request;
-    private Button mAccepted;
-    private Button mDeclined;
-    private Button mCancelled;
-    private LinearLayout mMyNotifications;
-    private Notification notification;
-    private TextView mNotificationStatus;
-    private int status;
-    private Ad ad;
-    private Tool tool;
-    private User requester;
-    private User owner;
-
+    private LinearLayout mNotificationLayout;
+    private View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View notificationsView = inflater.inflate(R.layout.fragment_notifications, null);
+        view = inflater.inflate(R.layout.fragment_notifications, null);
 
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
-        request = (Request) bundle.getSerializable("request");
-        ad = (Ad) bundle.getSerializable("ad");
-        tool = (Tool) bundle.getSerializable("tool");
 
-        requester = User.getUser(db, bundle.getString("userEmail"));
-        owner = User.getUser(db, ad.getOwner());
+        mNotificationLayout = (LinearLayout) view.findViewById(R.id.ll_notifications);
 
-        notification = new Notification();
-        // the below variables that are commented out as they display to be null.
-        /*notification.setRequesterId(bundle.getString("userEmail"));
-        notification.setOwnerId(ad.getOwner());
-        notification.setStatusId(request.getStatusId()); */
-        notification.setViewingStatus(0);
 
-        mMyNotifications = (LinearLayout) notificationsView.findViewById(R.id.ll_my_notifications);
+        loadNotifications();
 
-        mMyNotifications.removeAllViews();
-        List<Notification> notifications = Notification.getAllNotificationsByRequester((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
-
-        for (int i = 0; i < notifications.size(); i++) {
-            addNotifications(mMyNotifications, notifications.get(i));
-        }
-
-        return notificationsView;
+        return view;
     }
 
+    private void loadNotifications() {
+        mNotificationLayout.removeAllViews();
+        List<Notification> notifications = getAllNotificationsByOwner(db, bundle.getString("userEmail"));
 
-    private void addNotifications(LinearLayout layout, final Notification notification) {
-        LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(800, 500);
-        linearLayoutParams.setMargins(10,0,10,0);
-        LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(800, 150);
-        LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(800, 350);
-        imageViewParams.setMargins(10,10,10,10);
+        for (int i = 0; i < notifications.size(); i++) {
+            addNotification(mNotificationLayout, notifications.get(i));
+        }
+    }
 
-        LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
-        linearLayout.setLayoutParams(linearLayoutParams);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setBackgroundColor(Color.GRAY);
+    private void addNotification(LinearLayout layout, final Notification notification) {
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View notificationView = li.inflate(R.layout.layout_notification, null);
 
-        /*ImageView imageView = new ImageView(getActivity().getApplicationContext());
-        imageView.setAdjustViewBounds(true);
-        imageView.setImageBitmap(tool.getPicture());
-        imageView.setLayoutParams(imageViewParams); */
+        TextView title = (TextView) notificationView.findViewById(R.id.tv_title);
+        TextView description = (TextView) notificationView.findViewById(R.id.tv_description);
+        RadioButton read = (RadioButton)  notificationView.findViewById(R.id.rb_read_unread);
 
-        TextView textView = new TextView(getActivity().getApplicationContext());
-        status = notification.getStatusId();
-        //if(status == )
-        textView.setText(status);
-        textView.setGravity(Gravity.CENTER_HORIZONTAL);
-        textView.setLayoutParams(textViewParams);
+        switch (notification.getStatusId()) {
+            case 1:
+                title.setText("New rent request");
+                break;
+            case 2:
+                title.setText("Your request has been accepted");
+                break;
+            case 3:
+                title.setText("Your request has been rejected");
+                break;
+            case 4:
+                title.setText("A request for your tool has been cancelled");
+                break;
+        }
 
-        //linearLayout.addView(imageView);
-        linearLayout.addView(textView);
+        description.setText(notification.getRequest().getAd().getTitle());
+        read.setChecked(notification.getViewingStatus() == 1);
 
-        linearLayout.setClickable(true);
-        linearLayout.setOnClickListener(new View.OnClickListener() {
+        notificationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putSerializable("notification", notification);
-                Fragment fragment = new ViewToolFragment();
+                Fragment fragment = new ViewRentRequestFragment();
+                bundle.putSerializable("request", notification.getRequest());
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
@@ -131,22 +109,6 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
-        layout.addView(linearLayout);
+        layout.addView(notificationView);
     }
-
-
-
-
-    public void rentalPayment(){
-
-
-    }
-
-    public void declinedRequest(){
-
-    }
-
-    public void cancelledRequest() {
-    }
-
 }

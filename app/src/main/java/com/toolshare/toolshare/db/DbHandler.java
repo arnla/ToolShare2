@@ -148,10 +148,11 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     // NOTIFICATIONS ADDRESS TABLE
     public static final String TABLE_NOTIFICATION = "notifications";
     public static final String NOTIFICATION_COLUMN_ID = "id";
-    public static final String NOTIFICATION_COLUMN_REQUESTER_ID = "request_id";
-    public static final String NOTIFICATION_COLUMN_OWNER_ID = "own_id";
+    public static final String NOTIFICATION_COLUMN_OWNER_ID = "owner_id";
+    public static final String NOTIFICATION_COLUMN_REQUEST_ID = "request_id";
     public static final String NOTIFICATION_COLUMN_STATUS_ID = "status_id";
-    public static final String NOTIFICATION_COLUMN_VIEWSTATUS_ID = "viewstatus_id";
+    public static final String NOTIFICATION_COLUMN_VIEWSTATUS_ID = "read";
+    public static final String NOTIFICATION_COLUMN_DATE_CREATED = "date_created";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -434,13 +435,17 @@ public class DbHandler extends SQLiteOpenHelper implements Serializable {
     public static final String MIGRATION_13_TO_14 = "CREATE TABLE "
             + TABLE_NOTIFICATION + "("
             + NOTIFICATION_COLUMN_ID + " integer primary key autoincrement, "
-            + NOTIFICATION_COLUMN_REQUESTER_ID + " text not null, "
             + NOTIFICATION_COLUMN_OWNER_ID + " text not null, "
+            + NOTIFICATION_COLUMN_REQUEST_ID + " integer not null, "
             + NOTIFICATION_COLUMN_STATUS_ID + " integer not null, "
-            + NOTIFICATION_COLUMN_VIEWSTATUS_ID + " integer, "
+            + NOTIFICATION_COLUMN_VIEWSTATUS_ID + " integer not null, "
+            + NOTIFICATION_COLUMN_DATE_CREATED + " text not null, "
             + "CONSTRAINT fk_users FOREIGN KEY ("
-            + NOTIFICATION_COLUMN_REQUESTER_ID + "," + NOTIFICATION_COLUMN_OWNER_ID + ") REFERENCES "
-            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "," + USERS_COLUMN_EMAIL + "), "
+            + NOTIFICATION_COLUMN_OWNER_ID + ") REFERENCES "
+            + TABLE_USERS + "(" + USERS_COLUMN_EMAIL + "), "
+            + "CONSTRAINT fk_requests FOREIGN KEY ("
+            + NOTIFICATION_COLUMN_REQUEST_ID + ") REFERENCES "
+            + TABLE_REQUESTS + "(" + REQUEST_COLUMN_ID + "), "
             + "CONSTRAINT fk_status FOREIGN KEY ("
             + REQUEST_COLUMN_STATUS_ID + ") REFERENCES "
             + TABLE_REQUEST_STATUSES + "(" + REQUEST_STATUS_COLUMN_ID + "));";

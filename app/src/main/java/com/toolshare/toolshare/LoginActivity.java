@@ -38,6 +38,7 @@ import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Card;
+import com.toolshare.toolshare.models.Notification;
 import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolAddress;
@@ -51,6 +52,7 @@ import java.util.List;
 
 import static android.Manifest.permission.READ_CONTACTS;
 import static com.toolshare.toolshare.models.Card.addCard;
+import static com.toolshare.toolshare.models.Notification.addNotification;
 import static com.toolshare.toolshare.models.Request.addRequest;
 import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
 import static com.toolshare.toolshare.models.ToolSchedule.insertToolSchedule;
@@ -449,6 +451,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         addRequest(db, request);
         request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "Pickup", 2);
         addRequest(db, request);
+
+        Notification notification = new Notification("jane.doe@google.com", 1, 1, 1, "2018-12-02");
+        addNotification(db, notification);
+        notification = new Notification("john.smith@google.com", 2, 1, 1, "2018-12-02");
+        addNotification(db, notification);
+        notification = new Notification("john.smith@google.com", 3, 1, 0, "2018-11-02");
+        addNotification(db, notification);
+        notification = new Notification("john.smith@google.com", 3, 2, 1, "2018-11-02");
+        addNotification(db, notification);
 
         ToolSchedule toolSchedule = new ToolSchedule(2, 1, "2018-12-17", "Pending");
         insertToolSchedule(db, toolSchedule);
