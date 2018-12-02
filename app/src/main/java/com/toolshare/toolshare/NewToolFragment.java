@@ -31,13 +31,17 @@ import android.widget.Toast;
 import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
 import com.toolshare.toolshare.models.ToolType;
+import com.toolshare.toolshare.models.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.toolshare.toolshare.models.ToolAddress.addToolAddress;
+import static com.toolshare.toolshare.models.User.getUser;
 
 
 public class NewToolFragment extends Fragment {
@@ -167,7 +171,18 @@ public class NewToolFragment extends Fragment {
             image = photo;
         }
         Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
-        tool.addTool(db);
+        int id = tool.addTool(db);
+
+        User user = getUser(db, owner);
+        ToolAddress toolAddress;
+        if (mSameAddress.isChecked()) {
+            toolAddress = new ToolAddress(id, user.getStreetAddress(), user.getCity(), user.getProvince(), user.getZipCode(), user.getCountry());
+        } else {
+            toolAddress = new ToolAddress(id, mStreetAddress.getText().toString(), mCity.getText().toString(), mProvince.getText().toString(),
+                    mZipCode.getText().toString(), mCountry.getText().toString());
+        }
+        addToolAddress(db, toolAddress);
+
         Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
