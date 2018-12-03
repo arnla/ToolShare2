@@ -33,10 +33,11 @@ public class ProfileFragment extends Fragment {
 
     private Bundle bundle;
     private TextView mUsername;
-    private LinearLayout mMyTools;
+    //private LinearLayout mMyTools;
     private LinearLayout mMyAds;
     private LinearLayout mRentRequests;
     private LinearLayout mMyRequests;
+    private Button mToolsButton;
 
     @Nullable
     @Override
@@ -47,12 +48,26 @@ public class ProfileFragment extends Fragment {
         mUsername = (TextView) profile.findViewById(R.id.tv_username);
         setUsername();
 
-        mMyTools = (LinearLayout) profile.findViewById(R.id.ll_my_tools);
+        //mMyTools = (LinearLayout) profile.findViewById(R.id.ll_my_tools);
         mMyAds = (LinearLayout) profile.findViewById(R.id.ll_my_ads);
         mRentRequests = (LinearLayout) profile.findViewById(R.id.ll_rent_requests);
         mMyRequests = (LinearLayout) profile.findViewById(R.id.ll_my_requests);
+        mToolsButton = (Button) profile.findViewById(R.id.b_tools);
+        mToolsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new ToolListFragment();
+                fragment.setArguments(bundle);
 
-        loadTools();
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
+        //loadTools();
         loadAds();
         loadRentRequests();
         loadMyRequests();
@@ -65,14 +80,14 @@ public class ProfileFragment extends Fragment {
         mUsername.setText(user.getFirstName() + " " + user.getLastName());
     }
 
-    private void loadTools() {
+/*    private void loadTools() {
         mMyTools.removeAllViews();
         List<Tool> tools = Tool.getAllToolsByOwner((DbHandler) getArguments().getSerializable("db"), getArguments().getString("userEmail"));
 
         for (int i = 0; i < tools.size(); i++) {
             addToolButton(mMyTools, tools.get(i));
         }
-    }
+    }*/
 
     private void loadAds() {
         mMyAds.removeAllViews();;
@@ -189,7 +204,7 @@ public class ProfileFragment extends Fragment {
         layout.addView(linearLayout);
     }
 
-    private void addToolButton(LinearLayout layout, final Tool tool) {
+/*    private void addToolButton(LinearLayout layout, final Tool tool) {
         LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(425, 500);
         linearLayoutParams.setMargins(10,0,10,0);
         LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(425, 150);
@@ -231,5 +246,5 @@ public class ProfileFragment extends Fragment {
         });
 
         layout.addView(linearLayout);
-    }
+    }*/
 }
