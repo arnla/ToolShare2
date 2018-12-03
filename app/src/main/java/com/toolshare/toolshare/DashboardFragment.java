@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,8 +49,7 @@ public class DashboardFragment extends Fragment {
 
     private Bundle bundle;
     private DbHandler db;
-    private LinearLayout mAdsLeft;
-    private LinearLayout mAdsRight;
+    private LinearLayout mAdsLayout;
     private TextView mFilterButton;
     private List<Integer> toolTypesToShow;
     private int maxDistance;
@@ -70,8 +70,7 @@ public class DashboardFragment extends Fragment {
             maxDistance = -1;
         }
 
-        mAdsLeft = (LinearLayout) view.findViewById(R.id.ll_dash_ads_left);
-        mAdsRight = (LinearLayout) view.findViewById(R.id.ll_dash_ads_right);
+        mAdsLayout = (LinearLayout) view.findViewById(R.id.ll_dash_ads);
         mFilterButton = (TextView) view.findViewById(R.id.tv_filter);
 
         mFilterButton.setOnClickListener(new View.OnClickListener() {
@@ -234,31 +233,20 @@ public class DashboardFragment extends Fragment {
         }
         for (int i = 0; i < ads.size(); i++) {
             final Ad ad = ads.get(i);
-            LinearLayout.LayoutParams linearLayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 500);
-            linearLayoutParams.setMargins(0,10,0,10);
-            LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 150);
-            LinearLayout.LayoutParams imageViewParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 350);
-            imageViewParams.setMargins(5,20,5,0);
+            LayoutInflater li = LayoutInflater.from(getActivity());
+            View adView = li.inflate(R.layout.layout_ad, null);
 
-            LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
-            linearLayout.setLayoutParams(linearLayoutParams);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            linearLayout.setBackgroundColor(Color.GRAY);
+            ImageView image = adView.findViewById(R.id.iv_tool_pic);
+            TextView title = adView.findViewById(R.id.tv_ad_title);
+            TextView tool = adView.findViewById(R.id.tv_tool_name);
+            CardView adLink = adView.findViewById(R.id.cv_ad);
 
-            ImageView imageView = new ImageView(getActivity().getApplicationContext());
-            imageView.setImageBitmap(ad.getTool().getPicture());
-            imageView.setLayoutParams(imageViewParams);
+            image.setImageBitmap(ad.getTool().getPicture());
+            title.setText(ad.getTitle());
+            tool.setText(ad.getTool().getName());
 
-            TextView textView = new TextView(getActivity().getApplicationContext());
-            textView.setText(ad.getTitle());
-            textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setLayoutParams(textViewParams);
-
-            linearLayout.addView(imageView);
-            linearLayout.addView(textView);
-
-            linearLayout.setClickable(true);
-            linearLayout.setOnClickListener(new View.OnClickListener() {
+            adLink.setClickable(true);
+            adLink.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     bundle.putSerializable("ad", ad);
@@ -273,11 +261,7 @@ public class DashboardFragment extends Fragment {
                 }
             });
 
-            if ((i % 2) == 0) {
-                mAdsLeft.addView(linearLayout);
-            } else {
-                mAdsRight.addView(linearLayout);
-            }
+            mAdsLayout.addView(adView);
         }
     }
 }
