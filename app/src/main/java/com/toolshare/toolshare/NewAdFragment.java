@@ -173,11 +173,11 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     private boolean repeatDayClicked(boolean repeat, View v) {
         Button btn = (Button) v;
         if (repeat == false) {
-            btn.setBackgroundColor(Color.BLACK);
+            btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn.setTextColor(Color.WHITE);
         } else {
             btn.setBackgroundColor(Color.WHITE);
-            btn.setTextColor(Color.BLACK);
+            btn.setTextColor(getResources().getColor(R.color.colorPrimary));
         }
         return !repeat;
     }
