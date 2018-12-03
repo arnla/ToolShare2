@@ -177,10 +177,10 @@
                 android:orientation="horizontal">
 
                 <Button
-                    android:id="@+id/b_rent_request_accept"
+                    android:id="@+id/b_rent_request_reject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Accept"
+                    android:text="Reject"
                     android:visibility="gone"
                     android:background="@color/colorAccent"
                     android:textColor="#ffffff"
@@ -188,10 +188,10 @@
                     android:layout_margin="5dp"/>
 
                 <Button
-                    android:id="@+id/b_rent_request_reject"
+                    android:id="@+id/b_rent_request_accept"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Reject"
+                    android:text="Accept"
                     android:visibility="gone"
                     android:background="@color/colorAccent"
                     android:textColor="#ffffff"

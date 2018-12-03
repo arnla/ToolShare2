@@ -188,5 +188,16 @@ public class ViewRentRequestFragment extends Fragment {
         mAdTitle.setText(ad.getTitle());
         mToolName.setText(tool.getName());
         mDeliveryMethod.setText(request.getDeliveryMethod());
+
+        if (request.getRequesterId().equals(bundle.getString("userEmail"))) {
+            mCancel.setVisibility(View.VISIBLE);
+            mAccept.setVisibility(View.GONE);
+            mReject.setVisibility(View.GONE);
+        } else {
+            mCancel.setVisibility(View.GONE);
+            mAccept.setVisibility(View.VISIBLE);
+            mReject.setVisibility(View.VISIBLE);
+        }
+
     }
 }
