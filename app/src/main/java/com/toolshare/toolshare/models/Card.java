@@ -139,6 +139,8 @@ public class Card {
 
         // updating row
         db.update(TABLE_CARDS, values, CARD_COLUMN_ID + " = ?", new String[] {Integer.toString(card.getId())});
+
+        db.close();
     }
 
 }

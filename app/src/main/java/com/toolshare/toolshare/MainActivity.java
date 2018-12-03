@@ -5,6 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Notification;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bundle = getIntent().getExtras();
+        String userEmail = bundle.getString("userEmail");
+        DbHandler db = (DbHandler) bundle.getSerializable("db");
 
         mProfileButton = findViewById(R.id.profile_button);
         mProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        List<Notification> notificationList = Notification.getAllNotificationsByOwner(new DbHandler(this), bundle.getString("userEmail"));
+        if (notificationList.size() > 0) {
+            for (int i = 0; i < notificationList.size(); i++) {
+                if (notificationList.get(i).getViewingStatus() == 0) {
+                    Toast.makeText(MainActivity.this, "New notifications!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
     }
 
 }

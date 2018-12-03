@@ -180,5 +180,7 @@ public class ToolSchedule {
 
         // updating row
         db.update(TABLE_TOOL_SCHEDULE, values, TOOL_SCHEDULE_COLUMN_REQUEST_ID + " = ?", new String[] {Integer.toString(requestId)});
+
+        db.close();
     }
 }
