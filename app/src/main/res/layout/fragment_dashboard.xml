@@ -27,36 +27,14 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_dash_ads"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/ll_filter">
-
-                <LinearLayout
-                    android:id="@+id/ll_dash_ads_left"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp">
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_dash_ads_right"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:gravity="center_horizontal"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="20dp">
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_weight="1"
+                android:layout_below="@+id/ll_filter"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_margin="10dp"/>
         </RelativeLayout>
 
     </ScrollView>
