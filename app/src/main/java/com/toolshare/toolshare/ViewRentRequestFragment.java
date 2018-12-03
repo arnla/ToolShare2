@@ -8,11 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -32,6 +34,7 @@ import com.toolshare.toolshare.models.User;
 import org.w3c.dom.Text;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -50,16 +53,19 @@ public class ViewRentRequestFragment extends Fragment {
     private User owner;
     private Ad ad;
     private Tool tool;
-    private TextView mAdLink;
-    private TextView mToolLink;
-    private LinearLayout mRentRequestLayout;
-    private RadioGroup mDeliveryMethod;
+    private CardView mAdLink;
+    private ImageView mToolPic;
+    private TextView mAdTitle;
+    private TextView mToolName;
+    private TextView mDeliveryMethod;
     private Button mAccept;
     private Button mReject;
     private Button mCancel;
     private TextView mStatus;
     private TextView mRequestedDays;
     private Calendar today = Calendar.getInstance();
+    private TextView mTotal;
+    private TextView mPrice;
 
     @Nullable
     @Override
@@ -74,9 +80,16 @@ public class ViewRentRequestFragment extends Fragment {
         ad = request.getAd();
         tool = Tool.getToolByPk(db, ad.getToolId());
 
-        mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
+        mAdLink = (CardView) view.findViewById(R.id.ll_ad).findViewById(R.id.cv_ad);
+        mToolPic = (ImageView) mAdLink.findViewById(R.id.iv_tool_pic);
+        mAdTitle = (TextView) mAdLink.findViewById(R.id.tv_ad_title);
+        mToolName = (TextView) mAdLink.findViewById(R.id.tv_tool_name);
+        mStatus = (TextView) view.findViewById(R.id.tv_rent_request_status);
+        mTotal = (TextView) view.findViewById(R.id.tv_total);
+        mPrice = (TextView) view.findViewById(R.id.tv_price);
+        mRequestedDays = (TextView) view.findViewById(R.id.tv_requested_days);
+        mDeliveryMethod = (TextView) view.findViewById(R.id.tv_delivery_pickup);
 
-        mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
         mAdLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,31 +104,7 @@ public class ViewRentRequestFragment extends Fragment {
                 transaction.commit();
             }
         });
-        mToolLink = (TextView) view.findViewById(R.id.tv_rent_request_tool);
-        mToolLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new ViewToolFragment();
-                bundle.putSerializable("tool", tool);
-                fragment.setArguments(bundle);
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
-        mStatus = (TextView) view.findViewById(R.id.tv_rent_request_status);
-        mStatus.setText("Status: " + RequestStatus.getStatusByPk(db, request.getStatusId()));
-
-        mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
-        for (int i = 0; i < mDeliveryMethod.getChildCount(); i++) {
-            ((RadioButton) mDeliveryMethod.getChildAt(i)).setEnabled(false);
-        }
-
-        mRequestedDays = (TextView) view.findViewById(R.id.tv_requested_days);
 
         mAccept = (Button) view.findViewById(R.id.b_rent_request_accept);
         mAccept.setOnClickListener(new View.OnClickListener() {
@@ -183,12 +172,6 @@ public class ViewRentRequestFragment extends Fragment {
     }
 
     private void setValues() {
-        mAdLink.setText(request.getAd().getTitle());
-        mAdLink.setTextColor(Color.BLUE);
-        mAdLink.setClickable(true);
-        mToolLink.setText(tool.getName());
-        mToolLink.setTextColor(Color.BLUE);
-        mToolLink.setClickable(true);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         List<Date> dates = getDaysByRequestId(db, request.getId());
         String datesString = "";
@@ -196,5 +179,14 @@ public class ViewRentRequestFragment extends Fragment {
             datesString += formatter.format(dates.get(i)) + "\n";
         }
         mRequestedDays.setText(datesString);
+        float total = dates.size() * ad.getPrice();
+        DecimalFormat df = new DecimalFormat("#.00");
+        mTotal.setText("$" + df.format(total));
+        mPrice.setText("$" + df.format(ad.getPrice()));
+        mStatus.setText("Status: " + RequestStatus.getStatusByPk(db, request.getStatusId()));
+        mToolPic.setImageBitmap(tool.getPicture());
+        mAdTitle.setText(ad.getTitle());
+        mToolName.setText(tool.getName());
+        mDeliveryMethod.setText(request.getDeliveryMethod());
     }
 }
