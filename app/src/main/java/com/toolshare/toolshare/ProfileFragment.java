@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
     private Button mAdsButton;
     private Button mMyRequestsButton;
     private Button mRequestsForMeButton;
-
+    private Button mSignOut;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
