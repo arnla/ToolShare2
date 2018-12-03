@@ -26,10 +26,12 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Card;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
 import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
@@ -65,6 +67,7 @@ public class ViewAdFragment extends Fragment {
     private Button mSaturday;
     private Button mSunday;
     private TextView mPrice;
+    private TextView mLocation;
 
     @Nullable
     @Override
@@ -136,6 +139,7 @@ public class ViewAdFragment extends Fragment {
         mSaturday = (Button) view.findViewById(R.id.b_ad_saturday);
         mSunday = (Button) view.findViewById(R.id.b_ad_sunday);
         mPrice = (TextView) view.findViewById(R.id.tv_ad_price);
+        mLocation = (TextView) view.findViewById(R.id.tv_location);
 
         mToolLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,7 +168,8 @@ public class ViewAdFragment extends Fragment {
         mToolName.setText(tool.getName());
         mToolImage.setImageBitmap(tool.getPicture());
         mAdDescription.setText(ad.getDescription());
-        mPrice.setText(mPrice.getText() + "$" + Integer.toString(ad.getPrice()));
+        DecimalFormat df = new DecimalFormat("#.00");
+        mPrice.setText("$" + df.format(ad.getPrice()));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         mAdStartDate.setText(formatter.format(ad.getAvailability().getStartDate()));
         mAdEndDate.setText(formatter.format(ad.getAvailability().getEndDate()));
@@ -175,6 +180,8 @@ public class ViewAdFragment extends Fragment {
         setAvailabilityDay(mFriday, availability.isAvailableFriday());
         setAvailabilityDay(mSaturday, availability.isAvailableSaturday());
         setAvailabilityDay(mSunday, availability.isAvailableSunday());
+        ToolAddress toolAddress = ToolAddress.getToolAddressByToolId(db, tool.getId());
+        mLocation.setText(toolAddress.getZipCode());
     }
 
     private void setAvailabilityDay(Button btn, boolean available) {

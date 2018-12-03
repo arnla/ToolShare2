@@ -140,7 +140,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderCallbac
         String phone = mPhoneView.getText().toString();
         String password = mPasswordView.getText().toString();
         String streetAddress = mStreetAddress.getText().toString();
-        String city = mStreetAddress.getText().toString();
+        String city = mCity.getText().toString();
         String province = mProvince.getText().toString();
         String zipCode = mZipCode.getText().toString();
         String country = mCountry.getText().toString();

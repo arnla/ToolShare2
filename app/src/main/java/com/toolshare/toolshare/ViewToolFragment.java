@@ -26,6 +26,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.ToolAddress;
 import com.toolshare.toolshare.models.ToolReview;
 import com.toolshare.toolshare.models.User;
 
@@ -57,6 +58,7 @@ public class ViewToolFragment extends Fragment {
     private TextView mLeaveReview;
     private RatingBar mRating;
     private TextView mOwner;
+    private TextView mLocation;
 
     @Nullable
     @Override
@@ -83,6 +85,7 @@ public class ViewToolFragment extends Fragment {
         mLeaveReview = (TextView) view.findViewById(R.id.tv_ratings);
         mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
         mOwner = (TextView) view.findViewById(R.id.tv_owner);
+        mLocation = (TextView) view.findViewById(R.id.tv_location);
 
         setToolValues();
 
@@ -189,6 +192,8 @@ public class ViewToolFragment extends Fragment {
         if (bundle.getString("userEmail").equals(tool.getOwner())) {
             mDeleteButton.setVisibility(View.VISIBLE);
         }
+        ToolAddress toolAddress = ToolAddress.getToolAddressByToolId(db, tool.getId());
+        mLocation.setText(toolAddress.getZipCode());
     }
 
     private void deleteTool() {

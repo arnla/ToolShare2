@@ -27,6 +27,8 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             loadFragment(new ProfileFragment());
         } else if (bundle.getString("fragmentName").equals("dashboard")) {
             loadFragment(new DashboardFragment());
+        } else if (bundle.getString("fragmentName").equals("add")) {
+                loadFragment(new AddToolOrAdFragment());
         }else if (bundle.getString("fragmentName").equals("shareapp")) {
             loadFragment(new ShareFragment());
         }else if (bundle.getString("fragmentName").equals("aboutus")) {

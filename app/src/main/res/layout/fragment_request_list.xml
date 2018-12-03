@@ -10,12 +10,61 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/ll_requests"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="4">
+
+                <CheckBox
+                    android:id="@+id/cb_pending"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pending"
+                    android:checked="true"/>
+
+
+                <CheckBox
+                    android:id="@+id/cb_accepted"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Accepted"
+                    android:checked="true"/>
+
+
+                <CheckBox
+                    android:id="@+id/cb_rejected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rejected"
+                    android:checked="true"/>
+
+
+                <CheckBox
+                    android:id="@+id/cb_cancelled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cancelled"
+                    android:checked="true"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_requests"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+            </LinearLayout>
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

@@ -11,6 +11,8 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Request;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.toolshare.toolshare.models.Ad.getAllAdsByOwner;
@@ -31,6 +34,10 @@ public class RequestListFragment extends Fragment {
     private List<Request> requests;
     private LinearLayout mRequestsLayout;
     private String mWhoseRequests;
+    private CheckBox mPending;
+    private CheckBox mAccepted;
+    private CheckBox mRejected;
+    private CheckBox mCancelled;
 
     @Nullable
     @Override
@@ -42,19 +49,80 @@ public class RequestListFragment extends Fragment {
         mWhoseRequests = bundle.getString("whoseRequests");
 
         mRequestsLayout = (LinearLayout) view.findViewById(R.id.ll_requests);
+        mPending = (CheckBox) view.findViewById(R.id.cb_pending);
+        mAccepted = (CheckBox) view.findViewById(R.id.cb_accepted);
+        mRejected = (CheckBox) view.findViewById(R.id.cb_rejected);
+        mCancelled = (CheckBox) view.findViewById(R.id.cb_cancelled);
+
+        mPending.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadRequests();
+            }
+        });
+
+        mAccepted.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadRequests();
+            }
+        });
+
+        mRejected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadRequests();
+            }
+        });
+
+        mCancelled.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                loadRequests();
+            }
+        });
 
         loadRequests();
 
         return view;
     }
 
+    private List<Request> filterRequestsByStatus(List<Request> requests) {
+        List<Request> newRequests = new ArrayList<Request>();
+        Request request;
+        for (int i = 0; i < requests.size(); i++) {
+            request = requests.get(i);
+            if (mPending.isChecked() && request.getStatusId() == 1) {
+                newRequests.add(request);
+            }
+
+            if (mAccepted.isChecked() && request.getStatusId() == 2) {
+                newRequests.add(request);
+            }
+
+            if (mRejected.isChecked() && request.getStatusId() == 3) {
+                newRequests.add(request);
+            }
+
+            if (mCancelled.isChecked() && request.getStatusId() == 4) {
+                newRequests.add(request);
+            }
+        }
+
+        return newRequests;
+    }
+
     private void loadRequests() {
-        List<Request> requests;
+        mRequestsLayout.removeAllViews();
+
         if (mWhoseRequests.equals("myRequests")) {
             requests = getAllRequestsByRequester(db, bundle.getString("userEmail"));
         } else {
             requests = getAllRequestsByOwner(db, bundle.getString("userEmail"));
         }
+
+        // filter request by status
+        requests = filterRequestsByStatus(requests);
 
         for (int i = 0; i < requests.size(); i++) {
             final Request request = requests.get(i);
