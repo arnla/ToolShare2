@@ -164,31 +164,73 @@ public class NewToolFragment extends Fragment {
     }
 
     private void insertTool() {
-        String owner = bundle.getString("userEmail");
-        ToolType toolType = (ToolType) mToolTypeSpinner.getSelectedItem();
-        String name = mName.getText().toString();
-        int year = (int) mYearsSpinner.getSelectedItem();
-        String model = mModel.getText().toString();
-        Brand brand = (Brand) mBrandSpinner.getSelectedItem();
+        if (formIsValid()) {
+            String owner = bundle.getString("userEmail");
+            ToolType toolType = (ToolType) mToolTypeSpinner.getSelectedItem();
+            String name = mName.getText().toString();
+            int year = (int) mYearsSpinner.getSelectedItem();
+            String model = mModel.getText().toString();
+            Brand brand = (Brand) mBrandSpinner.getSelectedItem();
 
-        if (image == null) {
-            Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
-            image = photo;
+            if (image == null) {
+                Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.no_image);
+                image = photo;
+            }
+            Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
+            int id = tool.addTool(db);
+
+            User user = getUser(db, owner);
+            ToolAddress toolAddress;
+            if (mSameAddress.isChecked()) {
+                toolAddress = new ToolAddress(id, user.getStreetAddress(), user.getCity(), user.getProvince(), user.getZipCode(), user.getCountry());
+            } else {
+                toolAddress = new ToolAddress(id, mStreetAddress.getText().toString(), mCity.getText().toString(), mProvince.getText().toString(),
+                        mZipCode.getText().toString(), mCountry.getText().toString());
+            }
+            addToolAddress(db, toolAddress);
+
+            Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
+            getActivity().onBackPressed();
         }
-        Tool tool = new Tool(owner, toolType.getId(), brand.getId(), name, year, model, image);
-        int id = tool.addTool(db);
+    }
 
-        User user = getUser(db, owner);
-        ToolAddress toolAddress;
-        if (mSameAddress.isChecked()) {
-            toolAddress = new ToolAddress(id, user.getStreetAddress(), user.getCity(), user.getProvince(), user.getZipCode(), user.getCountry());
-        } else {
-            toolAddress = new ToolAddress(id, mStreetAddress.getText().toString(), mCity.getText().toString(), mProvince.getText().toString(),
-                    mZipCode.getText().toString(), mCountry.getText().toString());
+    private boolean formIsValid() {
+        if (mName.getText().toString().equals("")) {
+            mName.setError("Cannot be empty");
+            return false;
         }
-        addToolAddress(db, toolAddress);
 
-        Toast.makeText(getActivity(), "New tool added", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+        if (mModel.getText().toString().equals("")) {
+            mModel.setError("Cannot be empty");
+            return false;
+        }
+
+        if (!mSameAddress.isChecked()) {
+            if (mStreetAddress.getText().toString().equals("")) {
+                mStreetAddress.setError("Cannot be empty");
+                return false;
+            }
+
+            if (mCity.getText().toString().equals("")) {
+                mCity.setError("Cannot be empty");
+                return false;
+            }
+
+            if (mProvince.getText().toString().equals("")) {
+                mProvince.setError("Cannot be empty");
+                return false;
+            }
+
+            if (mZipCode.getText().toString().equals("")) {
+                mZipCode.setError("Cannot be empty");
+                return false;
+            }
+
+            if (mCountry.getText().toString().equals("")) {
+                mCountry.setError("Cannot be empty");
+                return false;
+            }
+        }
+        return true;
     }
 }

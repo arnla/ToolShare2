@@ -192,19 +192,45 @@ public class NewAdFragment extends Fragment implements View.OnClickListener {
     }
 
     private void insertAd() {
-        ad.setTitle(mTitle.getText().toString());
-        Tool tool = (Tool) mTool.getSelectedItem();
-        ad.setToolId(tool.getId());
-        ad.setDescription(mDescription.getText().toString());
-        Calendar today = Calendar.getInstance();
-        ad.setPostDate(today.getTime());
-        ad.setExpirationDate(ad.getAvailability().getEndDate());
-        ad.setPrice(Integer.parseInt(mPrice.getText().toString()));
+        if (isFormValid()) {
+            ad.setTitle(mTitle.getText().toString());
+            Tool tool = (Tool) mTool.getSelectedItem();
+            ad.setToolId(tool.getId());
+            ad.setDescription(mDescription.getText().toString());
+            Calendar today = Calendar.getInstance();
+            ad.setPostDate(today.getTime());
+            ad.setExpirationDate(ad.getAvailability().getEndDate());
+            ad.setPrice(Integer.parseInt(mPrice.getText().toString()));
 
-        ad.getAvailability().setAdId(ad.addAd(db));
-        ad.getAvailability().addAvailability(db);
-        Toast.makeText(getActivity(), "New ad added", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+            ad.getAvailability().setAdId(ad.addAd(db));
+            ad.getAvailability().addAvailability(db);
+            Toast.makeText(getActivity(), "New ad added", Toast.LENGTH_LONG).show();
+            getActivity().onBackPressed();
+        }
+    }
+
+    private boolean isFormValid() {
+        if (mTitle.getText().toString().equals("")) {
+            mTitle.setError("Cannot be empty");
+            return false;
+        }
+
+        if (mStartDate.getText().toString().equals("")) {
+            mStartDate.setError("Cannot be empty");
+            return false;
+        }
+
+        if (mEndDate.getText().toString().equals("")) {
+            mEndDate.setError("Cannot be empty");
+            return false;
+        }
+
+        if (mPrice.getText().toString().equals("")) {
+            mPrice.setError("Cannot be empty");
+            return false;
+        }
+
+        return true;
     }
 
     private void setCalendar() {
