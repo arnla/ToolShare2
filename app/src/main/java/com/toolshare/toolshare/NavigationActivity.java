@@ -1,15 +1,12 @@
 package com.toolshare.toolshare;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.PopupMenu;
 
 import com.toolshare.toolshare.db.DbHandler;
 
@@ -30,6 +27,10 @@ public class NavigationActivity extends AppCompatActivity implements BottomNavig
             loadFragment(new ProfileFragment());
         } else if (bundle.getString("fragmentName").equals("dashboard")) {
             loadFragment(new DashboardFragment());
+        }else if (bundle.getString("fragmentName").equals("shareapp")) {
+            loadFragment(new ShareFragment());
+        }else if (bundle.getString("fragmentName").equals("aboutus")) {
+            loadFragment(new AboutUsFragment());
         }
 
         //getting bottom navigation view and attaching the listener
