@@ -185,8 +185,8 @@ public class ViewAdFragment extends Fragment {
     }
 
     private void deleteAd() {
-        Ad.deleteAd(db, ad.getId());
+/*        Ad.deleteAd(db, ad.getId());
         Toast.makeText(getActivity(), "Ad deleted", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+        getActivity().onBackPressed();*/
     }
 }

@@ -193,12 +193,12 @@ public class ViewToolFragment extends Fragment {
 
     private void deleteTool() {
         // delete all ads for that tool
-        List<Ad> ads = getAdsByToolId(db, tool.getId());
+/*        List<Ad> ads = getAdsByToolId(db, tool.getId());
         for (int i = 0; i < ads.size(); i++) {
             deleteAd(db, ads.get(i).getId());
         }
         tool.deleteTool(db, tool.getId());
         Toast.makeText(getActivity(), "Tool and all associated ads deleted", Toast.LENGTH_LONG).show();
-        getActivity().onBackPressed();
+        getActivity().onBackPressed();*/
     }
 }
