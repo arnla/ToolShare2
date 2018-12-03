@@ -26,6 +26,7 @@ import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Card;
 import com.toolshare.toolshare.models.Tool;
+import com.toolshare.toolshare.models.User;
 
 import org.w3c.dom.Text;
 
@@ -34,6 +35,7 @@ import java.text.SimpleDateFormat;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByAdId;
 import static com.toolshare.toolshare.models.Availability.getAvailabilityByPk;
 import static com.toolshare.toolshare.models.Tool.getToolByPk;
+import static com.toolshare.toolshare.models.User.getUser;
 import static com.toolshare.toolshare.models.User.getUserNameByPk;
 
 
@@ -43,6 +45,7 @@ public class ViewAdFragment extends Fragment {
     private DbHandler db;
     private Ad ad;
     private Tool tool;
+    private User user;
     private Availability availability;
     private TextView mAdTitle;
     private TextView mAdOwner;
@@ -74,9 +77,24 @@ public class ViewAdFragment extends Fragment {
         ad = (Ad) bundle.getSerializable("ad");
         tool = (Tool) getToolByPk(db, ad.getToolId());
         availability = (Availability) getAvailabilityByAdId(db, ad.getId());
+        user = (User) getUser(db, tool.getOwner());
 
         mAdTitle = (TextView) view.findViewById(R.id.tv_ad_title);
         mAdOwner = (TextView) view.findViewById(R.id.tv_ad_owner);
+        mAdOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new ViewProfileFragment();
+                fragment.setArguments(bundle);
+                bundle.putSerializable("user", user);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         mAdDescription = (TextView) view.findViewById(R.id.tv_ad_description);
         mAdStartDate = (TextView) view.findViewById(R.id.tv_ad_start_date);
         mAdEndDate = (TextView) view.findViewById(R.id.tv_ad_end_date);
