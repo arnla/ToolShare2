@@ -2,14 +2,7 @@ package com.toolshare.toolshare;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -52,9 +45,27 @@ public class MainActivity extends AppCompatActivity {
         });
         mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
 
-        maboutus = findViewById(R.id.aboutus);
+        maboutus = findViewById(R.id.shareapp);
+        maboutus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
+                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "shareapp");
+                startActivity(i);
+            }
+        });
 
-        mshareapp = findViewById(R.id.shareapp);
+        mshareapp = findViewById(R.id.aboutus);
+        mshareapp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
+                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "aboutus");
+                startActivity(i);
+            }
+        });
     }
 
 }
