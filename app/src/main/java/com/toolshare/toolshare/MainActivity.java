@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NavigationActivity.class);
-                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 i.putExtra("fragmentName", "shareapp");
                 startActivity(i);
             }
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NavigationActivity.class);
-                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 i.putExtra("fragmentName", "aboutus");
                 startActivity(i);
             }
