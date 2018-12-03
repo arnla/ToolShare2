@@ -192,7 +192,7 @@ public class ViewRentRequestFragment extends Fragment {
         mToolName.setText(tool.getName());
         mDeliveryMethod.setText(request.getDeliveryMethod());
 
-        if (request.getRequesterId().equals(bundle.getString("userEmail"))) {
+/*        if (request.getRequesterId().equals(bundle.getString("userEmail")) || (request.getStatusId() != 1)) {
             mCancel.setVisibility(View.VISIBLE);
             mAccept.setVisibility(View.GONE);
             mReject.setVisibility(View.GONE);
@@ -200,6 +200,22 @@ public class ViewRentRequestFragment extends Fragment {
             mCancel.setVisibility(View.GONE);
             mAccept.setVisibility(View.VISIBLE);
             mReject.setVisibility(View.VISIBLE);
+        }*/
+
+        if (request.getStatusId() != 1) {
+            mCancel.setVisibility(View.GONE);
+            mAccept.setVisibility(View.GONE);
+            mReject.setVisibility(View.GONE);
+        } else {
+            if (request.getRequesterId().equals(bundle.getString("userEmail"))) {
+                mCancel.setVisibility(View.VISIBLE);
+                mAccept.setVisibility(View.GONE);
+                mReject.setVisibility(View.GONE);
+            } else {
+                mCancel.setVisibility(View.GONE);
+                mAccept.setVisibility(View.VISIBLE);
+                mReject.setVisibility(View.VISIBLE);
+            }
         }
 
     }
