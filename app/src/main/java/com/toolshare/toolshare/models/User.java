@@ -258,9 +258,10 @@ public class User implements Serializable {
         Cursor cursor = db.rawQuery("select first_name, last_name from users where email = ?", new String[] {owner});
 
         if (cursor.moveToFirst()) {
+            String username = cursor.getString(0) + " " + cursor.getString(1);
             cursor.close();
             db.close();
-            return cursor.getString(0) + " " + cursor.getString(1);
+            return username;
         }
 
         cursor.close();

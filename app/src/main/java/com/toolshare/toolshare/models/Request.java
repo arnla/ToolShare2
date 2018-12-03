@@ -188,7 +188,8 @@ public class Request implements Serializable {
     public static List<Request> getAllRequestsByRequester(DbHandler dbHandler, String requester) {
         List<Request> requests = new ArrayList<Request>();
         SQLiteDatabase db = dbHandler.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + TABLE_REQUESTS + " where " + REQUEST_COLUMN_REQUESTER_ID + " = ?", new String[] {requester});
+        Cursor cursor = db.rawQuery("select * from " + TABLE_REQUESTS + " where " + REQUEST_COLUMN_REQUESTER_ID + " = ? and not " + REQUEST_COLUMN_STATUS_ID + " = ?",
+                new String[] {requester, Integer.toString(4)});
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
