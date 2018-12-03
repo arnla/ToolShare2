@@ -77,7 +77,7 @@ public class ToolListFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     bundle.putSerializable("tool", tool);
-                    Fragment fragment = new ViewAdFragment();
+                    Fragment fragment = new ViewToolFragment();
                     fragment.setArguments(bundle);
 
                     FragmentManager fm = getFragmentManager();
