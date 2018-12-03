@@ -24,8 +24,10 @@ import com.toolshare.toolshare.models.Request;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static com.toolshare.toolshare.models.Request.getAllRequestsByOwner;
 import static com.toolshare.toolshare.models.RequestStatus.getStatusByPk;
 
 
@@ -83,7 +85,8 @@ public class ProfileFragment extends Fragment {
         mMyRequestsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new ToolListFragment();
+                Fragment fragment = new RequestListFragment();
+                bundle.putString("whoseRequests", "myRequests");
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
@@ -97,7 +100,8 @@ public class ProfileFragment extends Fragment {
         mRequestsForMeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = new ToolListFragment();
+                Fragment fragment = new RequestListFragment();
+                bundle.putString("whoseRequests", "requestsForMe");
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
