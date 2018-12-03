@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import com.toolshare.toolshare.db.DbHandler;
 import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Availability;
 import com.toolshare.toolshare.models.Brand;
+import com.toolshare.toolshare.models.Card;
 import com.toolshare.toolshare.models.Tool;
 
 import org.w3c.dom.Text;
@@ -47,7 +49,7 @@ public class ViewAdFragment extends Fragment {
     private TextView mAdDescription;
     private TextView mAdStartDate;
     private TextView mAdEndDate;
-    private LinearLayout mToolLink;
+    private CardView mToolLink;
     private TextView mToolName;
     private ImageView mToolImage;
     private Button mDeleteButton;
@@ -78,9 +80,9 @@ public class ViewAdFragment extends Fragment {
         mAdDescription = (TextView) view.findViewById(R.id.tv_ad_description);
         mAdStartDate = (TextView) view.findViewById(R.id.tv_ad_start_date);
         mAdEndDate = (TextView) view.findViewById(R.id.tv_ad_end_date);
-        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
-        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
-        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mToolLink = (CardView) view.findViewById(R.id.ll_tool).findViewById(R.id.cv_tool);
+        mToolName = (TextView) mToolLink.findViewById(R.id.tv_name);
+        mToolImage = (ImageView) mToolLink.findViewById(R.id.iv_tool_pic);
         mDeleteButton = (Button) view.findViewById(R.id.b_delete_ad);
         mEditButton = (Button) view.findViewById(R.id.b_edit_ad);
         mRentToolButton = (Button) view.findViewById(R.id.b_rent_tool);
@@ -146,7 +148,6 @@ public class ViewAdFragment extends Fragment {
         mAdOwner.setTextColor(Color.BLUE);
         mToolName.setText(tool.getName());
         mToolImage.setImageBitmap(tool.getPicture());
-        mToolLink.setBackgroundColor(Color.GRAY);
         mAdDescription.setText(ad.getDescription());
         mPrice.setText(mPrice.getText() + "$" + Integer.toString(ad.getPrice()));
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -163,7 +164,7 @@ public class ViewAdFragment extends Fragment {
 
     private void setAvailabilityDay(Button btn, boolean available) {
         if (available) {
-            btn.setBackgroundColor(Color.BLACK);
+            btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn.setTextColor(Color.WHITE);
         }
     }
