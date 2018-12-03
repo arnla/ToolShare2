@@ -29,79 +29,49 @@
             android:gravity="center_horizontal"
             android:textSize="25dp" />
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_username">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/tv_username"
+            android:weightSum="4">
 
-            <LinearLayout
+            <Button
+                android:id="@+id/b_tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:text="My Tools"
+                android:layout_weight="1"/>
 
-                <Button
-                    android:id="@+id/b_tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorAccent"
-                    android:textColor="#ffffff"
-                    android:text="My Tools"/>
+            <Button
+                android:id="@+id/b_ads"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:text="My Ads"
+                android:layout_weight="1"/>
 
-                <TextView
-                    android:id="@+id/tv_my_ads"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="My Ads"/>
+            <Button
+                android:id="@+id/b_my_requests"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:text="My Requests"
+                android:layout_weight="1"/>
 
-                <HorizontalScrollView
-                    android:id="@+id/v_my_ads"
-                    android:layout_width="match_parent"
-                    android:layout_height="500px">
-
-                    <LinearLayout
-                        android:id="@+id/ll_my_ads"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
-                </HorizontalScrollView>
-
-                <TextView
-                    android:id="@+id/tv_rent_requests"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Rent Requests"/>
-
-                <HorizontalScrollView
-                    android:id="@+id/v_rent_requests"
-                    android:layout_width="match_parent"
-                    android:layout_height="500px">
-
-                    <LinearLayout
-                        android:id="@+id/ll_rent_requests"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
-                </HorizontalScrollView>
-
-                <TextView
-                    android:id="@+id/tv_my_requests"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="My Requests"/>
-
-                <HorizontalScrollView
-                    android:id="@+id/v_my_requests"
-                    android:layout_width="match_parent"
-                    android:layout_height="500px">
-
-                    <LinearLayout
-                        android:id="@+id/ll_my_requests"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"></LinearLayout>
-                </HorizontalScrollView>
-            </LinearLayout>
-        </ScrollView>
+            <Button
+                android:id="@+id/b_requests_for_me"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:textColor="#ffffff"
+                android:text="Requests for Me"
+                android:layout_weight="1"/>
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
