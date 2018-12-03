@@ -172,20 +172,31 @@ public class NewRentRequestFragment extends Fragment {
     }
 
     private void submitRequest() {
-        request.setStatusId(1);
-        int requestId = addRequest(db, request);
-        for (int i = 0; i < toolSchedules.size(); i++) {
-            toolSchedules.get(i).setRequestId(requestId);
-            insertToolSchedule(db, toolSchedules.get(i));
+        if (isFormValid()) {
+            request.setStatusId(1);
+            int requestId = addRequest(db, request);
+            for (int i = 0; i < toolSchedules.size(); i++) {
+                toolSchedules.get(i).setRequestId(requestId);
+                insertToolSchedule(db, toolSchedules.get(i));
+            }
+
+            // send notification to owner
+            Calendar today = Calendar.getInstance();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
+            addNotification(db, notification);
+
+            Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isFormValid() {
+        if (mRequestedDates.getText().toString().equals("")) {
+            mRequestedDates.setError("Cannot be empty");
+            return false;
         }
 
-        // send notification to owner
-        Calendar today = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
-        addNotification(db, notification);
-
-        Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
+        return true;
     }
 
     private void setValues() {
@@ -228,6 +239,17 @@ public class NewRentRequestFragment extends Fragment {
         }
 
         daysNotAllowed = getBusyDaysByToolId(db, tool.getId());
+        // add all days that are after the start date and before today
+        Calendar c2 = Calendar.getInstance();
+        c2.add(Calendar.DATE, -2);
+        Date today = c2.getTime();
+        c.setTime(ad.getAvailability().getStartDate());
+        Date d = c.getTime();
+        while (d.before(today)) {
+            daysNotAllowed.add(d);
+            c.add(Calendar.DATE, 1);
+            d = c.getTime();
+        }
 
         mCalendar.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
             @Override
@@ -235,6 +257,14 @@ public class NewRentRequestFragment extends Fragment {
                 c.setTime(date);
                 int dow = c.get(Calendar.DAY_OF_WEEK);
                 return daysAllowed.contains(dow) && !daysNotAllowed.contains(date);
+            }
+        });
+
+        mCalendar.setOnInvalidDateSelectedListener(new CalendarPickerView.OnInvalidDateSelectedListener() {
+            @Override
+            public void onInvalidDateSelected(Date date) {
+                String errMsg = "Tool is not avaialable on selected date";
+                Toast.makeText(getActivity().getApplicationContext(), errMsg, Toast.LENGTH_LONG).show();
             }
         });
 

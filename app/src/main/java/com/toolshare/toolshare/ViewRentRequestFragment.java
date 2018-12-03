@@ -183,7 +183,7 @@ public class ViewRentRequestFragment extends Fragment {
         DecimalFormat df = new DecimalFormat("#.00");
         mTotal.setText("$" + df.format(total));
         mPrice.setText("$" + df.format(ad.getPrice()));
-        mStatus.setText("Status: " + RequestStatus.getStatusByPk(db, request.getStatusId()));
+        mStatus.setText(RequestStatus.getStatusByPk(db, request.getStatusId()));
         mToolPic.setImageBitmap(tool.getPicture());
         mAdTitle.setText(ad.getTitle());
         mToolName.setText(tool.getName());
