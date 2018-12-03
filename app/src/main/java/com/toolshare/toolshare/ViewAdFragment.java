@@ -164,7 +164,7 @@ public class ViewAdFragment extends Fragment {
 
     private void setAvailabilityDay(Button btn, boolean available) {
         if (available) {
-            btn.setBackgroundColor(Color.BLACK);
+            btn.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
             btn.setTextColor(Color.WHITE);
         }
     }
