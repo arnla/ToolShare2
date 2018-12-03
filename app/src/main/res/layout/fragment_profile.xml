@@ -34,7 +34,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_below="@id/tv_username"
-            android:weightSum="4">
+            android:weightSum="5">
 
             <Button
                 android:id="@+id/b_tools"
@@ -71,6 +71,16 @@
                 android:textColor="#ffffff"
                 android:text="Requests for Me"
                 android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/b_sign_out"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"
+                android:text="Sign Out"
+                android:layout_weight="1"/>
+
         </LinearLayout>
     </RelativeLayout>
 
