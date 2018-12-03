@@ -6,10 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.toolshare.toolshare.db.DbHandler;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private String Email;
     private String FirstName;
     private String LastName;

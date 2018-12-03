@@ -52,12 +52,12 @@
                         android:layout_height="1dp"
                         android:layout_margin="10dp"
                         android:background="@color/colorAccent" />
-
                     <TextView
                         android:id="@+id/tv_ad_owner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center"/>
+                        android:gravity="center"
+                        android:clickable="true"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
