@@ -90,13 +90,14 @@
                             android:id="@+id/rb_delivery"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Delivery"/>
+                            android:text="Delivery" />
 
                         <RadioButton
                             android:id="@+id/rb_pickup"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Pick Up"/>
+                            android:text="Pick Up"
+                            android:checked="true"/>
                     </RadioGroup>
 
                 </LinearLayout>

@@ -172,20 +172,31 @@ public class NewRentRequestFragment extends Fragment {
     }
 
     private void submitRequest() {
-        request.setStatusId(1);
-        int requestId = addRequest(db, request);
-        for (int i = 0; i < toolSchedules.size(); i++) {
-            toolSchedules.get(i).setRequestId(requestId);
-            insertToolSchedule(db, toolSchedules.get(i));
+        if (isFormValid()) {
+            request.setStatusId(1);
+            int requestId = addRequest(db, request);
+            for (int i = 0; i < toolSchedules.size(); i++) {
+                toolSchedules.get(i).setRequestId(requestId);
+                insertToolSchedule(db, toolSchedules.get(i));
+            }
+
+            // send notification to owner
+            Calendar today = Calendar.getInstance();
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
+            addNotification(db, notification);
+
+            Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isFormValid() {
+        if (mRequestedDates.getText().toString().equals("")) {
+            mRequestedDates.setError("Cannot be empty");
+            return false;
         }
 
-        // send notification to owner
-        Calendar today = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
-        addNotification(db, notification);
-
-        Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
+        return true;
     }
 
     private void setValues() {
