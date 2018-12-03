@@ -98,6 +98,7 @@ public class NewRentRequestFragment extends Fragment {
         request.setRequesterId(bundle.getString("userEmail"));
         request.setOwnerId(ad.getOwner());
         request.setAdId(ad.getId());
+        request.setDeliveryMethod("Pickup");
 
         mRentRequestLayout = (LinearLayout) view.findViewById(R.id.ll_rent_request);
         mCalendar = (CalendarPickerView) view.findViewById(R.id.cv_dates);

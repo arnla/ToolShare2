@@ -1,6 +1,7 @@
 package com.toolshare.toolshare;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ public class ProfileFragment extends Fragment {
     private Button mAdsButton;
     private Button mMyRequestsButton;
     private Button mRequestsForMeButton;
-
+    private Button mSignOut;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class ProfileFragment extends Fragment {
         mAdsButton = (Button) profile.findViewById(R.id.b_ads);
         mMyRequestsButton = (Button) profile.findViewById(R.id.b_my_requests);
         mRequestsForMeButton = (Button) profile.findViewById(R.id.b_requests_for_me);
+        mSignOut = (Button) profile.findViewById(R.id.b_sign_out);
 
         mToolsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +111,14 @@ public class ProfileFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, fragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
+            }
+        });
+
+        mSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
             }
         });
 

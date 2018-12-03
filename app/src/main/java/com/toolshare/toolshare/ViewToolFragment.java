@@ -36,6 +36,7 @@ import static android.view.View.VISIBLE;
 import static com.toolshare.toolshare.models.Tool.updateTool;
 import static com.toolshare.toolshare.models.ToolReview.addToolReview;
 import static com.toolshare.toolshare.models.ToolReview.getAllRatingsByToolId;
+import static com.toolshare.toolshare.models.User.getUser;
 
 
 public class ViewToolFragment extends Fragment {
@@ -43,6 +44,7 @@ public class ViewToolFragment extends Fragment {
     private Bundle bundle;
     private DbHandler db;
     private Tool tool;
+    private User user;
     private TextView mToolName;
     private TextView mToolYear;
     private TextView mToolBrand;
@@ -62,6 +64,7 @@ public class ViewToolFragment extends Fragment {
         bundle = getArguments();
         db = (DbHandler) bundle.getSerializable("db");
         tool = (Tool) bundle.getSerializable("tool");
+        user = (User) getUser(db, tool.getOwner());
 
         mToolName = (TextView) view.findViewById(R.id.tv_tool_name);
         mToolYear = (TextView) view.findViewById(R.id.tv_tool_year);
@@ -81,6 +84,21 @@ public class ViewToolFragment extends Fragment {
         mOwner = (TextView) view.findViewById(R.id.tv_owner);
 
         setToolValues();
+
+        mOwner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment fragment = new ViewProfileFragment();
+                fragment.setArguments(bundle);
+                bundle.putSerializable("user", user);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         mLeaveReview.setOnClickListener(new View.OnClickListener() {
             @Override
