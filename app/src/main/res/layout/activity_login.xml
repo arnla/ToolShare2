@@ -78,7 +78,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Sign In"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@color/colorAccent" />
 
             <Button
                 android:id="@+id/register_button"
@@ -87,7 +89,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Register"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@color/colorAccent"/>
 
             <Button
                 android:id="@+id/seed_button"
@@ -96,7 +100,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Seed Data"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@color/colorAccent"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
