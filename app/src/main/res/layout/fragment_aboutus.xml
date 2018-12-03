@@ -19,12 +19,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="184dp"
         android:layout_marginEnd="8dp"
-        android:text="At Toolshare our mission is to provide people with the opportunity to rent tools from other individuals in their community and to Help people make extra income and help others by renting out their own tools.
+        android:text="At Toolshare our mission is to provide people with the opportunity to rent tools from other individuals in their community and to help people make extra income and help others by renting out their own tools.
 "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

@@ -1,11 +1,9 @@
 package com.toolshare.toolshare;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,22 +11,15 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.annotation.Nullable;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.toolshare.toolshare.db.DbHandler;
-import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Request;
-import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.toolshare.toolshare.models.Request.getAllRequestsByOwner;
 import static com.toolshare.toolshare.models.RequestStatus.getStatusByPk;
 
 
@@ -36,11 +27,11 @@ public class ProfileFragment extends Fragment {
 
     private Bundle bundle;
     private TextView mUsername;
-    private Button mToolsButton;
-    private Button mAdsButton;
-    private Button mMyRequestsButton;
-    private Button mRequestsForMeButton;
-    private Button mSignOut;
+    private ImageButton mToolsButton;
+    private ImageButton mAdsButton;
+    private ImageButton mMyRequestsButton;
+    private ImageButton mRequestsForMeButton;
+    private ImageButton mSignOut;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -50,11 +41,11 @@ public class ProfileFragment extends Fragment {
         mUsername = (TextView) profile.findViewById(R.id.tv_username);
         setUsername();
 
-        mToolsButton = (Button) profile.findViewById(R.id.b_tools);
-        mAdsButton = (Button) profile.findViewById(R.id.b_ads);
-        mMyRequestsButton = (Button) profile.findViewById(R.id.b_my_requests);
-        mRequestsForMeButton = (Button) profile.findViewById(R.id.b_requests_for_me);
-        mSignOut = (Button) profile.findViewById(R.id.b_sign_out);
+        mToolsButton = profile.findViewById(R.id.b_tools);
+        mAdsButton = profile.findViewById(R.id.b_ads);
+        mMyRequestsButton = profile.findViewById(R.id.b_my_requests);
+        mRequestsForMeButton = profile.findViewById(R.id.b_requests_for_me);
+        mSignOut = profile.findViewById(R.id.b_sign_out);
 
         mToolsButton.setOnClickListener(new View.OnClickListener() {
             @Override
