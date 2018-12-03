@@ -15,7 +15,312 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
+            <android.support.v7.widget.CardView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        android:text="Ad Info"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/colorAccent" />
+
+                    <EditText
+                        android:id="@+id/et_ad_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:hint="Title"/>
+
+                    <TextView
+                        android:id="@+id/tv_ad_tool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tool"
+                        android:textSize="20dp"/>
+
+                    <Spinner
+                        android:id="@+id/s_ad_tool"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:spinnerMode="dropdown"
+                        android:background="@android:drawable/btn_dropdown"/>
+
+                    <EditText
+                        android:id="@+id/et_ad_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapSentences"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        android:text="Tool Availability"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/colorAccent" />
+
+                    <Button
+                        android:id="@+id/b_select_dates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Select dates"
+                        android:background="@color/colorAccent"
+                        android:textColor="#ffffff"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Start Date"
+                                android:gravity="center"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="End Date"
+                                android:gravity="center"
+                                android:textStyle="bold"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_start_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:id="@+id/tv_end_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Repeat"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_margin="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_sunday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="S"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_monday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="M"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_tuesday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="T"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_wednesday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="W"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_thursday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="T"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_friday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="F"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+
+                            <Button
+                                android:id="@+id/b_saturday"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="S"
+                                android:background="#ffffff"
+                                android:layout_margin="5dp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="30dp"
+                        android:textStyle="bold"
+                        android:text="Ad Info"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="10dp"
+                        android:background="@color/colorAccent" />
+
+                    <EditText
+                        android:id="@+id/et_ad_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:hint="Price per day"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <!--<TextView
                 android:id="@+id/tv_ad_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -271,13 +576,15 @@
                         android:layout_height="wrap_content"
                         android:inputType="number"/>
                 </LinearLayout>
-            </LinearLayout>
+            </LinearLayout>-->
 
             <Button
                 android:id="@+id/b_create_ad"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:text="Create Ad"/>
+                android:text="Create Ad"
+                android:background="@color/colorAccent"
+                android:textColor="#ffffff"/>
         </LinearLayout>
     </ScrollView>
 
@@ -298,6 +605,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="OK"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@color/colorAccent"
+            android:textColor="#ffffff"/>
     </LinearLayout>
 </RelativeLayout>
