@@ -153,6 +153,8 @@ public class Request implements Serializable {
             cursor.moveToFirst();
 
         id =  cursor.getInt(0);
+
+        cursor.close();
         db.close(); // Closing database connection
         return id;
     }
@@ -240,6 +242,9 @@ public class Request implements Serializable {
         request.setAd(getAdByPk(dbHandler, request.getAdId()));
         request.setOwner(User.getUser(dbHandler, request.getOwnerId()));
         request.setRequester(User.getUser(dbHandler, request.getRequesterId()));
+
+        cursor.close();
+        db.close();
 
         return request;
     }

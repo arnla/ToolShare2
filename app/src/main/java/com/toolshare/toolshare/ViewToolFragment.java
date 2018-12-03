@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.toolshare.toolshare.db.DbHandler;
+import com.toolshare.toolshare.models.Ad;
 import com.toolshare.toolshare.models.Brand;
 import com.toolshare.toolshare.models.Tool;
 import com.toolshare.toolshare.models.ToolReview;
@@ -33,6 +34,8 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 import static android.view.View.VISIBLE;
+import static com.toolshare.toolshare.models.Ad.deleteAd;
+import static com.toolshare.toolshare.models.Ad.getAdsByToolId;
 import static com.toolshare.toolshare.models.Tool.updateTool;
 import static com.toolshare.toolshare.models.ToolReview.addToolReview;
 import static com.toolshare.toolshare.models.ToolReview.getAllRatingsByToolId;
@@ -50,7 +53,6 @@ public class ViewToolFragment extends Fragment {
     private TextView mToolBrand;
     private TextView mToolModel;
     private Button mDeleteButton;
-    private Button mEditButton;
     private ImageView mImage;
     private TextView mLeaveReview;
     private RatingBar mRating;
@@ -77,7 +79,6 @@ public class ViewToolFragment extends Fragment {
                 deleteTool();
             }
         });
-        mEditButton = (Button) view.findViewById(R.id.b_edit_tool);
         mImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
         mLeaveReview = (TextView) view.findViewById(R.id.tv_ratings);
         mRating = (RatingBar) view.findViewById(R.id.rb_tool_rating);
@@ -186,14 +187,18 @@ public class ViewToolFragment extends Fragment {
         mOwner.setText(user.getFirstName() + " " + user.getLastName());
         mOwner.setTextColor(Color.BLUE);
         if (bundle.getString("userEmail").equals(tool.getOwner())) {
-            mEditButton.setVisibility(View.VISIBLE);
             mDeleteButton.setVisibility(View.VISIBLE);
         }
     }
 
     private void deleteTool() {
+        // delete all ads for that tool
+        List<Ad> ads = getAdsByToolId(db, tool.getId());
+        for (int i = 0; i < ads.size(); i++) {
+            deleteAd(db, ads.get(i).getId());
+        }
         tool.deleteTool(db, tool.getId());
-        Toast.makeText(getActivity(), "Tool deleted", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Tool and all associated ads deleted", Toast.LENGTH_LONG).show();
         getActivity().onBackPressed();
     }
 }

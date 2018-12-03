@@ -169,6 +169,7 @@ public class Tool implements Serializable {
 
         id = cursor.getInt(0);
 
+        cursor.close();
         db.close();
         return id;
     }
@@ -274,6 +275,8 @@ public class Tool implements Serializable {
 
         // updating row
         db.update(TABLE_TOOLS, values, TOOL_COLUMN_ID + " = ?", new String[] {Integer.toString(tool.getId())});
+
+        db.close();
     }
 
     @Override

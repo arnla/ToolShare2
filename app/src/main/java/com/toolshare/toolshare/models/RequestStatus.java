@@ -27,9 +27,13 @@ public class RequestStatus {
         Cursor cursor = db.rawQuery("select status_name from request_statuses where id = ?", new String[] {Integer.toString(id)});
 
         if (cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
             return cursor.getString(0);
         }
 
+        cursor.close();
+        db.close();
         return "";
     }
 }

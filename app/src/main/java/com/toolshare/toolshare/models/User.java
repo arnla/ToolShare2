@@ -178,6 +178,9 @@ public class User implements Serializable {
                 cursor.getString(7),
                 cursor.getString(8),
                 cursor.getString(9));
+
+        cursor.close();
+        db.close();
         // return user
         return user;
     }
@@ -205,6 +208,8 @@ public class User implements Serializable {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+        db.close();
         // return user list
         return userList;
     }
@@ -219,6 +224,7 @@ public class User implements Serializable {
         values.put("phone", user.getPhone());
         values.put("password", user.getPassword());
 
+        db.close();
         // updating row
         return db.update("users",
                 values,
@@ -242,6 +248,7 @@ public class User implements Serializable {
         Cursor cursor = db.rawQuery(countQuery, null);
         cursor.close();
 
+        db.close();
         // return count
         return cursor.getCount();
     }
@@ -251,9 +258,13 @@ public class User implements Serializable {
         Cursor cursor = db.rawQuery("select first_name, last_name from users where email = ?", new String[] {owner});
 
         if (cursor.moveToFirst()) {
+            cursor.close();
+            db.close();
             return cursor.getString(0) + " " + cursor.getString(1);
         }
 
+        cursor.close();
+        db.close();
         return "";
     }
 }

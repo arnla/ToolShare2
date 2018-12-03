@@ -223,6 +223,7 @@ public class Ad implements Serializable {
 
         id =  cursor.getInt(0);
 
+        cursor.close();
         db.close();
 
         return id;
@@ -261,6 +262,9 @@ public class Ad implements Serializable {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+        db.close();
+
         return ads;
     }
 
@@ -280,9 +284,43 @@ public class Ad implements Serializable {
             ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
             ad.setTool(com.toolshare.toolshare.models.Tool.getToolByPk(dbHandler, cursor.getInt(2)));
 
+            cursor.close();
+            db.close();
+
             return ad;
         }
 
+        cursor.close();
+        db.close();
+
         return null;
+    }
+
+    public static List<Ad> getAdsByToolId(DbHandler dbHandler, int id) {
+        SQLiteDatabase db = dbHandler.getReadableDatabase();
+        List<Ad> ads = new ArrayList<Ad>();
+
+        Cursor cursor = db.rawQuery("select * from ads where tool_id = ?", new String[] {Integer.toString(id)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Ad ad = new Ad(cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getInt(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6),
+                        cursor.getInt(7));
+                ad.setAvailability(getAvailabilityByAdId(dbHandler, ad.getId()));
+                ad.setTool(com.toolshare.toolshare.models.Tool.getToolByPk(dbHandler, cursor.getInt(2)));
+                ads.add(ad);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return ads;
     }
 }

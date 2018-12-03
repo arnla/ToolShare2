@@ -56,7 +56,6 @@ public class ViewAdFragment extends Fragment {
     private TextView mToolName;
     private ImageView mToolImage;
     private Button mDeleteButton;
-    private Button mEditButton;
     private Button mRentToolButton;
     private Button mMonday;
     private Button mTuesday;
@@ -102,7 +101,6 @@ public class ViewAdFragment extends Fragment {
         mToolName = (TextView) mToolLink.findViewById(R.id.tv_name);
         mToolImage = (ImageView) mToolLink.findViewById(R.id.iv_tool_pic);
         mDeleteButton = (Button) view.findViewById(R.id.b_delete_ad);
-        mEditButton = (Button) view.findViewById(R.id.b_edit_ad);
         mRentToolButton = (Button) view.findViewById(R.id.b_rent_tool);
         if (bundle.getString("userEmail").equals(ad.getOwner())) {
             mDeleteButton.setVisibility(View.VISIBLE);
@@ -112,7 +110,6 @@ public class ViewAdFragment extends Fragment {
                     deleteAd();
                 }
             });
-            mEditButton.setVisibility(View.VISIBLE);
         } else {
             mRentToolButton.setVisibility(View.VISIBLE);
             mRentToolButton.setOnClickListener(new View.OnClickListener() {
