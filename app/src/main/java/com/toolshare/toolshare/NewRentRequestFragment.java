@@ -187,7 +187,8 @@ public class NewRentRequestFragment extends Fragment {
             Notification notification = new Notification(request.getOwnerId(), requestId, request.getStatusId(), 0, df.format(today.getTime()));
             addNotification(db, notification);
 
-            Toast.makeText(getActivity(), "Request submitted", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Request submitted!", Toast.LENGTH_LONG).show();
+            getActivity().onBackPressed();
         }
     }
 

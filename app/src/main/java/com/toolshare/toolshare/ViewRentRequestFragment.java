@@ -111,7 +111,6 @@ public class ViewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 acceptRequest();
-                Toast.makeText(getActivity(), "Request accepted!", Toast.LENGTH_LONG).show();
             }
         });
         mReject = (Button) view.findViewById(R.id.b_rent_request_reject);
@@ -119,7 +118,6 @@ public class ViewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 rejectRequest();
-                Toast.makeText(getActivity(), "Request rejected!", Toast.LENGTH_LONG).show();
             }
         });
         mCancel = (Button) view.findViewById(R.id.b_rent_request_cancel);
@@ -127,7 +125,6 @@ public class ViewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 cancelRequest();
-                Toast.makeText(getActivity(), "Request cancelled!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -151,6 +148,8 @@ public class ViewRentRequestFragment extends Fragment {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
         addNotification(db, notification);
+        Toast.makeText(getActivity(), "Request accepted!", Toast.LENGTH_LONG).show();
+        getActivity().onBackPressed();
     }
 
     private void rejectRequest() {
@@ -160,6 +159,8 @@ public class ViewRentRequestFragment extends Fragment {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Notification notification = new Notification(request.getRequesterId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
         addNotification(db, notification);
+        Toast.makeText(getActivity(), "Request rejected!", Toast.LENGTH_LONG).show();
+        getActivity().onBackPressed();
     }
 
     private void cancelRequest() {
@@ -169,6 +170,8 @@ public class ViewRentRequestFragment extends Fragment {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Notification notification = new Notification(request.getOwnerId(), request.getId(), request.getStatusId(), 0, df.format(today.getTime()));
         addNotification(db, notification);
+        Toast.makeText(getActivity(), "Request cancelled!", Toast.LENGTH_LONG).show();
+        getActivity().onBackPressed();
     }
 
     private void setValues() {
