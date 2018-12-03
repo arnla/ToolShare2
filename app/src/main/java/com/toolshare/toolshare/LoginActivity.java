@@ -378,10 +378,22 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         user1.addUser(db);
         User user2 = new User("jane.doe@google.com", "Jane", "Doe", "4039876543", "00000", "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
         user2.addUser(db);
+        User user3 = new User("angelaranola30@gmail.com", "Angela", "Ranola", "4036292073", "00000", "2039 52 Ave SW", "Calgary", "AB", "T3E1K2", "Canada");
+        user3.addUser(db);
+        User user4 = new User("eve.chen@gmail.com", "Eve", "Chen", "4032580369", "00000", "1316 39 St SE", "Calgary", "AB", "T2A1H7", "Canada");
+        user4.addUser(db);
+        User user5 = new User("sody.nkwonta@gmail.com", "Sody", "Nkwonta", "4039876543", "00000", "30 Royal Elm Road NW", "Calgary", "AB", "T3G5P6", "Canada");
+        user5.addUser(db);
 
         Card card = new Card("john.smith@google.com", "John Smith", "1234567812345678", 3, 2021, 321);
         addCard(db, card);
         card = new Card("jane.doe@google.com", "Jane Doe", "8765432187654321", 12, 2022, 123);
+        addCard(db, card);
+        card = new Card("angelaranola30@gmail.com", "Angela Ranola", "1472583691472583", 4, 2019, 147);
+        addCard(db, card);
+        card = new Card("eve.chen@gmail.com", "Eve Chen", "3692581473692581", 3, 2020, 369);
+        addCard(db, card);
+        card = new Card("sody.nkwonta@gmail.com", "Sody Nkwonta", "1234567891234567", 1, 2021, 258);
         addCard(db, card);
 
         ToolType toolType = new ToolType("Saws", "Tools consisting of a tough blade, wire, or chain with a hard toothed edge. Used for cutting material.");
@@ -420,6 +432,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         tool = new Tool("john.smith@google.com", 1, 1, "12-amp Corded Reciprocating Saw", 2018, "DWE305", image);
         tool.addTool(db);
 
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.ridgid_spindle_sanders_eb4424_64_1000);
+        tool = new Tool("angelaranola30@gmail.com", 4, 4, "Oscillating Edge/Belt Spindle Sander", 2018, "EB4424", image);
+        tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.dewalt_portable_air_compressors_d55140_64_1000);
+        tool = new Tool("angelaranola30@gmail.com", 3, 1, "1 Gal. Portablr Electric Air Compressor", 2017, "D55140", image);
+        tool.addTool(db);
+        image = BitmapFactory.decodeResource(getResources(), R.drawable.ryobi_belt_sanders_bd4601g_64_1000);
+        tool = new Tool("sody.nkwonta@gmail.com", 4, 3, "120v 4-in By 36-in Belt/Disc Sander", 2018, "BD4601G", image);
+        tool.addTool(db);
+
         ToolAddress toolAddress = new ToolAddress(1, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
         addToolAddress(db, toolAddress);
         toolAddress = new ToolAddress(2, "6320 Taralea Park NE", "Calgary", "AB", "T3J5C4", "Canada");
@@ -430,6 +452,12 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         addToolAddress(db, toolAddress);
         toolAddress = new ToolAddress(5, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
         addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(6, "2039 52 Ave SW", "Calgary", "AB", "T3E1K2", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(7, "1316 39 St SE", "Calgary", "AB", "T2A1H7", "Canada");
+        addToolAddress(db, toolAddress);
+        toolAddress = new ToolAddress(8, "2500 University Dr NW", "Calgary", "AB", "T2N1N4", "Canada");
+        addToolAddress(db, toolAddress);
 
         Ad ad = new Ad("john.smith@google.com", 1, "2018-11-29", "2019-12-29", "Table saw available weekends", "Available only on the weekends. Can keep from Saturday to Sunday", 5);
         ad.addAd(db);
@@ -438,11 +466,20 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         ad = new Ad("jane.doe@google.com", 2, "2018-11-29", "2019-05-31", "Spade drill", "Only available weekdays", 7);
         ad.addAd(db);
 
+        ad = new Ad("angelaranola30@gmail.com", 7, "2018-12-03", "2019-04-30", "Air Compressor $7/Day", "Works good and is portable", 7);
+        ad.addAd(db);
+        ad = new Ad("sody.nkwonta@gmail.com", 8, "2018-12-03", "2019-04-27", "Belt Sander Available Weekends", "Only available weekends. I have extra paper", 20);
+        ad.addAd(db);
+
         Availability availability = new Availability(1, 1, 0, 0, 0, 0, 0, 1, "2018-12-01", "2019-12-29");
         availability.addAvailability(db);
         availability = new Availability(2, 1, 1, 1, 1, 1, 1, 1, "2018-11-29", "2019-05-31");
         availability.addAvailability(db);
         availability = new Availability(3, 0, 1, 1, 1, 1, 1, 0, "2018-11-29", "2019-05-31");
+        availability.addAvailability(db);
+        availability = new Availability(4, 0, 1, 1, 1, 1, 1, 0, "2018-12-03", "2019-04-30");
+        availability.addAvailability(db);
+        availability = new Availability(5, 1, 0, 0, 0, 0, 0, 1, "2019-01-05", "2019-04-27");
         availability.addAvailability(db);
 
         Request request = new Request("john.smith@google.com", "jane.doe@google.com", 3, "Pickup", 1);
@@ -452,6 +489,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         request = new Request("jane.doe@google.com", "john.smith@google.com", 1, "Pickup", 2);
         addRequest(db, request);
 
+        request = new Request("angelaranola30@gmail.com", "john.smith@google.com", 1, "Pickup", 1);
+        addRequest(db, request);
+        request = new Request("eve.chen@gmail.com", "angelaranola30@gmail.com", 4, "Delivery", 2);
+        addRequest(db, request);
+        request = new Request("sody.nkwonta@gmail.com", "angelaranola30@gmail.com", 4, "Pickup", 1);
+        addRequest(db, request);
+
         Notification notification = new Notification("jane.doe@google.com", 1, 1, 1, "2018-12-02");
         addNotification(db, notification);
         notification = new Notification("john.smith@google.com", 2, 1, 1, "2018-12-02");
@@ -459,6 +503,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         notification = new Notification("john.smith@google.com", 3, 1, 0, "2018-11-02");
         addNotification(db, notification);
         notification = new Notification("john.smith@google.com", 3, 2, 1, "2018-11-02");
+        addNotification(db, notification);
+        notification = new Notification("john.smith@google.com", 4, 1, 0, "2018-12-03");
+        addNotification(db, notification);
+        notification = new Notification("angelaranola30@gmail.com", 5, 1, 0, "2018-12-03");
+        addNotification(db, notification);
+        notification = new Notification("eve.chen@gmail.com", 5, 2, 0, "2018-12-03");
+        addNotification(db, notification);
+        notification = new Notification("angelaranola30@gmail.com", 6, 1, 0, "2018-12-03");
         addNotification(db, notification);
 
         ToolSchedule toolSchedule = new ToolSchedule(2, 1, "2018-12-17", "Pending");
@@ -477,7 +529,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         insertToolSchedule(db, toolSchedule);
         toolSchedule = new ToolSchedule(1, 3, "2019-03-03", "Busy");
         insertToolSchedule(db, toolSchedule);
-
+        toolSchedule = new ToolSchedule(1, 4, "2018-12-29", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(1, 4, "2018-12-30", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 5, "2019-01-28", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 5, "2019-01-29", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 5, "2019-01-30", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 5, "2019-01-31", "Busy");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 6, "2019-02-07", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        toolSchedule = new ToolSchedule(7, 6, "2019-02-08", "Pending");
+        insertToolSchedule(db, toolSchedule);
+        db.close();
         Toast.makeText(LoginActivity.this, "Database has been seeded", Toast.LENGTH_LONG).show();
     }
 
