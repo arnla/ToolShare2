@@ -52,13 +52,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mRentOutToolsButton = findViewById(R.id.rent_out_tools_button);
+        mRentOutToolsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NavigationActivity.class);
+                i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("fragmentName", "add");
+                startActivity(i);
+            }
+        });
 
         maboutus = findViewById(R.id.shareapp);
         maboutus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NavigationActivity.class);
-                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 i.putExtra("fragmentName", "shareapp");
                 startActivity(i);
             }
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, NavigationActivity.class);
-                //i.putExtra("userEmail", bundle.getString("userEmail"));
+                i.putExtra("userEmail", bundle.getString("userEmail"));
                 i.putExtra("fragmentName", "aboutus");
                 startActivity(i);
             }
