@@ -32,6 +32,7 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static android.view.View.VISIBLE;
 import static com.toolshare.toolshare.models.Tool.updateTool;
 import static com.toolshare.toolshare.models.ToolReview.addToolReview;
 import static com.toolshare.toolshare.models.ToolReview.getAllRatingsByToolId;
@@ -166,6 +167,10 @@ public class ViewToolFragment extends Fragment {
         User user = User.getUser(db, tool.getOwner());
         mOwner.setText(user.getFirstName() + " " + user.getLastName());
         mOwner.setTextColor(Color.BLUE);
+        if (bundle.getString("userEmail").equals(tool.getOwner())) {
+            mEditButton.setVisibility(View.VISIBLE);
+            mDeleteButton.setVisibility(View.VISIBLE);
+        }
     }
 
     private void deleteTool() {
