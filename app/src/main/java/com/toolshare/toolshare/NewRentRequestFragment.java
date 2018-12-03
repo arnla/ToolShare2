@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,10 +65,10 @@ public class NewRentRequestFragment extends Fragment {
     private Ad ad;
     private Tool tool;
     private Availability availability;
-    private TextView mAdLink;
-    private LinearLayout mToolLink;
+    private CardView mAdLink;
+    private ImageView mToolPic;
+    private TextView mAdTitle;
     private TextView mToolName;
-    private ImageView mToolImage;
     private LinearLayout mRentRequestLayout;
     private LinearLayout mDatesLayout;
     private Button mSelectDates;
@@ -104,10 +105,10 @@ public class NewRentRequestFragment extends Fragment {
         mDatesLayout = (LinearLayout) view.findViewById(R.id.ll_dates);
         mSelectDates = (Button) view.findViewById(R.id.b_select_dates);
         mDatesOk = (Button) view.findViewById(R.id.b_dates_ok);
-        mAdLink = (TextView) view.findViewById(R.id.tv_rent_request_ad);
-        mToolLink = (LinearLayout) view.findViewById(R.id.ll_tool);
-        mToolName = (TextView) view.findViewById(R.id.tv_rent_request_tool);
-        mToolImage = (ImageView) view.findViewById(R.id.iv_tool_picture);
+        mAdLink = (CardView) view.findViewById(R.id.ll_ad).findViewById(R.id.cv_ad);
+        mToolPic = (ImageView) mAdLink.findViewById(R.id.iv_tool_pic);
+        mAdTitle = (TextView) mAdLink.findViewById(R.id.tv_ad_title);
+        mToolName = (TextView) mAdLink.findViewById(R.id.tv_tool_name);
         mSubmitRequest = (Button) view.findViewById(R.id.b_rent_request_submit);
         mDeliveryMethod = (RadioGroup) view.findViewById(R.id.rg_delivery_method);
         
@@ -133,20 +134,6 @@ public class NewRentRequestFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Fragment fragment = new ViewAdFragment();
-                fragment.setArguments(bundle);
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction transaction = fm.beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-
-        mToolLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Fragment fragment = new ViewToolFragment();
                 fragment.setArguments(bundle);
 
                 FragmentManager fm = getFragmentManager();
@@ -202,12 +189,10 @@ public class NewRentRequestFragment extends Fragment {
     }
 
     private void setValues() {
-        mAdLink.setText(ad.getTitle());
-        mAdLink.setTextColor(Color.BLUE);
         mAdLink.setClickable(true);
+        mToolPic.setImageBitmap(tool.getPicture());
+        mAdTitle.setText(ad.getTitle());
         mToolName.setText(tool.getName());
-        mToolImage.setImageBitmap(tool.getPicture());
-        mToolLink.setBackgroundColor(Color.GRAY);
     }
 
     private void setCalendar() {
